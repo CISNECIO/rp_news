@@ -15,6 +15,8 @@
   --navy-light: #1a3a6a;
   --accent: #2563eb;
   --accent-soft: #60a5fa;
+  --accent-bg: rgba(37,99,235,.06);
+  --gold-soft: rgba(201,168,76,.12);
   --gold: #c9a84c;
   --white: #ffffff;
   --gray-50: #f8f9fb;
@@ -699,7 +701,10 @@ input, select { font-family: inherit; }
   border-radius: 3px;
   margin-right: 4px;
   margin-bottom: 4px;
+  cursor: pointer;
+  transition: var(--transition);
 }
+.tag:hover { color: var(--accent); background: var(--accent-bg); }
 
 /* ═══ MODAL ═══ */
 .modal-overlay {
@@ -840,6 +845,8 @@ input, select { font-family: inherit; }
 @media (max-width: 1100px) {
   .editorial-hero { grid-template-columns: 1fr 340px; gap: 0 20px; }
   .hero-headlines { display: none; }
+  .insight-strip__inner { flex-wrap: wrap; }
+  .insight-card { min-width: 140px; }
 }
 @media (max-width: 900px) {
   .editorial-hero { grid-template-columns: 1fr; gap: 0; }
@@ -860,6 +867,11 @@ input, select { font-family: inherit; }
   .market-bar { overflow-x: auto; }
   .logo-subtitle { display: none; }
   .section-title { font-size: 22px; }
+  .welcome-bar { flex-direction: column; gap: 16px; }
+  .welcome-bar__actions { flex-wrap: wrap; }
+  .insight-card { flex: none; width: 50%; }
+  .insight-card:nth-child(2) { border-right: none; }
+  .search-presets { display: none; }
 }
 @media (max-width: 600px) {
   .search-row { flex-direction: column; }
@@ -871,6 +883,10 @@ input, select { font-family: inherit; }
   .hero-mid-card + .hero-mid-card { border-left: none; border-top: var(--border-strong); }
   .market-item { padding: 0 10px; font-size: 11px; }
   .section-title { font-size: 20px; }
+  .insight-card { width: 100%; border-right: none !important; border-bottom: 1px solid var(--gray-200); }
+  .insight-card:last-child { border-bottom: none; }
+  .trend-bars { height: 60px; }
+  .welcome-bar__title { font-size: 22px; }
 }
 
 .load-more {
@@ -889,6 +905,85 @@ input, select { font-family: inherit; }
   letter-spacing: 0.3px;
 }
 .load-more:hover { background: var(--gray-50); color: var(--navy); }
+
+/* ═══ INSIGHT DASHBOARD ═══ */
+.insight-strip { background: var(--white); border-bottom: var(--border); padding: 14px 0; }
+.insight-strip__inner { max-width: var(--max-width); margin: 0 auto; padding: 0 24px; display: flex; gap: 0; align-items: stretch; }
+.insight-card { flex: 1; padding: 10px 20px; border-right: 1px solid var(--gray-200); display: flex; flex-direction: column; gap: 2px; }
+.insight-card:last-child { border-right: none; }
+.insight-card__label { font-size: 10px; font-weight: 700; color: var(--gray-400); text-transform: uppercase; letter-spacing: 1px; }
+.insight-card__value { font-family: var(--font-mono); font-size: 18px; font-weight: 700; color: var(--gray-800); line-height: 1.2; }
+.insight-card__value--text { font-family: var(--font-body); font-size: 14px; font-weight: 700; color: var(--navy); }
+.insight-card__sub { font-size: 11px; color: var(--gray-400); }
+
+/* ═══ ALWAYS-VISIBLE SEARCH BAR ═══ */
+.search-bar { background: var(--white); border-bottom: var(--border); padding: 12px 0; }
+.search-bar__inner { max-width: var(--max-width); margin: 0 auto; padding: 0 24px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.search-bar__field { flex: 1; min-width: 240px; position: relative; }
+.search-bar__field input {
+  width: 100%; height: 40px; border: 1px solid var(--gray-200); border-radius: 6px;
+  padding: 0 14px 0 38px; font-size: 13.5px; color: var(--gray-800);
+  background: var(--gray-50); outline: none; transition: var(--transition);
+}
+.search-bar__field input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(37,99,235,.10); background: var(--white); }
+.search-bar__field input::placeholder { color: var(--gray-400); }
+.search-bar__icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 16px; color: var(--gray-400); pointer-events: none; }
+.search-presets { display: flex; gap: 6px; align-items: center; }
+.preset-btn {
+  font-size: 11px; font-weight: 600; padding: 6px 12px; border-radius: 4px;
+  color: var(--gray-500); border: 1px solid var(--gray-200); background: var(--white);
+  transition: var(--transition); white-space: nowrap;
+}
+.preset-btn:hover { border-color: var(--accent); color: var(--accent); }
+.preset-btn.active { background: var(--accent); color: var(--white); border-color: var(--accent); }
+
+/* ═══ FILTER CHIPS ═══ */
+.filter-chips { max-width: var(--max-width); margin: 0 auto; padding: 10px 24px 0; display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+.filter-chips:empty { display: none; }
+.filter-chip { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 600; color: var(--accent); background: var(--accent-bg); padding: 4px 10px; border-radius: 4px; border: 1px solid rgba(37,99,235,.15); }
+.filter-chip__remove { font-size: 13px; color: var(--accent); cursor: pointer; line-height: 1; opacity: .6; transition: var(--transition); }
+.filter-chip__remove:hover { opacity: 1; }
+.filter-chips__clear { font-size: 11px; font-weight: 600; color: var(--gray-400); cursor: pointer; margin-left: 4px; }
+.filter-chips__clear:hover { color: var(--accent); }
+
+/* ═══ WELCOME / VALUE PROPOSITION ═══ */
+.welcome-bar { padding: 28px 0 20px; display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; }
+.welcome-bar__title { font-family: var(--font-display); font-size: 28px; font-weight: 800; color: var(--gray-800); line-height: 1.15; margin-bottom: 6px; letter-spacing: -0.3px; }
+.welcome-bar__subtitle { font-size: 14px; color: var(--gray-500); line-height: 1.5; max-width: 560px; }
+.welcome-bar__actions { display: flex; gap: 8px; flex-shrink: 0; align-items: center; padding-top: 4px; }
+.action-btn {
+  display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: 6px;
+  font-size: 12px; font-weight: 600; transition: var(--transition);
+  border: 1px solid var(--gray-200); color: var(--gray-600); background: var(--white); white-space: nowrap;
+}
+.action-btn:hover { border-color: var(--accent); color: var(--accent); }
+.action-btn--primary { background: var(--navy); color: var(--white); border-color: var(--navy); }
+.action-btn--primary:hover { background: var(--navy-light); border-color: var(--navy-light); }
+.action-btn__icon { font-size: 14px; }
+
+/* ═══ NEW-SINCE-VISIT BANNER ═══ */
+.new-since-banner {
+  background: var(--gold-soft); border: 1px solid rgba(201,168,76,.25); border-radius: 6px;
+  padding: 10px 18px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;
+  font-size: 13px; color: var(--gray-700);
+}
+.new-since-banner__icon { font-size: 16px; }
+.new-since-banner__count { font-weight: 700; color: var(--navy); }
+.new-since-banner__dismiss { margin-left: auto; font-size: 16px; color: var(--gray-400); cursor: pointer; }
+.new-since-banner__dismiss:hover { color: var(--gray-600); }
+
+/* ═══ TREND MINI-CHART ═══ */
+.trend-section { background: var(--white); border: var(--border); border-radius: 8px; padding: 24px; margin: 24px 0; }
+.trend-section__header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+.trend-section__title { font-size: 16px; font-weight: 800; color: var(--gray-800); display: flex; align-items: center; gap: 8px; }
+.trend-section__title-icon { font-size: 18px; }
+.trend-section__sub { font-size: 11px; color: var(--gray-400); font-family: var(--font-mono); }
+.trend-bars { display: flex; align-items: flex-end; gap: 4px; height: 80px; }
+.trend-bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; height: 100%; justify-content: flex-end; }
+.trend-bar { width: 100%; border-radius: 3px 3px 0 0; background: var(--accent); min-height: 4px; transition: height 400ms ease, opacity 300ms; opacity: .7; }
+.trend-bar:hover { opacity: 1; }
+.trend-bar-label { font-size: 9px; font-weight: 700; color: var(--gray-400); text-transform: uppercase; letter-spacing: .3px; text-align: center; white-space: nowrap; }
+.trend-bar-count { font-family: var(--font-mono); font-size: 10px; color: var(--gray-500); font-weight: 600; }
 
 /* ═══ FOCUS TOGGLE BUTTON ═══ */
 .focus-toggle {
@@ -930,6 +1025,11 @@ body.focus-mode #filteredResults,
 body.focus-mode #filterStatus,
 body.focus-mode .market-bar,
 body.focus-mode .search-panel,
+body.focus-mode .search-bar,
+body.focus-mode .insight-strip,
+body.focus-mode .welcome-bar,
+body.focus-mode .new-since-banner,
+body.focus-mode .trend-section,
 body.focus-mode .modal-image,
 body.focus-mode .modal-image-placeholder {
   display: none !important;
@@ -1319,7 +1419,7 @@ body.focus-mode { background: #f5f7fa; }
 
 <header class="top-header">
   <div class="top-header__inner">
-    <div class="logo">
+    <div class="logo" id="logoHome">
       <span class="logo-brand">BCRP<span class="logo-sep">|</span><span class="logo-safr">SAFR</span></span>
       <span class="logo-subtitle">Plataforma de Novedades</span>
     </div>
@@ -1329,7 +1429,6 @@ body.focus-mode { background: #f5f7fa; }
         <span class="focus-toggle__icon" id="focusIcon">&#x25CE;</span>
         <span class="focus-toggle__label" id="focusLabel">Focus</span>
       </button>
-      <button class="search-toggle" id="searchToggle" title="Buscar">&#x2315;</button>
     </div>
   </div>
 </header>
@@ -1351,26 +1450,52 @@ body.focus-mode { background: #f5f7fa; }
   <div class="market-bar__inner" id="marketBar"></div>
 </div>
 
-<div class="search-panel" id="searchPanel">
-  <div class="search-panel__inner">
-    <div class="search-row" style="gap:12px;align-items:center;">
-      <div class="search-field" style="flex:1;min-width:0;">
-        <input type="text" id="searchInput" placeholder="Buscar por palabra clave, título, resumen..." style="height:42px;font-size:14px;">
-      </div>
-      <div class="search-actions">
-        <button class="btn btn-ghost" id="clearFilters">Limpiar</button>
-      </div>
-    </div>
-  </div>
-  <!-- hidden filter state -->
-  <input type="hidden" id="filterCategory" value="">
-  <input type="hidden" id="filterSource" value="">
-  <input type="hidden" id="filterRegion" value="">
-  <input type="hidden" id="filterDateFrom" value="">
-  <input type="hidden" id="filterDateTo" value="">
+<div class="insight-strip" id="insightStrip">
+  <div class="insight-strip__inner" id="insightCards"></div>
 </div>
 
+<div class="search-bar" id="searchBar">
+  <div class="search-bar__inner">
+    <div class="search-bar__field">
+      <span class="search-bar__icon">&#x2315;</span>
+      <input type="text" id="searchInput" placeholder="Buscar por palabra clave, título, fuente o tema...">
+    </div>
+    <div class="search-presets" id="searchPresets">
+      <button class="preset-btn" data-days="7">7d</button>
+      <button class="preset-btn" data-days="30">30d</button>
+      <button class="preset-btn" data-days="0">Todo</button>
+    </div>
+  </div>
+</div>
+
+<!-- hidden filter state -->
+<input type="hidden" id="filterCategory" value="">
+<input type="hidden" id="filterSource" value="">
+<input type="hidden" id="filterRegion" value="">
+<input type="hidden" id="filterDateFrom" value="">
+<input type="hidden" id="filterDateTo" value="">
+
+<div class="filter-chips" id="filterChips"></div>
+
 <main class="main-wrap" id="mainContent">
+  <div class="welcome-bar" id="welcomeBar">
+    <div class="welcome-bar__text">
+      <div class="welcome-bar__title" id="welcomeTitle">Selección del día</div>
+      <div class="welcome-bar__subtitle">Noticias curadas, tendencias y contexto del sector financiero peruano e internacional, en un solo lugar.</div>
+    </div>
+    <div class="welcome-bar__actions">
+      <button class="action-btn action-btn--primary" id="btnToday"><span class="action-btn__icon">&#x25C9;</span> Noticias de hoy</button>
+      <button class="action-btn" id="btnArchive"><span class="action-btn__icon">&#x2630;</span> Explorar archivo</button>
+      <button class="action-btn" id="btnTrends"><span class="action-btn__icon">&#x2197;</span> Ver tendencias</button>
+    </div>
+  </div>
+
+  <div class="new-since-banner hidden" id="newSinceBanner">
+    <span class="new-since-banner__icon">&#x2728;</span>
+    <span><span class="new-since-banner__count" id="newSinceCount">0</span> noticias nuevas desde tu última visita</span>
+    <button class="new-since-banner__dismiss" id="newSinceDismiss">&#x2715;</button>
+  </div>
+
   <div class="filter-status hidden" id="filterStatus">
     <span class="filter-status__text" id="filterStatusText"></span>
     <span class="filter-status__clear" id="filterStatusClear">&#x2715; Limpiar filtros</span>
@@ -1380,6 +1505,15 @@ body.focus-mode { background: #f5f7fa; }
     <div class="main-feed" id="mainFeed"></div>
     <aside class="sidebar" id="sidebar"></aside>
   </div>
+
+  <div class="trend-section hidden" id="trendSection">
+    <div class="trend-section__header">
+      <span class="trend-section__title"><span class="trend-section__title-icon">&#x2197;</span> Distribución por categoría</span>
+      <span class="trend-section__sub" id="trendTotal"></span>
+    </div>
+    <div class="trend-bars" id="trendBars"></div>
+  </div>
+
   <div id="categorySections"></div>
   <div class="hidden" id="filteredResults"></div>
 
@@ -1429,7 +1563,8 @@ body.focus-mode { background: #f5f7fa; }
 <script>
 var DATA = null;
 var SORT_DESC = true;
-var TODAY_SORT = ''; // will hold most recent date for "new" badge
+var TODAY_SORT = '';
+var ACTIVE_PRESET = null;
 
 /* ══════════════════════════════════════════════════════════
    INDICADORES DE MERCADO
@@ -1469,14 +1604,17 @@ function init() {
   // Load news
   fetch('data/news.json').then(function(res) { return res.json(); }).then(function(data) {
     DATA = data;
+    DATA.articles.forEach(function(a) { if (!a.region) a.region = 'Local'; });
     // Determine most recent date for "new" badges
     var dates = DATA.articles.map(function(a) { return a.date_sort; });
     TODAY_SORT = dates.sort().reverse()[0] || '';
     document.getElementById('footerDate').textContent = DATA.generated;
     buildNav();
-    buildFilters();
+    buildInsightStrip();
+    buildTrendChart();
     renderHome();
     bindEvents();
+    checkNewSinceLastVisit();
   }).catch(function() {
     document.getElementById('mainContent').innerHTML = '<div class="empty-state"><div class="empty-state__icon">&#x26A0;</div><div class="empty-state__text">No se pudo cargar data/news.json<br>Ejecuta: <code>python convert.py</code></div></div>';
   });
@@ -1528,9 +1666,61 @@ function buildNav() {
   });
 }
 
-function buildFilters() {
-  // Filters are now controlled via nav clicks and search bar
-  // Hidden inputs handle the state — no dropdowns to populate
+function buildInsightStrip() {
+  if (!DATA) return;
+  var articles = DATA.articles, total = articles.length;
+  var catCount = {};
+  articles.forEach(function(a) { catCount[a.category] = (catCount[a.category] || 0) + 1; });
+  var topCat = Object.keys(catCount).sort(function(a,b) { return catCount[b] - catCount[a]; })[0] || '\u2014';
+  var srcCount = {};
+  articles.forEach(function(a) { srcCount[a.source] = (srcCount[a.source] || 0) + 1; });
+  var topSrc = Object.keys(srcCount).sort(function(a,b) { return srcCount[b] - srcCount[a]; })[0] || '\u2014';
+  var dates = articles.map(function(a) { return a.date_sort; }).sort();
+  var newest = dates[dates.length - 1] || '';
+  var newestFmt = newest ? formatDateShort(newest) : '\u2014';
+  var todayCount = articles.filter(function(a) { return a.date_sort === TODAY_SORT; }).length;
+  document.getElementById('insightCards').innerHTML =
+    '<div class="insight-card"><span class="insight-card__label">Total noticias</span><span class="insight-card__value">' + total + '</span><span class="insight-card__sub">en el archivo</span></div>' +
+    '<div class="insight-card"><span class="insight-card__label">\u00daltima actualizaci\u00f3n</span><span class="insight-card__value--text">' + newestFmt + '</span><span class="insight-card__sub">' + todayCount + ' noticias recientes</span></div>' +
+    '<div class="insight-card"><span class="insight-card__label">Tema principal</span><span class="insight-card__value--text">' + topCat + '</span><span class="insight-card__sub">' + (catCount[topCat] || 0) + ' noticias</span></div>' +
+    '<div class="insight-card"><span class="insight-card__label">Fuente principal</span><span class="insight-card__value--text">' + topSrc + '</span><span class="insight-card__sub">' + (srcCount[topSrc] || 0) + ' art\u00edculos</span></div>';
+}
+
+function buildTrendChart() {
+  if (!DATA) return;
+  var cats = ['Fintech', 'Banca', 'Pagos', 'Regulaci\u00f3n', 'Inversiones'];
+  var counts = {};
+  cats.forEach(function(c) { counts[c] = 0; });
+  DATA.articles.forEach(function(a) { if (counts[a.category] !== undefined) counts[a.category]++; });
+  var max = Math.max.apply(null, cats.map(function(c) { return counts[c]; })) || 1;
+  var colors = ['#2563eb', '#0b1d3a', '#c9a84c', '#16a34a', '#6b7789'];
+  document.getElementById('trendBars').innerHTML = cats.map(function(c, i) {
+    var pct = (counts[c] / max * 100);
+    return '<div class="trend-bar-col"><span class="trend-bar-count">' + counts[c] + '</span><div class="trend-bar" style="height:' + Math.max(pct, 5) + '%;background:' + colors[i] + ';"></div><span class="trend-bar-label">' + c + '</span></div>';
+  }).join('');
+  document.getElementById('trendTotal').textContent = DATA.articles.length + ' art\u00edculos totales';
+  document.getElementById('trendSection').classList.remove('hidden');
+}
+
+function checkNewSinceLastVisit() {
+  try {
+    var lastVisit = localStorage.getItem('bcrp_last_visit');
+    var now = new Date().toISOString();
+    if (lastVisit && DATA) {
+      var newCount = DATA.articles.filter(function(a) { return a.date_sort > lastVisit.slice(0, 10); }).length;
+      if (newCount > 0) {
+        document.getElementById('newSinceCount').textContent = newCount;
+        document.getElementById('newSinceBanner').classList.remove('hidden');
+      }
+    }
+    localStorage.setItem('bcrp_last_visit', now);
+  } catch(e) {}
+}
+
+function formatDateShort(ds) {
+  var M = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  var p = ds.split('-');
+  return parseInt(p[2]) + ' ' + M[parseInt(p[1])-1] + ' ' + p[0];
 }
 
 function renderHome() {
@@ -1628,8 +1818,10 @@ function renderHome() {
   document.getElementById('heroSection').classList.remove('hidden');
   document.getElementById('contentGrid').classList.remove('hidden');
   document.getElementById('categorySections').classList.remove('hidden');
+  document.getElementById('trendSection').classList.remove('hidden');
   document.getElementById('filteredResults').classList.add('hidden');
   document.getElementById('filterStatus').classList.add('hidden');
+  document.getElementById('welcomeBar').classList.remove('hidden');
 
   var sortBtn = document.getElementById('sortToggle');
   if (sortBtn) sortBtn.addEventListener('click', function() { SORT_DESC = !SORT_DESC; renderHome(); });
@@ -1676,6 +1868,9 @@ function renderHome() {
 }
 
 function feedCardHTML(a) {
+  var tagsHTML = (a.keywords || []).slice(0, 4).map(function(k) {
+    return '<span class="tag" data-keyword="' + k + '">' + k + '</span>';
+  }).join('');
   return '<div class="feed-card ' + (a.image_url ? '' : 'feed-card--no-img') + '" data-id="' + a.id + '">' +
     (a.image_url
       ? '<img class="feed-card__img" loading="lazy" src="' + a.image_url + '" alt="" onerror="this.outerHTML=\'<div class=feed-card__img-placeholder>SAFR</div>\'">'
@@ -1684,6 +1879,7 @@ function feedCardHTML(a) {
       '<div class="feed-card__cat">' + a.category + '</div>' + regionHTML(a) +
       '<div class="feed-card__title">' + badgeHTML(a) + a.title + '</div>' +
       '<div class="feed-card__summary">' + (a.summary_short || 'Resumen no disponible') + '</div>' +
+      (tagsHTML ? '<div class="feed-card__tags" style="margin-bottom:8px;display:flex;flex-wrap:wrap;gap:4px;">' + tagsHTML + '</div>' : '') +
       '<div class="feed-card__meta"><span class="source">' + a.source + '</span><span> · </span><span>' + a.date + '</span></div>' +
     '</div>' +
   '</div>';
@@ -1698,9 +1894,13 @@ function sidebarCardHTML(a, num) {
 }
 
 function catCardHTML(a) {
+  var tagsHTML = (a.keywords || []).slice(0, 3).map(function(k) {
+    return '<span class="tag" data-keyword="' + k + '">' + k + '</span>';
+  }).join('');
   return '<div class="cat-card" data-id="' + a.id + '">' +
     '<div class="cat-card__title">' + badgeHTML(a) + a.title + '</div>' +
     '<div class="cat-card__summary">' + (a.summary_short || 'Resumen no disponible') + '</div>' +
+    (tagsHTML ? '<div style="margin-bottom:6px;display:flex;flex-wrap:wrap;gap:3px;">' + tagsHTML + '</div>' : '') +
     '<div class="cat-card__meta"><span class="source">' + a.source + '</span><span> · </span><span>' + a.date + '</span></div>' +
   '</div>';
 }
@@ -1721,7 +1921,7 @@ function openModal(id) {
       '<div class="modal-keywords">' +
         '<div class="modal-keywords-label">Palabras clave</div>' +
         (a.keywords.length > 0
-          ? a.keywords.map(function(k) { return '<span class="tag">' + k + '</span>'; }).join('')
+          ? a.keywords.map(function(k) { return '<span class="tag" data-keyword="' + k + '">' + k + '</span>'; }).join('')
           : '<span style="font-size:12px;color:var(--gray-400);">Sin palabras clave</span>') +
       '</div>' +
       (a.url
@@ -1745,7 +1945,7 @@ function applyFilters() {
   var region = document.getElementById('filterRegion').value;
   var dateFrom = document.getElementById('filterDateFrom').value;
   var dateTo = document.getElementById('filterDateTo').value;
-  if (!query && !cat && !src && !region && !dateFrom && !dateTo) { renderHome(); return; }
+  if (!query && !cat && !src && !region && !dateFrom && !dateTo) { renderHome(); updateFilterChips(); return; }
   var results = DATA.articles.slice();
   if (query) {
     results = results.filter(function(a) {
@@ -1761,6 +1961,8 @@ function applyFilters() {
   document.getElementById('heroSection').classList.add('hidden');
   document.getElementById('contentGrid').classList.add('hidden');
   document.getElementById('categorySections').classList.add('hidden');
+  document.getElementById('trendSection').classList.add('hidden');
+  document.getElementById('welcomeBar').classList.add('hidden');
   document.getElementById('filteredResults').classList.remove('hidden');
   document.getElementById('filterStatus').classList.remove('hidden');
   document.getElementById('filterStatusText').innerHTML = '<strong>' + results.length + '</strong> resultado' + (results.length !== 1 ? 's' : '') + ' encontrado' + (results.length !== 1 ? 's' : '');
@@ -1791,6 +1993,35 @@ function applyFilters() {
     }
   }
   bindCardClicks();
+  updateFilterChips();
+}
+
+function updateFilterChips() {
+  var chips = [];
+  var query = document.getElementById('searchInput').value.trim();
+  var cat = document.getElementById('filterCategory').value;
+  var region = document.getElementById('filterRegion').value;
+  if (query) chips.push({ label: '"' + query + '"', clear: function() { document.getElementById('searchInput').value = ''; } });
+  if (cat) chips.push({ label: cat, clear: function() { document.getElementById('filterCategory').value = ''; } });
+  if (region) chips.push({ label: region, clear: function() { document.getElementById('filterRegion').value = ''; } });
+  if (ACTIVE_PRESET !== null) chips.push({ label: ACTIVE_PRESET === 0 ? 'Todo' : ACTIVE_PRESET + ' d\u00edas', clear: function() { clearDatePreset(); } });
+  var el = document.getElementById('filterChips');
+  if (!chips.length) { el.innerHTML = ''; return; }
+  el.innerHTML = chips.map(function(c, i) {
+    return '<span class="filter-chip"><span>' + c.label + '</span><span class="filter-chip__remove" data-chip="' + i + '">&#x2715;</span></span>';
+  }).join('') + '<span class="filter-chips__clear" id="clearAllChips">Limpiar todo</span>';
+  el.querySelectorAll('.filter-chip__remove').forEach(function(btn) {
+    btn.addEventListener('click', function() { chips[parseInt(btn.dataset.chip)].clear(); applyFilters(); });
+  });
+  var ca = document.getElementById('clearAllChips');
+  if (ca) ca.addEventListener('click', clearAllFilters);
+}
+
+function clearDatePreset() {
+  ACTIVE_PRESET = null;
+  document.getElementById('filterDateFrom').value = '';
+  document.getElementById('filterDateTo').value = '';
+  document.querySelectorAll('.preset-btn').forEach(function(b) { b.classList.remove('active'); });
 }
 
 function clearAllFilters() {
@@ -1800,8 +2031,11 @@ function clearAllFilters() {
   document.getElementById('filterRegion').value = '';
   document.getElementById('filterDateFrom').value = '';
   document.getElementById('filterDateTo').value = '';
+  ACTIVE_PRESET = null;
+  document.querySelectorAll('.preset-btn').forEach(function(b) { b.classList.remove('active'); });
   document.querySelectorAll('.nav-item').forEach(function(n) { n.classList.remove('active'); });
   document.querySelector('.nav-item.nav-all').classList.add('active');
+  document.getElementById('filterChips').innerHTML = '';
   renderHome();
 }
 
@@ -1840,15 +2074,67 @@ function bindEvents() {
     }
   });
 
-  document.getElementById('searchToggle').addEventListener('click', function() {
-    document.getElementById('searchPanel').classList.toggle('open');
-    if (document.getElementById('searchPanel').classList.contains('open')) {
-      document.getElementById('searchInput').focus();
+  document.getElementById('searchInput').addEventListener('input', debounce(applyFilters, 300));
+  document.getElementById('filterStatusClear').addEventListener('click', clearAllFilters);
+
+  // Date preset buttons
+  document.querySelectorAll('.preset-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var days = parseInt(btn.dataset.days);
+      document.querySelectorAll('.preset-btn').forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      if (days === 0) { document.getElementById('filterDateFrom').value = ''; ACTIVE_PRESET = 0; }
+      else {
+        var d = new Date(); d.setDate(d.getDate() - days);
+        document.getElementById('filterDateFrom').value = d.toISOString().slice(0, 10);
+        ACTIVE_PRESET = days;
+      }
+      applyFilters();
+    });
+  });
+
+  // Logo home
+  document.getElementById('logoHome').addEventListener('click', clearAllFilters);
+
+  // Tag clicks (delegated)
+  document.addEventListener('click', function(e) {
+    var tag = e.target.closest('.tag[data-keyword], .focus-card__tag[data-keyword]');
+    if (tag) {
+      e.stopPropagation();
+      document.getElementById('searchInput').value = tag.dataset.keyword;
+      closeModal();
+      if (document.body.classList.contains('focus-mode')) {
+        focusQuery = tag.dataset.keyword.toLowerCase(); focusShown = 0; renderFocusView();
+      } else { applyFilters(); }
     }
   });
-  document.getElementById('searchInput').addEventListener('input', debounce(applyFilters, 300));
-  document.getElementById('clearFilters').addEventListener('click', clearAllFilters);
-  document.getElementById('filterStatusClear').addEventListener('click', clearAllFilters);
+
+  // Welcome action buttons
+  document.getElementById('btnToday').addEventListener('click', function() {
+    document.getElementById('searchInput').value = '';
+    document.getElementById('filterCategory').value = '';
+    document.getElementById('filterRegion').value = '';
+    document.getElementById('filterDateFrom').value = TODAY_SORT;
+    document.getElementById('filterDateTo').value = TODAY_SORT;
+    ACTIVE_PRESET = null; applyFilters();
+  });
+  document.getElementById('btnArchive').addEventListener('click', function() {
+    document.body.classList.add('focus-mode');
+    sessionStorage.setItem('focusMode', 'on');
+    focusShown = 0; focusActiveCat = 'TODAS'; focusQuery = ''; focusDateInited = false;
+    focusBtn.classList.add('active');
+    focusIcon.innerHTML = '&#x25C9;'; focusLabel.textContent = 'Focus ON';
+    renderFocusView();
+  });
+  document.getElementById('btnTrends').addEventListener('click', function() {
+    var el = document.getElementById('trendSection');
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  });
+
+  // New-since dismiss
+  document.getElementById('newSinceDismiss').addEventListener('click', function() {
+    document.getElementById('newSinceBanner').classList.add('hidden');
+  });
 
   document.querySelectorAll('.nav-item').forEach(function(item) {
     item.addEventListener('click', function(e) {
@@ -1906,7 +2192,7 @@ function bindEvents() {
 function bindCardClicks() {
   document.querySelectorAll('[data-id]').forEach(function(el) {
     el.addEventListener('click', function(e) {
-      if (e.target.closest('a')) return;
+      if (e.target.closest('a') || e.target.closest('.tag')) return;
       openModal(parseInt(el.dataset.id));
     });
   });
@@ -2076,7 +2362,7 @@ function focusCardHTML(a) {
   var regionCls = (a.region || '').toLowerCase() === 'internacional' ? 'focus-card__region-badge--internacional' : 'focus-card__region-badge--local';
   var regionLabel = a.region || 'Local';
   var tags = (a.keywords || []).slice(0, 8).map(function(k) {
-    return '<span class="focus-card__tag">' + k + '</span>';
+    return '<span class="focus-card__tag" data-keyword="' + k + '">' + k + '</span>';
   }).join('');
 
   return '<div class="focus-card" data-id="' + a.id + '">' +
