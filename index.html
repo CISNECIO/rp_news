@@ -308,6 +308,11 @@ input, select { font-family: inherit; }
   margin-top: 1px;
   padding: 0;
 }
+.editorial-hero--no-headlines { grid-template-columns: 1fr 370px; }
+.editorial-hero--no-headlines .hero-headlines { display: none; }
+.editorial-hero--single { grid-template-columns: 1fr; }
+.editorial-hero--single .hero-mid,
+.editorial-hero--single .hero-headlines { display: none; }
 .hero-lead {
   cursor: pointer;
   overflow: hidden;
@@ -360,6 +365,7 @@ input, select { font-family: inherit; }
   -webkit-box-orient: vertical;
   overflow: hidden;
   margin-bottom: 12px;
+  white-space: pre-line;
 }
 .hero-lead__meta {
   display: flex; align-items: center; gap: 10px;
@@ -996,8 +1002,7 @@ input, select { font-family: inherit; }
 
 /* ═══ WELCOME / VALUE PROPOSITION ═══ */
 .welcome-bar { padding: 28px 0 20px; display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; }
-.welcome-bar__title { font-family: var(--font-display); font-size: 28px; font-weight: 800; color: var(--gray-800); line-height: 1.15; margin-bottom: 6px; letter-spacing: -0.3px; }
-.welcome-bar__subtitle { font-size: 14px; color: var(--gray-500); line-height: 1.5; max-width: 560px; }
+.welcome-bar__title { font-family: var(--font-body); font-size: 28px; font-weight: 800; color: var(--gray-800); line-height: 1.15; letter-spacing: -0.3px; }
 .welcome-bar__actions { display: flex; gap: 8px; flex-shrink: 0; align-items: center; padding-top: 4px; }
 .action-btn {
   display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: 6px;
@@ -1032,6 +1037,63 @@ input, select { font-family: inherit; }
 .trend-bar:hover { opacity: 1; }
 .trend-bar-label { font-size: 9px; font-weight: 700; color: var(--gray-400); text-transform: uppercase; letter-spacing: .3px; text-align: center; white-space: nowrap; }
 .trend-bar-count { font-family: var(--font-mono); font-size: 10px; color: var(--gray-500); font-weight: 600; }
+
+/* ═══ ESTADÍSTICAS VIEW ═══ */
+.stats-view { display: none; }
+.stats-view.active { display: block; }
+.stats-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px;
+}
+.stats-card {
+  background: var(--white); border: var(--border); border-radius: 8px; padding: 22px 24px;
+}
+.stats-card--full { grid-column: 1 / -1; }
+.stats-card__header {
+  display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px;
+  padding-bottom: 12px; border-bottom: var(--border);
+}
+.stats-card__title { font-size: 15px; font-weight: 800; color: var(--gray-800); }
+.stats-card__sub { font-size: 10px; color: var(--gray-400); font-family: var(--font-mono); text-transform: uppercase; letter-spacing: .5px; }
+.stats-bar-row {
+  display: flex; align-items: center; gap: 10px; padding: 6px 0;
+  cursor: pointer; border-radius: 4px; transition: background 120ms;
+}
+.stats-bar-row:hover { background: var(--gray-50); }
+.stats-bar-label {
+  font-size: 12px; font-weight: 600; color: var(--gray-700);
+  width: 140px; flex-shrink: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.stats-bar-track { flex: 1; height: 10px; background: var(--gray-100); border-radius: 5px; overflow: hidden; }
+.stats-bar-fill { height: 100%; border-radius: 5px; transition: width 600ms ease; }
+.stats-bar-fill--accent { background: var(--accent); }
+.stats-bar-fill--navy { background: var(--navy); }
+.stats-bar-fill--gold { background: var(--gold); }
+.stats-bar-fill--green { background: var(--green); }
+.stats-bar-fill--gray { background: var(--gray-500); }
+.stats-bar-count {
+  font-family: var(--font-mono); font-size: 11px; color: var(--gray-500);
+  width: 32px; text-align: right; flex-shrink: 0; font-weight: 600;
+}
+.stats-bar-pct {
+  font-family: var(--font-mono); font-size: 10px; color: var(--gray-400);
+  width: 40px; text-align: right; flex-shrink: 0;
+}
+.stats-back {
+  display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600;
+  color: var(--accent); cursor: pointer; margin-bottom: 20px; padding: 6px 0;
+}
+.stats-back:hover { text-decoration: underline; }
+.stats-region-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.stats-region-box {
+  padding: 16px; border-radius: 6px; text-align: center; cursor: pointer; transition: var(--transition);
+}
+.stats-region-box:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+.stats-region-box__label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+.stats-region-box__value { font-family: var(--font-mono); font-size: 28px; font-weight: 700; }
+.stats-region-box--local { background: #e0f2e9; color: #166534; }
+.stats-region-box--intl { background: #e0e7ff; color: #3730a3; }
+@media (max-width: 900px) { .stats-grid { grid-template-columns: 1fr; } .stats-bar-label { width: 110px; } }
+@media (max-width: 600px) { .stats-region-grid { grid-template-columns: 1fr; } .stats-bar-label { width: 90px; font-size: 11px; } }
 
 /* ═══ FOCUS TOGGLE BUTTON ═══ */
 .focus-toggle {
@@ -1076,6 +1138,7 @@ body.focus-mode .welcome-bar,
 body.focus-mode .new-since-banner,
 body.focus-mode .trend-section,
 body.focus-mode .intel-row,
+body.focus-mode .stats-view,
 body.focus-mode .search-toggle,
 body.focus-mode .modal-image,
 body.focus-mode .modal-image-placeholder {
@@ -1518,8 +1581,7 @@ body.focus-mode { background: #f5f7fa; }
 <main class="main-wrap" id="mainContent">
   <div class="welcome-bar" id="welcomeBar">
     <div class="welcome-bar__text">
-      <div class="welcome-bar__title" id="welcomeTitle">Selección del día</div>
-      <div class="welcome-bar__subtitle">Noticias curadas, tendencias y contexto del sector financiero peruano e internacional, en un solo lugar.</div>
+      <div class="welcome-bar__title" id="welcomeTitle">Del día</div>
     </div>
     <div class="welcome-bar__actions">
       <button class="action-btn action-btn--primary" id="btnToday"><span class="action-btn__icon">&#x25C9;</span> Noticias de hoy</button>
@@ -1574,6 +1636,60 @@ body.focus-mode { background: #f5f7fa; }
       <span class="trend-section__sub" id="trendSourceTotal"></span>
     </div>
     <div class="trend-bars" id="trendSourceBars"></div>
+  </div>
+
+  <!-- Estadísticas View -->
+  <div class="stats-view" id="statsView">
+    <div class="stats-back" id="statsBack">&#x2190; Volver a Inicio</div>
+    <div class="section-header" style="margin-bottom:20px;">
+      <span class="section-title">Estadísticas</span>
+    </div>
+
+    <!-- Region split -->
+    <div class="stats-grid" style="margin-bottom:20px;">
+      <div class="stats-card">
+        <div class="stats-card__header">
+          <span class="stats-card__title">Cobertura por región</span>
+        </div>
+        <div class="stats-region-grid" id="statsRegion"></div>
+      </div>
+      <div class="stats-card">
+        <div class="stats-card__header">
+          <span class="stats-card__title">Categorías</span>
+          <span class="stats-card__sub" id="statsCatSub"></span>
+        </div>
+        <div id="statsCatBars"></div>
+      </div>
+    </div>
+
+    <!-- Keywords + Sources -->
+    <div class="stats-grid">
+      <div class="stats-card">
+        <div class="stats-card__header">
+          <span class="stats-card__title">Temas más frecuentes</span>
+          <span class="stats-card__sub" id="statsKwSub"></span>
+        </div>
+        <div id="statsKwBars"></div>
+      </div>
+      <div class="stats-card">
+        <div class="stats-card__header">
+          <span class="stats-card__title">Fuentes / Medios</span>
+          <span class="stats-card__sub" id="statsSrcSub"></span>
+        </div>
+        <div id="statsSrcBars"></div>
+      </div>
+    </div>
+
+    <!-- Timeline -->
+    <div class="stats-grid" style="margin-top:20px;">
+      <div class="stats-card stats-card--full">
+        <div class="stats-card__header">
+          <span class="stats-card__title">Volumen por fecha</span>
+          <span class="stats-card__sub" id="statsTimeSub"></span>
+        </div>
+        <div class="trend-bars" id="statsTimeBars" style="height:100px;"></div>
+      </div>
+    </div>
   </div>
 
   <div id="categorySections"></div>
@@ -1697,6 +1813,17 @@ function buildNav() {
     a.textContent = item.label;
     nav.appendChild(a);
   });
+  // Estadísticas tab
+  var statsLink = document.createElement('a');
+  statsLink.className = 'nav-item';
+  statsLink.href = '#';
+  statsLink.dataset.category = 'stats';
+  statsLink.textContent = 'Estadísticas';
+  statsLink.style.marginLeft = 'auto';
+  statsLink.style.color = 'rgba(255,255,255,.45)';
+  statsLink.style.borderLeft = '1px solid rgba(255,255,255,.1)';
+  statsLink.style.paddingLeft = '18px';
+  nav.appendChild(statsLink);
 }
 
 function buildIntelModules() {
@@ -1811,6 +1938,112 @@ function buildTrendChart() {
   document.getElementById('trendSection').classList.remove('hidden');
 }
 
+function buildStatsView() {
+  if (!DATA) return;
+  var articles = DATA.articles;
+  var total = articles.length;
+
+  // Region
+  var localCount = articles.filter(function(a) { return (a.region||'').toLowerCase() === 'local'; }).length;
+  var intlCount = articles.filter(function(a) { return (a.region||'').toLowerCase() === 'internacional'; }).length;
+  document.getElementById('statsRegion').innerHTML =
+    '<div class="stats-region-box stats-region-box--local" data-stats-region="Local"><div class="stats-region-box__label">Local</div><div class="stats-region-box__value">' + localCount + '</div></div>' +
+    '<div class="stats-region-box stats-region-box--intl" data-stats-region="Internacional"><div class="stats-region-box__label">Internacional</div><div class="stats-region-box__value">' + intlCount + '</div></div>';
+
+  // Categories
+  var catCount = {};
+  articles.forEach(function(a) { catCount[a.category] = (catCount[a.category] || 0) + 1; });
+  var cats = Object.keys(catCount).sort(function(a,b) { return catCount[b] - catCount[a]; });
+  var catMax = cats.length > 0 ? catCount[cats[0]] : 1;
+  document.getElementById('statsCatBars').innerHTML = cats.map(function(c) {
+    var pct = Math.round(catCount[c] / catMax * 100);
+    var pctTotal = Math.round(catCount[c] / total * 100);
+    return '<div class="stats-bar-row" data-stats-cat="' + c + '"><span class="stats-bar-label">' + c + '</span><div class="stats-bar-track"><div class="stats-bar-fill stats-bar-fill--accent" style="width:' + pct + '%"></div></div><span class="stats-bar-count">' + catCount[c] + '</span><span class="stats-bar-pct">' + pctTotal + '%</span></div>';
+  }).join('');
+  document.getElementById('statsCatSub').textContent = cats.length + ' categorías';
+
+  // Keywords
+  var kwCount = {};
+  articles.forEach(function(a) { (a.keywords||[]).forEach(function(k) { kwCount[k] = (kwCount[k]||0) + 1; }); });
+  var topKW = Object.keys(kwCount).sort(function(a,b) { return kwCount[b] - kwCount[a]; }).slice(0, 15);
+  var kwMax = topKW.length > 0 ? kwCount[topKW[0]] : 1;
+  document.getElementById('statsKwBars').innerHTML = topKW.map(function(k) {
+    var pct = Math.round(kwCount[k] / kwMax * 100);
+    return '<div class="stats-bar-row" data-stats-kw="' + k + '"><span class="stats-bar-label">' + k + '</span><div class="stats-bar-track"><div class="stats-bar-fill stats-bar-fill--gold" style="width:' + pct + '%"></div></div><span class="stats-bar-count">' + kwCount[k] + '</span></div>';
+  }).join('');
+  document.getElementById('statsKwSub').textContent = topKW.length + ' temas';
+
+  // Sources
+  var srcCount = {};
+  articles.forEach(function(a) { srcCount[a.source] = (srcCount[a.source]||0) + 1; });
+  var topSrc = Object.keys(srcCount).sort(function(a,b) { return srcCount[b] - srcCount[a]; });
+  var srcMax = topSrc.length > 0 ? srcCount[topSrc[0]] : 1;
+  document.getElementById('statsSrcBars').innerHTML = topSrc.map(function(s) {
+    var pct = Math.round(srcCount[s] / srcMax * 100);
+    var pctTotal = Math.round(srcCount[s] / total * 100);
+    return '<div class="stats-bar-row" data-stats-src="' + s + '"><span class="stats-bar-label">' + s + '</span><div class="stats-bar-track"><div class="stats-bar-fill stats-bar-fill--navy" style="width:' + pct + '%"></div></div><span class="stats-bar-count">' + srcCount[s] + '</span><span class="stats-bar-pct">' + pctTotal + '%</span></div>';
+  }).join('');
+  document.getElementById('statsSrcSub').textContent = topSrc.length + ' fuentes';
+
+  // Timeline (volume by date)
+  var dateCount = {};
+  articles.forEach(function(a) { if (a.date_sort && a.date_sort !== '1900-01-01') dateCount[a.date_sort] = (dateCount[a.date_sort]||0) + 1; });
+  var dates = Object.keys(dateCount).sort();
+  var dateMax = Math.max.apply(null, dates.map(function(d) { return dateCount[d]; })) || 1;
+  document.getElementById('statsTimeBars').innerHTML = dates.map(function(d) {
+    var pct = (dateCount[d] / dateMax * 100);
+    var label = d.split('-').slice(1).reverse().join('/');
+    return '<div class="trend-bar-col"><span class="trend-bar-count">' + dateCount[d] + '</span><div class="trend-bar" style="height:' + Math.max(pct, 5) + '%;background:var(--accent);"></div><span class="trend-bar-label">' + label + '</span></div>';
+  }).join('');
+  document.getElementById('statsTimeSub').textContent = dates.length + ' fechas';
+
+  // Bind all stats clicks
+  document.querySelectorAll('[data-stats-region]').forEach(function(el) {
+    el.addEventListener('click', function() {
+      hideStatsView();
+      document.getElementById('filterRegion').value = el.dataset.statsRegion;
+      applyFilters();
+    });
+  });
+  document.querySelectorAll('[data-stats-cat]').forEach(function(el) {
+    el.addEventListener('click', function() {
+      hideStatsView();
+      document.getElementById('filterCategory').value = el.dataset.statsCat;
+      applyFilters();
+    });
+  });
+  document.querySelectorAll('[data-stats-kw]').forEach(function(el) {
+    el.addEventListener('click', function() {
+      hideStatsView();
+      document.getElementById('searchInput').value = el.dataset.statsKw;
+      applyFilters();
+    });
+  });
+  document.querySelectorAll('[data-stats-src]').forEach(function(el) {
+    el.addEventListener('click', function() {
+      hideStatsView();
+      document.getElementById('filterSource').value = el.dataset.statsSrc;
+      applyFilters();
+    });
+  });
+}
+
+function showStatsView() {
+  if (!DATA) return;
+  buildStatsView();
+  // Hide main content sections
+  ['heroSection','contentGrid','categorySections','trendSection','welcomeBar','intelRow','filteredResults','filterStatus'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.classList.add('hidden');
+  });
+  document.getElementById('statsView').classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function hideStatsView() {
+  document.getElementById('statsView').classList.remove('active');
+}
+
 function checkNewSinceLastVisit() {
   try {
     var lastVisit = localStorage.getItem('bcrp_last_visit');
@@ -1838,9 +2071,15 @@ function renderHome() {
   });
 
   var heroLead = articles[0];
-  var heroMid = articles.slice(1, 3);
-  var heroHeadlines = articles.slice(3, 7);
+  var heroMid = articles.length > 2 ? articles.slice(1, 3) : [];
+  var heroHeadlines = articles.length > 3 ? articles.slice(3, 7) : [];
 
+  // Adapt hero grid to available content
+  var heroClass = 'editorial-hero';
+  if (heroHeadlines.length === 0 && heroMid.length === 0) heroClass += ' editorial-hero--single';
+  else if (heroHeadlines.length === 0) heroClass += ' editorial-hero--no-headlines';
+
+  document.getElementById('heroSection').className = heroClass;
   document.getElementById('heroSection').innerHTML =
     '<div class="hero-lead" data-id="' + heroLead.id + '">' +
       '<div class="hero-lead__img-wrap">' +
@@ -1872,7 +2111,7 @@ function renderHome() {
       }).join('') +
     '</div>' +
     '<div class="hero-headlines">' +
-      '<div class="hero-headlines__title">Noticias Recientes</div>' +
+      '<div class="hero-headlines__title">Noticias del d\u00eda</div>' +
       heroHeadlines.map(function(a) {
         return '<div class="hero-headline-item" data-id="' + a.id + '">' +
           '<div class="hero-headline-item__bullet"></div>' +
@@ -2161,6 +2400,7 @@ function clearAllFilters() {
   document.querySelector('.nav-item.nav-all').classList.add('active');
   document.getElementById('filterChips').innerHTML = '';
   closeSearchOverlay();
+  hideStatsView();
   renderHome();
 }
 
@@ -2260,8 +2500,15 @@ function bindEvents() {
     renderFocusView();
   });
   document.getElementById('btnTrends').addEventListener('click', function() {
-    var el = document.getElementById('trendSection');
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
+    showStatsView();
+    document.querySelectorAll('.nav-item').forEach(function(n) { n.classList.remove('active'); });
+    document.querySelector('[data-category="stats"]').classList.add('active');
+  });
+
+  // Stats back button
+  document.getElementById('statsBack').addEventListener('click', function() {
+    hideStatsView();
+    clearAllFilters();
   });
 
   // New-since dismiss
@@ -2295,9 +2542,17 @@ function bindEvents() {
 
       // "Inicio" has data-category="all"
       if (item.dataset.category === 'all') {
+        hideStatsView();
         clearAllFilters();
         return;
       }
+      // Estadísticas tab
+      if (item.dataset.category === 'stats') {
+        showStatsView();
+        return;
+      }
+      // Any other nav click hides stats
+      hideStatsView();
       // Clear all filters first
       document.getElementById('filterCategory').value = '';
       document.getElementById('filterRegion').value = '';
