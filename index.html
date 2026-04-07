@@ -950,55 +950,23 @@ input, select { font-family: inherit; }
 }
 .filter-chips__clear:hover { color: var(--accent); }
 
-/* ═══ INTELLIGENCE MODULES ═══ */
-.intel-row {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
-  margin-bottom: 24px;
-}
-.intel-module {
-  background: var(--white); border: var(--border); border-radius: 8px;
-  padding: 20px 22px;
-}
-.intel-module__header {
-  display: flex; align-items: center; justify-content: space-between;
-  margin-bottom: 16px;
-}
-.intel-module__title {
-  font-size: 14px; font-weight: 800; color: var(--gray-800);
-}
-.intel-module__sub {
-  font-size: 10px; color: var(--gray-400); font-family: var(--font-mono);
-  text-transform: uppercase; letter-spacing: 0.5px;
-}
-.intel-bar-row {
-  display: flex; align-items: center; gap: 10px;
-  padding: 5px 0; cursor: pointer; transition: background 120ms;
-  border-radius: 4px; margin: 0 -6px; padding-left: 6px; padding-right: 6px;
-}
-.intel-bar-row:hover { background: var(--gray-50); }
-.intel-bar-label {
-  font-size: 12px; font-weight: 600; color: var(--gray-700);
-  width: 120px; flex-shrink: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-}
-.intel-bar-track {
-  flex: 1; height: 8px; background: var(--gray-100); border-radius: 4px; overflow: hidden;
-}
-.intel-bar-fill {
-  height: 100%; border-radius: 4px; transition: width 500ms ease;
-}
-.intel-bar-fill--keyword { background: var(--accent); }
-.intel-bar-fill--source { background: var(--navy); }
-.intel-bar-count {
-  font-family: var(--font-mono); font-size: 11px; color: var(--gray-400);
-  width: 28px; text-align: right; flex-shrink: 0;
-}
-@media (max-width: 900px) { .intel-row { grid-template-columns: 1fr; } }
-@media (max-width: 600px) {
-  .intel-bar-label { width: 90px; font-size: 11px; }
-}
-
-/* ═══ TREND SECTION DIVIDER ═══ */
+/* ═══ TREND DIVIDER ═══ */
 .trend-divider { height: 1px; background: var(--gray-200); margin: 20px 0; }
+
+/* ═══ INLINE SEARCH (non-Inicio views) ═══ */
+.inline-search { background: var(--white); border-bottom: var(--border); padding: 10px 0; }
+.inline-search__inner {
+  max-width: var(--max-width); margin: 0 auto; padding: 0 24px;
+  display: flex; gap: 10px; align-items: center;
+}
+.inline-search__icon { font-size: 16px; color: var(--gray-400); flex-shrink: 0; }
+.inline-search__inner input {
+  flex: 1; height: 36px; border: 1px solid var(--gray-200); border-radius: 6px;
+  padding: 0 12px; font-size: 13px; color: var(--gray-800); background: var(--gray-50);
+  outline: none; transition: var(--transition); font-family: var(--font-body);
+}
+.inline-search__inner input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(37,99,235,.08); }
+.inline-search__inner input::placeholder { color: var(--gray-400); }
 
 /* ═══ WELCOME / VALUE PROPOSITION ═══ */
 .welcome-bar { padding: 28px 0 20px; display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; }
@@ -1137,8 +1105,8 @@ body.focus-mode .search-overlay,
 body.focus-mode .welcome-bar,
 body.focus-mode .new-since-banner,
 body.focus-mode .trend-section,
-body.focus-mode .intel-row,
 body.focus-mode .stats-view,
+body.focus-mode .inline-search,
 body.focus-mode .search-toggle,
 body.focus-mode .modal-image,
 body.focus-mode .modal-image-placeholder {
@@ -1578,6 +1546,19 @@ body.focus-mode { background: #f5f7fa; }
 
 <div class="filter-chips" id="filterChips"></div>
 
+<!-- Inline search bar (shown only when filtering, not on Inicio) -->
+<div class="inline-search hidden" id="inlineSearch">
+  <div class="inline-search__inner">
+    <span class="inline-search__icon">&#x2315;</span>
+    <input type="text" id="inlineSearchInput" placeholder="Refinar búsqueda...">
+    <div class="search-presets" id="inlinePresets">
+      <button class="preset-btn inline-preset" data-days="7">7d</button>
+      <button class="preset-btn inline-preset" data-days="30">30d</button>
+      <button class="preset-btn inline-preset" data-days="0">Todo</button>
+    </div>
+  </div>
+</div>
+
 <main class="main-wrap" id="mainContent">
   <div class="welcome-bar" id="welcomeBar">
     <div class="welcome-bar__text">
@@ -1594,24 +1575,6 @@ body.focus-mode { background: #f5f7fa; }
     <span class="new-since-banner__icon">&#x2728;</span>
     <span><span class="new-since-banner__count" id="newSinceCount">0</span> noticias nuevas desde tu última visita</span>
     <button class="new-since-banner__dismiss" id="newSinceDismiss">&#x2715;</button>
-  </div>
-
-  <!-- Intelligence Modules -->
-  <div class="intel-row" id="intelRow">
-    <div class="intel-module">
-      <div class="intel-module__header">
-        <span class="intel-module__title">&#x1F3AF; Temas principales</span>
-        <span class="intel-module__sub" id="intelKeywordSub">top palabras clave</span>
-      </div>
-      <div class="intel-keyword-bars" id="intelKeywordBars"></div>
-    </div>
-    <div class="intel-module">
-      <div class="intel-module__header">
-        <span class="intel-module__title">&#x1F4F0; Fuentes principales</span>
-        <span class="intel-module__sub" id="intelSourceSub">distribución por medio</span>
-      </div>
-      <div class="intel-source-bars" id="intelSourceBars"></div>
-    </div>
   </div>
 
   <div class="filter-status hidden" id="filterStatus">
@@ -1685,6 +1648,12 @@ body.focus-mode { background: #f5f7fa; }
       <div class="stats-card stats-card--full">
         <div class="stats-card__header">
           <span class="stats-card__title">Volumen por fecha</span>
+          <div style="display:flex;gap:6px;align-items:center;">
+            <button class="preset-btn stats-time-btn" data-stats-days="7">7d</button>
+            <button class="preset-btn stats-time-btn" data-stats-days="14">14d</button>
+            <button class="preset-btn stats-time-btn" data-stats-days="30">30d</button>
+            <button class="preset-btn stats-time-btn active" data-stats-days="0">Todo</button>
+          </div>
           <span class="stats-card__sub" id="statsTimeSub"></span>
         </div>
         <div class="trend-bars" id="statsTimeBars" style="height:100px;"></div>
@@ -1780,7 +1749,6 @@ function init() {
     TODAY_SORT = dates.sort().reverse()[0] || '';
     document.getElementById('footerDate').textContent = DATA.generated;
     buildNav();
-    buildIntelModules();
     buildTrendChart();
     buildSearchSourcePills();
     renderHome();
@@ -1824,57 +1792,6 @@ function buildNav() {
   statsLink.style.borderLeft = '1px solid rgba(255,255,255,.1)';
   statsLink.style.paddingLeft = '18px';
   nav.appendChild(statsLink);
-}
-
-function buildIntelModules() {
-  if (!DATA) return;
-  var articles = DATA.articles;
-  // Top keywords
-  var kwCount = {};
-  articles.forEach(function(a) {
-    (a.keywords || []).forEach(function(k) { kwCount[k] = (kwCount[k] || 0) + 1; });
-  });
-  var topKW = Object.keys(kwCount).sort(function(a,b) { return kwCount[b] - kwCount[a]; }).slice(0, 8);
-  var kwMax = topKW.length > 0 ? kwCount[topKW[0]] : 1;
-  var kwHTML = topKW.map(function(k) {
-    var pct = Math.round(kwCount[k] / kwMax * 100);
-    return '<div class="intel-bar-row" data-keyword="' + k + '">' +
-      '<span class="intel-bar-label">' + k + '</span>' +
-      '<div class="intel-bar-track"><div class="intel-bar-fill intel-bar-fill--keyword" style="width:' + pct + '%"></div></div>' +
-      '<span class="intel-bar-count">' + kwCount[k] + '</span></div>';
-  }).join('');
-  document.getElementById('intelKeywordBars').innerHTML = kwHTML || '<span style="font-size:12px;color:var(--gray-400);">Sin datos</span>';
-  document.getElementById('intelKeywordSub').textContent = topKW.length + ' temas frecuentes';
-
-  // Top sources
-  var srcCount = {};
-  articles.forEach(function(a) { srcCount[a.source] = (srcCount[a.source] || 0) + 1; });
-  var topSrc = Object.keys(srcCount).sort(function(a,b) { return srcCount[b] - srcCount[a]; }).slice(0, 8);
-  var srcMax = topSrc.length > 0 ? srcCount[topSrc[0]] : 1;
-  var srcHTML = topSrc.map(function(s) {
-    var pct = Math.round(srcCount[s] / srcMax * 100);
-    return '<div class="intel-bar-row" data-source="' + s + '">' +
-      '<span class="intel-bar-label">' + s + '</span>' +
-      '<div class="intel-bar-track"><div class="intel-bar-fill intel-bar-fill--source" style="width:' + pct + '%"></div></div>' +
-      '<span class="intel-bar-count">' + srcCount[s] + '</span></div>';
-  }).join('');
-  document.getElementById('intelSourceBars').innerHTML = srcHTML || '<span style="font-size:12px;color:var(--gray-400);">Sin datos</span>';
-  document.getElementById('intelSourceSub').textContent = topSrc.length + ' medios';
-
-  // Bind intel bar clicks
-  document.querySelectorAll('.intel-bar-row[data-keyword]').forEach(function(row) {
-    row.addEventListener('click', function() {
-      document.getElementById('searchInput').value = row.dataset.keyword;
-      openSearchOverlay();
-      applyFilters();
-    });
-  });
-  document.querySelectorAll('.intel-bar-row[data-source]').forEach(function(row) {
-    row.addEventListener('click', function() {
-      document.getElementById('filterSource').value = row.dataset.source;
-      applyFilters();
-    });
-  });
 }
 
 function buildSearchSourcePills() {
@@ -1978,24 +1895,31 @@ function buildStatsView() {
   articles.forEach(function(a) { srcCount[a.source] = (srcCount[a.source]||0) + 1; });
   var topSrc = Object.keys(srcCount).sort(function(a,b) { return srcCount[b] - srcCount[a]; });
   var srcMax = topSrc.length > 0 ? srcCount[topSrc[0]] : 1;
-  document.getElementById('statsSrcBars').innerHTML = topSrc.map(function(s) {
+  // Group sources <1% into "Otros"
+  var mainSources = [];
+  var otrosCount = 0;
+  topSrc.forEach(function(s) {
+    if (Math.round(srcCount[s] / total * 100) >= 1) { mainSources.push(s); }
+    else { otrosCount += srcCount[s]; }
+  });
+  var srcHTML = mainSources.map(function(s) {
     var pct = Math.round(srcCount[s] / srcMax * 100);
     var pctTotal = Math.round(srcCount[s] / total * 100);
     return '<div class="stats-bar-row" data-stats-src="' + s + '"><span class="stats-bar-label">' + s + '</span><div class="stats-bar-track"><div class="stats-bar-fill stats-bar-fill--navy" style="width:' + pct + '%"></div></div><span class="stats-bar-count">' + srcCount[s] + '</span><span class="stats-bar-pct">' + pctTotal + '%</span></div>';
   }).join('');
+  if (otrosCount > 0) {
+    var otrosPct = Math.round(otrosCount / srcMax * 100);
+    var otrosPctTotal = Math.round(otrosCount / total * 100);
+    srcHTML += '<div class="stats-bar-row"><span class="stats-bar-label" style="color:var(--gray-400);">Otros (' + (topSrc.length - mainSources.length) + ')</span><div class="stats-bar-track"><div class="stats-bar-fill stats-bar-fill--gray" style="width:' + otrosPct + '%"></div></div><span class="stats-bar-count">' + otrosCount + '</span><span class="stats-bar-pct">' + otrosPctTotal + '%</span></div>';
+  }
+  document.getElementById('statsSrcBars').innerHTML = srcHTML;
   document.getElementById('statsSrcSub').textContent = topSrc.length + ' fuentes';
 
-  // Timeline (volume by date)
-  var dateCount = {};
-  articles.forEach(function(a) { if (a.date_sort && a.date_sort !== '1900-01-01') dateCount[a.date_sort] = (dateCount[a.date_sort]||0) + 1; });
-  var dates = Object.keys(dateCount).sort();
-  var dateMax = Math.max.apply(null, dates.map(function(d) { return dateCount[d]; })) || 1;
-  document.getElementById('statsTimeBars').innerHTML = dates.map(function(d) {
-    var pct = (dateCount[d] / dateMax * 100);
-    var label = d.split('-').slice(1).reverse().join('/');
-    return '<div class="trend-bar-col"><span class="trend-bar-count">' + dateCount[d] + '</span><div class="trend-bar" style="height:' + Math.max(pct, 5) + '%;background:var(--accent);"></div><span class="trend-bar-label">' + label + '</span></div>';
-  }).join('');
-  document.getElementById('statsTimeSub').textContent = dates.length + ' fechas';
+  // Timeline (volume by date) — with period filter
+  var allDateCount = {};
+  articles.forEach(function(a) { if (a.date_sort && a.date_sort !== '1900-01-01') allDateCount[a.date_sort] = (allDateCount[a.date_sort]||0) + 1; });
+  window._statsAllDateCount = allDateCount;
+  renderStatsTimeline(0); // 0 = all
 
   // Bind all stats clicks
   document.querySelectorAll('[data-stats-region]').forEach(function(el) {
@@ -2026,13 +1950,42 @@ function buildStatsView() {
       applyFilters();
     });
   });
+  document.querySelectorAll('.stats-time-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      renderStatsTimeline(parseInt(btn.dataset.statsDays));
+    });
+  });
+}
+
+function renderStatsTimeline(days) {
+  var allDateCount = window._statsAllDateCount || {};
+  var allDates = Object.keys(allDateCount).sort();
+  var dates = allDates;
+  if (days > 0) {
+    var cutoff = new Date();
+    cutoff.setDate(cutoff.getDate() - days);
+    var cutoffStr = cutoff.toISOString().slice(0, 10);
+    dates = allDates.filter(function(d) { return d >= cutoffStr; });
+  }
+  if (dates.length === 0) dates = allDates.slice(-7);
+  var dateMax = Math.max.apply(null, dates.map(function(d) { return allDateCount[d]; })) || 1;
+  document.getElementById('statsTimeBars').innerHTML = dates.map(function(d) {
+    var pct = (allDateCount[d] / dateMax * 100);
+    var label = d.split('-').slice(1).reverse().join('/');
+    return '<div class="trend-bar-col"><span class="trend-bar-count">' + allDateCount[d] + '</span><div class="trend-bar" style="height:' + Math.max(pct, 5) + '%;background:var(--accent);"></div><span class="trend-bar-label">' + label + '</span></div>';
+  }).join('');
+  document.getElementById('statsTimeSub').textContent = dates.length + ' fechas';
+  // Update active state on period buttons
+  document.querySelectorAll('.stats-time-btn').forEach(function(b) {
+    b.classList.toggle('active', parseInt(b.dataset.statsDays) === days);
+  });
 }
 
 function showStatsView() {
   if (!DATA) return;
   buildStatsView();
   // Hide main content sections
-  ['heroSection','contentGrid','categorySections','trendSection','welcomeBar','intelRow','filteredResults','filterStatus'].forEach(function(id) {
+  ['heroSection','contentGrid','categorySections','trendSection','welcomeBar','filteredResults','filterStatus'].forEach(function(id) {
     var el = document.getElementById(id);
     if (el) el.classList.add('hidden');
   });
@@ -2170,7 +2123,7 @@ function renderHome() {
   document.getElementById('filteredResults').classList.add('hidden');
   document.getElementById('filterStatus').classList.add('hidden');
   document.getElementById('welcomeBar').classList.remove('hidden');
-  document.getElementById('intelRow').classList.remove('hidden');
+  document.getElementById('inlineSearch').classList.add('hidden');
 
   var sortBtn = document.getElementById('sortToggle');
   if (sortBtn) sortBtn.addEventListener('click', function() { SORT_DESC = !SORT_DESC; renderHome(); });
@@ -2312,9 +2265,11 @@ function applyFilters() {
   document.getElementById('categorySections').classList.add('hidden');
   document.getElementById('trendSection').classList.add('hidden');
   document.getElementById('welcomeBar').classList.add('hidden');
-  document.getElementById('intelRow').classList.add('hidden');
   document.getElementById('filteredResults').classList.remove('hidden');
   document.getElementById('filterStatus').classList.remove('hidden');
+  // Show inline search and sync value
+  document.getElementById('inlineSearch').classList.remove('hidden');
+  document.getElementById('inlineSearchInput').value = document.getElementById('searchInput').value;
   document.getElementById('filterStatusText').innerHTML = '<strong>' + results.length + '</strong> resultado' + (results.length !== 1 ? 's' : '') + ' encontrado' + (results.length !== 1 ? 's' : '');
   if (results.length === 0) {
     document.getElementById('filteredResults').innerHTML = '<div class="empty-state"><div class="empty-state__icon">&#x1F50D;</div><div class="empty-state__text">No se encontraron noticias con esos criterios</div></div>';
@@ -2401,6 +2356,7 @@ function clearAllFilters() {
   document.getElementById('filterChips').innerHTML = '';
   closeSearchOverlay();
   hideStatsView();
+  document.getElementById('inlineSearch').classList.add('hidden');
   renderHome();
 }
 
@@ -2439,7 +2395,35 @@ function bindEvents() {
     }
   });
 
-  document.getElementById('searchInput').addEventListener('input', debounce(applyFilters, 300));
+  document.getElementById('searchInput').addEventListener('input', debounce(function() {
+    applyFilters();
+    // Close overlay after search starts showing results
+    if (document.getElementById('searchInput').value.trim()) {
+      closeSearchOverlay();
+    }
+  }, 300));
+
+  // Inline search sync
+  document.getElementById('inlineSearchInput').addEventListener('input', debounce(function() {
+    document.getElementById('searchInput').value = document.getElementById('inlineSearchInput').value;
+    applyFilters();
+  }, 300));
+
+  // Inline presets
+  document.querySelectorAll('.inline-preset').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var days = parseInt(btn.dataset.days);
+      document.querySelectorAll('.preset-btn').forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      if (days === 0) { document.getElementById('filterDateFrom').value = ''; ACTIVE_PRESET = 0; }
+      else {
+        var d = new Date(); d.setDate(d.getDate() - days);
+        document.getElementById('filterDateFrom').value = d.toISOString().slice(0, 10);
+        ACTIVE_PRESET = days;
+      }
+      applyFilters();
+    });
+  });
   document.getElementById('filterStatusClear').addEventListener('click', clearAllFilters);
 
   // Search overlay toggle
@@ -2492,12 +2476,8 @@ function bindEvents() {
     ACTIVE_PRESET = null; applyFilters();
   });
   document.getElementById('btnArchive').addEventListener('click', function() {
-    document.body.classList.add('focus-mode');
-    sessionStorage.setItem('focusMode', 'on');
-    focusShown = 0; focusActiveCat = 'TODAS'; focusQuery = ''; focusDateInited = false;
-    focusBtn.classList.add('active');
-    focusIcon.innerHTML = '&#x25C9;'; focusLabel.textContent = 'Focus ON';
-    renderFocusView();
+    var feed = document.getElementById('mainFeed');
+    if (feed) feed.scrollIntoView({ behavior: 'smooth' });
   });
   document.getElementById('btnTrends').addEventListener('click', function() {
     showStatsView();

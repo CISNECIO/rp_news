@@ -1,5 +1,5 @@
 {
-  "generated": "2026-04-06 16:11:50",
+  "generated": "2026-04-07 10:17:11",
   "total": 2873,
   "categories": [
     "Banca",
@@ -12,7 +12,6 @@
     "24/7",
     "6minutos",
     "ANNA",
-    "ASBANC",
     "Alfintech",
     "Americaeconomia",
     "América Economía",
@@ -125,11 +124,8 @@
     "Fpcmac",
     "Ft",
     "Fuente no identificada",
+    "Gan@ Más",
     "Gan@ más",
-    "Gan@Más",
-    "Gan@más",
-    "Gana Más",
-    "Gana más",
     "GanaMás",
     "Ganam@s",
     "Ganamás",
@@ -220,7 +216,6 @@
     "Sbs",
     "Segurosyara",
     "Semana Económica",
-    "Semana económica",
     "Semanaeconomica",
     "Soypositivo",
     "Startupslatam",
@@ -258,7 +253,6 @@
     "eToro",
     "elias",
     "finnovista",
-    "gana más",
     "iProup",
     "informe de opinión - Gestión",
     "latamfintech hub",
@@ -559,7 +553,7 @@
     {
       "id": 12,
       "title": "Uso masivo de billeteras digitales en Perú plantea desafíos en seguridad y educación financiera",
-      "source": "Gana más",
+      "source": "Gan@ Más",
       "date": "17 Mar 2026",
       "date_sort": "2026-03-17",
       "url": "https://revistaganamas.com.pe/nueve-de-cada-diez-usuarios-de-servicios-financieros-digitales-en-peru-usa-billeteras-digitales/",
@@ -2500,7 +2494,7 @@
     {
       "id": 92,
       "title": "Encuesta Anual de Ejecutivos 2025 revela consolidación digital del sistema financiero peruano",
-      "source": "Gan@más",
+      "source": "Gan@ Más",
       "date": "11 Feb 2026",
       "date_sort": "2026-02-11",
       "url": "https://revistaganamas.com.pe/ejecutivos-confirman-la-consolidacion-del-sistema-financiero-digital-en-el-peru/",
@@ -2968,7 +2962,7 @@
     {
       "id": 111,
       "title": "CMAC Arequipa innova con desembolsos de crédito vía WhatsApp",
-      "source": "Gan@más",
+      "source": "Gan@ Más",
       "date": "04 Feb 2026",
       "date_sort": "2026-02-04",
       "url": "https://revistaganamas.com.pe/caja-arequipa-innova-con-desembolsos-de-credito-via-whatsapp/",
@@ -3013,7 +3007,7 @@
     {
       "id": 113,
       "title": "La SBS impulsa el manejo responsable de dinero a través de la educación financiera",
-      "source": "Gana más",
+      "source": "Gan@ Más",
       "date": "03 Feb 2026",
       "date_sort": "2026-02-03",
       "url": "https://revistaganamas.com.pe/la-sbs-impulsa-el-manejo-responsable-del-dinero-a-traves-de-la-educacion-financiera/",
@@ -3500,7 +3494,7 @@
     {
       "id": 133,
       "title": "Ingeniería financiera para un acceso al crédito sostenible en el Perú",
-      "source": "Gana más",
+      "source": "Gan@ Más",
       "date": "28 Jan 2026",
       "date_sort": "2026-01-28",
       "url": "https://revistaganamas.com.pe/ingenieria-financiera-con-rostro-humano-tecnologia-para-cerrar-brechas-sociales/",
@@ -4381,7 +4375,7 @@
     {
       "id": 167,
       "title": "INDECOPI multa al BCP por aplicar de forma incorrecta un pago anticipado",
-      "source": "Gana más",
+      "source": "Gan@ Más",
       "date": "14 Jan 2026",
       "date_sort": "2026-01-14",
       "url": "https://revistaganamas.com.pe/indecopi-sanciona-al-bcp-por-aplicar-incorrectamente-un-pago-anticipado/",
@@ -4780,7 +4774,7 @@
     {
       "id": 183,
       "title": "CMAC Arequipa acelera la digitalización y la inclusión financiera en 2025",
-      "source": "gana más",
+      "source": "Gan@ Más",
       "date": "08 Jan 2026",
       "date_sort": "2026-01-08",
       "url": "https://revistaganamas.com.pe/caja-arequipa-fortalece-su-posicion-financiera-y-digital-al-cierre-de-2025/",
@@ -5249,7 +5243,7 @@
     {
       "id": 201,
       "title": "Un consumidor más digital acelera el crecimiento del ecosistema Fintech en Perú",
-      "source": "Gan@más",
+      "source": "Gan@ Más",
       "date": "24 Dec 2025",
       "date_sort": "2025-12-24",
       "url": "https://revistaganamas.com.pe/un-consumidor-mas-digital-esta-acelerando-la-expansion-del-ecosistema-fintech-en-peru/",
@@ -5632,7 +5626,7 @@
     {
       "id": 215,
       "title": "Interbank habilita funcionalidad digital de descuento de facturas para PYMES",
-      "source": "Gana Más",
+      "source": "Gan@ Más",
       "date": "17 Dec 2025",
       "date_sort": "2025-12-17",
       "url": "https://revistaganamas.com.pe/interbank-habilita-adelanto-digital-de-facturas-para-pymes/",
@@ -5654,7 +5648,7 @@
     {
       "id": 216,
       "title": "BCP impulsa la primera expansión internacional de una Fintech peruana",
-      "source": "Gana más",
+      "source": "Gan@ Más",
       "date": "17 Dec 2025",
       "date_sort": "2025-12-17",
       "url": "https://revistaganamas.com.pe/bcp-respalda-la-primera-expansion-internacional-de-una-fintech-peruana/",
@@ -5856,7 +5850,7 @@
     {
       "id": 224,
       "title": "CMAC Arequipa inicia con desembolsos de crédito por WhatsApp",
-      "source": "Gana Más",
+      "source": "Gan@ Más",
       "date": "15 Dec 2025",
       "date_sort": "2025-12-15",
       "url": "https://revistaganamas.com.pe/caja-arequipa-impulsa-la-inclusion-financiera-con-desembolsos-de-credito-por-whatsapp/",
@@ -6378,7 +6372,7 @@
     {
       "id": 245,
       "title": "Primer paso hacia un mercado único de renta fija en Perú y Chile",
-      "source": "Gan@más",
+      "source": "Gan@ Más",
       "date": "04 Dec 2025",
       "date_sort": "2025-12-04",
       "url": "https://revistaganamas.com.pe/peru-y-chile-dan-el-primer-paso-hacia-un-mercado-unico-de-renta-fija/",
@@ -6565,7 +6559,7 @@
     {
       "id": 253,
       "title": "Más de 3,5 millones de peruanos ya usan Dinero Digital del BCRP",
-      "source": "Gana Más",
+      "source": "Gan@ Más",
       "date": "02 Dec 2025",
       "date_sort": "2025-12-02",
       "url": "https://revistaganamas.com.pe/mas-de-3-5-millones-de-peruanos-ya-utilizan-el-dinero-digital-del-bcrp/",
@@ -6710,7 +6704,7 @@
     {
       "id": 259,
       "title": "Lanzamiento del desembolso digital por WhatsApp de Caja Arequipa",
-      "source": "Gan@más",
+      "source": "Gan@ Más",
       "date": "01 Dec 2025",
       "date_sort": "2025-12-01",
       "url": "https://revistaganamas.com.pe/caja-arequipa-lanzara-en-diciembre-su-desembolso-digital-por-whatsapp/",
@@ -6871,7 +6865,7 @@
     {
       "id": 266,
       "title": "Modernización regulatoria de la SBS ante los riesgos del ecosistema digital",
-      "source": "Gan@más",
+      "source": "Gan@ Más",
       "date": "26 Nov 2025",
       "date_sort": "2025-11-26",
       "url": "https://revistaganamas.com.pe/la-sbs-acelera-la-modernizacion-regulatoria-para-enfrentar-los-riesgos-del-ecosistema-digital/",
@@ -6903,7 +6897,7 @@
     {
       "id": 267,
       "title": "La apuesta del BCP por criptoactivos puede redefinir la compra de activos digitales en el país",
-      "source": "Gan@más",
+      "source": "Gan@ Más",
       "date": "26 Nov 2025",
       "date_sort": "2025-11-26",
       "url": "https://revistaganamas.com.pe/la-apuesta-cripto-del-bcp-toma-fuerza-y-redefine-la-forma-de-comprar-activos-digitales-en-peru/",
@@ -7314,7 +7308,7 @@
     {
       "id": 283,
       "title": "SBS presenta hoja de ruta para la implementación de banca abierta en el Perú",
-      "source": "Gana Más",
+      "source": "Gan@ Más",
       "date": "19 Nov 2025",
       "date_sort": "2025-11-19",
       "url": "https://revistaganamas.com.pe/sbs-expone-la-hoja-de-ruta-y-principios-del-modelo-de-finanzas-abiertas/",
@@ -7833,7 +7827,7 @@
     {
       "id": 302,
       "title": "Crecimiento de inversionistas minoristas y avance de la integración bursátil en Perú",
-      "source": "Gan@más",
+      "source": "Gan@ Más",
       "date": "13 Nov 2025",
       "date_sort": "2025-11-13",
       "url": "https://revistaganamas.com.pe/mas-de-300-mil-peruanos-ya-invierten-en-la-bvl-impulsados-por-la-tecnologia-y-las-apps-financieras/",
@@ -8669,7 +8663,7 @@
     {
       "id": 334,
       "title": "Moonflow adquiere Fintech mexicana Kobro.io",
-      "source": "gana más",
+      "source": "Gan@ Más",
       "date": "31 Oct 2025",
       "date_sort": "2025-10-31",
       "url": "https://revistaganamas.com.pe/moonflow-compra-fintech-mexicana-kobro-io-y-fortalece-su-presencia-en-26-paises/",
@@ -9246,7 +9240,7 @@
     {
       "id": 356,
       "title": "Monto negociado de facturas negociables supera S/ 37 600 millones y consolidan al factoring como mecanismo de financiamiento para las MYPE",
-      "source": "Gan@más",
+      "source": "Gan@ Más",
       "date": "27 Oct 2025",
       "date_sort": "2025-10-27",
       "url": "https://revistaganamas.com.pe/facturas-negociables-suman-s-37-637-millones-y-refuerzan-el-acceso-al-financiamiento-empresarial/",
@@ -9298,7 +9292,7 @@
     {
       "id": 358,
       "title": "BCP impulsa el Open Banking con nuevas API para Fintech",
-      "source": "Gan@más",
+      "source": "Gan@ Más",
       "date": "27 Oct 2025",
       "date_sort": "2025-10-27",
       "url": "https://revistaganamas.com.pe/bcp-da-un-paso-hacia-el-open-banking-con-el-despliegue-de-sus-apis-para-fintechs/",
@@ -9527,7 +9521,7 @@
     {
       "id": 367,
       "title": "BCP impulsa la integración de criptoactivos en el sistema financiero peruano",
-      "source": "Gan@Más",
+      "source": "Gan@ Más",
       "date": "24 Oct 2025",
       "date_sort": "2025-10-24",
       "url": "https://revistaganamas.com.pe/bcp-impulsa-la-integracion-de-criptoactivos-en-el-sistema-financiero-peruano/",
@@ -9638,7 +9632,7 @@
     {
       "id": 371,
       "title": "Ocho años de evolución del sector Fintech en el Perú: De la curiosidad a la consolidación",
-      "source": "Gan@Más",
+      "source": "Gan@ Más",
       "date": "23 Oct 2025",
       "date_sort": "2025-10-23",
       "url": "https://revistaganamas.com.pe/ocho-anos-de-evolucion-fintech-en-el-peru-de-la-curiosidad-a-la-consolidacion/",
@@ -9914,7 +9908,7 @@
     {
       "id": 381,
       "title": "Buenbit amplía su oferta y se consolida como app de inversión accesible en Perú",
-      "source": "Semana económica",
+      "source": "Semana Económica",
       "date": "17 Oct 2025",
       "date_sort": "2025-10-17",
       "url": "https://semanaeconomica.com/economia-finanzas/fondos-de-inversion/nbspbuenbit-rompe-las-barreras-y-se-consolida-como-la-opcion-mas-simple-de-invertir-en-perunbsp",
@@ -17452,7 +17446,7 @@
     {
       "id": 670,
       "title": "La Asociación Perú Payments lanza certificación para fortalecer confianza en Fintech de pagos",
-      "source": "Gana Más",
+      "source": "Gan@ Más",
       "date": "25 Jun 2025",
       "date_sort": "2025-06-25",
       "url": "https://revistaganamas.com.pe/peru-payments-lanza-certificacion-para-fortalecer-la-confianza-en-fintechs-de-pagos/",
@@ -17748,7 +17742,7 @@
     {
       "id": 680,
       "title": "Coopac San Miguel lanza aplicación móvil en alianza con Bankingly para promover la inclusión financiera",
-      "source": "Gan@más",
+      "source": "Gan@ Más",
       "date": "18 Jun 2025",
       "date_sort": "2025-06-18",
       "url": "https://revistaganamas.com.pe/coopac-san-miguel-y-bankingly-lanzan-app-que-acerca-los-servicios-financieros-a-sus-socios/",
@@ -17990,7 +17984,7 @@
     {
       "id": 689,
       "title": "CMAC Huancayo implementa pagarés 100% digitales tras alianza con Cavali",
-      "source": "Gana Más",
+      "source": "Gan@ Más",
       "date": "13 Jun 2025",
       "date_sort": "2025-06-13",
       "url": "https://revistaganamas.com.pe/caja-huancayo-inicia-desembolsos-con-pagares-100-digitales-tras-alianza-con-cavali/",
@@ -18073,7 +18067,7 @@
     {
       "id": 692,
       "title": "BBVA lidera el Open Banking en Perú con soluciones API y más de 40 mil puntos de recaudación",
-      "source": "Gan@más",
+      "source": "Gan@ Más",
       "date": "12 Jun 2025",
       "date_sort": "2025-06-12",
       "url": "https://revistaganamas.com.pe/bbva-impulsa-el-open-banking-en-el-peru-con-mas-de-170-mil-operaciones-mensuales-y-40-mil-puntos-de-recaudacion/",
@@ -18253,7 +18247,7 @@
     {
       "id": 698,
       "title": "Más de 68 mil personas ya utilizan la billetera digital del BCRP en piloto de CBDC",
-      "source": "Gan@más",
+      "source": "Gan@ Más",
       "date": "10 Jun 2025",
       "date_sort": "2025-06-10",
       "url": "https://revistaganamas.com.pe/mas-de-68-mil-usuarios-ya-usan-la-billetera-digital-con-dinero-emitido-por-el-bcrp/",
@@ -18840,7 +18834,7 @@
     {
       "id": 719,
       "title": "Fintech cambistas ganan terreno en Perú y presionan a los bancos a mejorar sus condiciones",
-      "source": "Gan@más",
+      "source": "Gan@ Más",
       "date": "02 Jun 2025",
       "date_sort": "2025-06-02",
       "url": "https://revistaganamas.com.pe/bcrp-publica-datos-por-primera-vez-de-11-casas-de-cambio-digitales-que-operan-en-el-mercado/",
@@ -19560,7 +19554,7 @@
     {
       "id": 745,
       "title": "Compartamos lanza plataforma digital para ayudar a los peruanos a organizar mejor su dinero",
-      "source": "Gana Más",
+      "source": "Gan@ Más",
       "date": "21 May 2025",
       "date_sort": "2025-05-21",
       "url": "https://revistaganamas.com.pe/compartamos-lanza-plataforma-digital-para-ayudar-a-los-peruanos-a-organizar-mejor-su-dinero/",
@@ -23232,7 +23226,7 @@
     {
       "id": 879,
       "title": "INDECOPI sanciona a Interbank con más de S/ 600 mil por alterar saldos y deficiencias en la información a sus clientes",
-      "source": "Gan@más",
+      "source": "Gan@ Más",
       "date": "25 Mar 2025",
       "date_sort": "2025-03-25",
       "url": "https://revistaganamas.com.pe/indecopi-ratifica-multa-a-interbank-por-afectar-saldos-de-cuentas-y-no-informar-a-clientes/",
@@ -23774,7 +23768,7 @@
     {
       "id": 900,
       "title": "Mibanco impulsa transformación digital y supera sus metas de innovación en 2024",
-      "source": "Gan@más",
+      "source": "Gan@ Más",
       "date": "17 Mar 2025",
       "date_sort": "2025-03-17",
       "url": "https://revistaganamas.com.pe/mibanco-acelera-su-transformacion-digital-y-supera-metas-de-innovacion-en-2024/",
@@ -23805,7 +23799,7 @@
     {
       "id": 901,
       "title": "Las Fintech impulsan pagos y créditos, pero enfrentan desafíos regulatorios",
-      "source": "Gan@más",
+      "source": "Gan@ Más",
       "date": "17 Mar 2025",
       "date_sort": "2025-03-17",
       "url": "https://revistaganamas.com.pe/bcrp-las-fintech-impulsan-la-expansion-de-pagos-y-creditos-pero-presentan-desafios-regulatorios/",
@@ -24053,7 +24047,7 @@
     {
       "id": 911,
       "title": "Grupo AJE lanza su Fintech Toquea enfocada en la vertical de préstamos",
-      "source": "Gana más",
+      "source": "Gan@ Más",
       "date": "12 Mar 2025",
       "date_sort": "2025-03-12",
       "url": "https://revistaganamas.com.pe/toquea-fintech-del-grupo-aje-impulsa-el-acceso-al-credito-para-bodegueros/",
@@ -24192,7 +24186,7 @@
     {
       "id": 917,
       "title": "670 mil peruanos accedieron al crédito formal a través de Yape",
-      "source": "Gana más",
+      "source": "Gan@ Más",
       "date": "10 Mar 2025",
       "date_sort": "2025-03-10",
       "url": "https://revistaganamas.com.pe/670000-peruanos-accedieron-a-su-primer-credito-formal-en-2024-a-traves-de-yape/",
@@ -24368,7 +24362,7 @@
     {
       "id": 924,
       "title": "Ladonware y Odybank establecen alianza para transformar soluciones bancarias digitales en el Perú",
-      "source": "Gana más",
+      "source": "Gan@ Más",
       "date": "06 Mar 2025",
       "date_sort": "2025-03-06",
       "url": "https://revistaganamas.com.pe/ladonware-y-odybank-se-unen-para-acelerar-la-transformacion-digital-en-el-sector-financiero/",
@@ -24849,7 +24843,7 @@
     {
       "id": 945,
       "title": "La Asociación Fintech del Perú impulsa la colaboración y la innovación con su nuevo Consejo Directivo",
-      "source": "Gan@más",
+      "source": "Gan@ Más",
       "date": "21 Feb 2025",
       "date_sort": "2025-02-21",
       "url": "https://revistaganamas.com.pe/asociacion-fintech-del-peru-debemos-dejar-de-lado-el-ego-sistema-y-construir-un-verdadero-ecosistema/",
@@ -25659,7 +25653,7 @@
     {
       "id": 979,
       "title": "Yape inaugura su primera tienda insignia en alianza con OXXO",
-      "source": "Gan@Más",
+      "source": "Gan@ Más",
       "date": "10 Feb 2025",
       "date_sort": "2025-02-10",
       "url": "https://revistaganamas.com.pe/yape-inaugura-su-primera-tienda-insignia-en-alianza-con-oxxo-para-potenciar-experiencia-de-compra/",
@@ -26130,7 +26124,7 @@
     {
       "id": 999,
       "title": "Asociación de Bancos del Perú y el Ministerio Público se unen para luchar contra la ciberdelincuencia",
-      "source": "ASBANC",
+      "source": "Asbanc",
       "date": "30 Jan 2025",
       "date_sort": "2025-01-30",
       "url": "https://www.asbanc.com.pe/noticia/asociacion-de-bancos-del-peru-y-el-ministerio-publico-se-unen-para-luchar-contra-la-ciberdelincuencia1",
@@ -27074,7 +27068,7 @@
     {
       "id": 1044,
       "title": "BBVA completa la migración de su plataforma ADA a la nube de AWS en Europa y proyecta su expansión a América Latina",
-      "source": "Gan@Más",
+      "source": "Gan@ Más",
       "date": "27 Dec 2024",
       "date_sort": "2024-12-27",
       "url": "https://revistaganamas.com.pe/bbva-completa-migracion-de-su-plataforma-de-datos-a-la-nube-de-aws-en-europa/",
@@ -27095,7 +27089,7 @@
     {
       "id": 1045,
       "title": "Caja Trujillo gana premio por asistente virtual ‘Mari’ que promueve inclusión financiera",
-      "source": "Gan@más",
+      "source": "Gan@ Más",
       "date": "27 Dec 2024",
       "date_sort": "2024-12-27",
       "url": "https://revistaganamas.com.pe/caja-trujillo-gana-premio-por-proyecto-mari-asistente-virtual-que-impulsa-la-inclusion-financiera/",
@@ -27369,7 +27363,7 @@
     {
       "id": 1058,
       "title": "Ábaco implementa pagarés electrónicos para agilizar créditos y reducir riesgos financieros",
-      "source": "Gan@más",
+      "source": "Gan@ Más",
       "date": "17 Dec 2024",
       "date_sort": "2024-12-17",
       "url": "Ábaco implementa pagarés electrónicos para agilizar créditos y reducir riesgos financieros (Gan@más)",
@@ -27600,7 +27594,7 @@
     {
       "id": 1069,
       "title": "La inteligencia artificial y su impacto en la atención al cliente",
-      "source": "Gan@Más",
+      "source": "Gan@ Más",
       "date": "13 Dec 2024",
       "date_sort": "2024-12-13",
       "url": "La inteligencia artificial y su impacto en la atención al cliente (Gan@Más)",
@@ -27621,7 +27615,7 @@
     {
       "id": 1070,
       "title": "Coopac Norandino avanza en su transformación digital para impulsar la inclusión financiera digital en zonas rurales",
-      "source": "Gan@Más",
+      "source": "Gan@ Más",
       "date": "13 Dec 2024",
       "date_sort": "2024-12-13",
       "url": "Coopac Norandino avanza en su transformación digital para impulsar la inclusión financiera digital en zonas rurales (Gan@Más)",
@@ -27684,7 +27678,7 @@
     {
       "id": 1073,
       "title": "Caja Metropolitana de Lima presenta crecimiento sostenido y avances tecnológicos",
-      "source": "Gan@Más",
+      "source": "Gan@ Más",
       "date": "12 Dec 2024",
       "date_sort": "2024-12-12",
       "url": "https://revistaganamas.com.pe/caja-metropolitana-de-lima-presenta-crecimiento-sostenido-y-avances-tecnologicos/",
@@ -29093,7 +29087,7 @@
     {
       "id": 1140,
       "title": "BCP invertirá S/ 2 500 millones para modernización tecnológica, junto a Microsoft y Kyndryl",
-      "source": "Gan@Más",
+      "source": "Gan@ Más",
       "date": "12 Nov 2024",
       "date_sort": "2024-11-12",
       "url": "BCP invertirá S/ 2 500 millones para modernización tecnológica, junto a Microsoft y Kyndryl (Gan@Más)",
