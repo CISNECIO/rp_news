@@ -38,8 +38,8 @@ export async function onRequest(context) {
     const pass = decoded.slice(sep + 1);
 
     if (
-      user === context.env.Julio &&
-      pass === context.env.Profe
+      user === context.env.AUTH_USER &&
+      pass === context.env.AUTH_PASS
     ) {
       return context.next();
     }
