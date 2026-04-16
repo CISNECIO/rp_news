@@ -18,16 +18,242 @@ def extract_source(title, url):
     """Extract source from title parentheses, then URL domain, then fallback."""
     match = re.search(r'\(([^)]+)\)\s*$', title or '')
     if match:
-        return match.group(1).strip()
+        return normalize_source(match.group(1).strip())
     if url and isinstance(url, str):
         try:
             domain = urlparse(url).netloc.replace('www.', '')
             parts = domain.split('.')
             if len(parts) >= 2:
-                return parts[0].capitalize()
+                return normalize_source(parts[0].capitalize())
         except:
             pass
     return "Fuente no identificada"
+
+# ─────────────────────────────────────────────────────────────
+# SOURCE NORMALIZATION
+# Consolidates variants like "Gestion"/"Gestión", "ThePaypers"/"The paypers",
+# "Gan@ Más"/"GanaMás", "Sbs"/"SBS", etc. into canonical names.
+# If a raw source isn't in the exact map, heuristic cleanup applies.
+# ─────────────────────────────────────────────────────────────
+SOURCE_CANONICAL_MAP = {
+    # Peruvian press
+    'gestion': 'Gestión',
+    'gestión': 'Gestión',
+    'gestión versión impresa': 'Gestión',
+    'gestión - versión impresa': 'Gestión',
+    'gestión versión mpresa': 'Gestión',
+    'informe de opinión - gestión': 'Gestión',
+    'artículo de vodanovic en gestión': 'Gestión',
+    'artículo de opinión de ljubica vodanovic en gestión': 'Gestión',
+    'gestión y semana económica': 'Gestión',
+    'el comercio': 'El Comercio',
+    'elcomercio': 'El Comercio',
+    'el comerio': 'El Comercio',
+    'comercio': 'El Comercio',
+    'la república': 'La República',
+    'larepublica': 'La República',
+    'semanaeconomica': 'Semana Económica',
+    'semana económica': 'Semana Económica',
+    'perú 21': 'Perú 21',
+    'peru21': 'Perú 21',
+    'perú retail': 'Perú Retail',
+    'perú retail ': 'Perú Retail',
+    'perú retail': 'Perú Retail',
+    'rpp': 'RPP',
+    'andina': 'Andina',
+    'infobae': 'Infobae',
+    'exitosa': 'Exitosa',
+    'exitosanoticias': 'Exitosa',
+    'el peruano': 'El Peruano',
+    'infomercado': 'Infomercado',
+    'diario uno': 'Diario UNO',
+    'diariohoy': 'Diario Hoy',
+    'expreso': 'Expreso',
+    # Fintech-specialized (Peru / LatAm)
+    'masfinanzas': 'Más Finanzas',
+    'más finanzas': 'Más Finanzas',
+    'masfinanz@s': 'Más Finanzas',
+    'másfinanz@s': 'Más Finanzas',
+    'másfinanzas': 'Más Finanzas',
+    'más finanz@s': 'Más Finanzas',
+    'más fin@nzas': 'Más Finanzas',
+    'másfin@nzas': 'Más Finanzas',
+    'másfinan@z': 'Más Finanzas',
+    'mas finanzas': 'Más Finanzas',
+    'más finanzas': 'Más Finanzas',
+    'más': 'Más Finanzas',
+    'mas': 'Más Finanzas',
+    'microfinanzas': 'Microfinanzas',
+    'revistaganamas': 'Gana Más',
+    'gan@ más': 'Gana Más',
+    'gan@más': 'Gana Más',
+    'ganamás': 'Gana Más',
+    'ganamas': 'Gana Más',
+    'ganam@s': 'Gana Más',
+    'gana más': 'Gana Más',
+    'gana mas': 'Gana Más',
+    'iupana': 'Iupana',
+    'latamfintech': 'Latam Fintech Hub',
+    'latam fintech': 'Latam Fintech Hub',
+    'latam fintech hub': 'Latam Fintech Hub',
+    'latam fintech hub': 'Latam Fintech Hub',
+    'latamfintech hub': 'Latam Fintech Hub',
+    'colombiafintech': 'Colombia Fintech',
+    'finnovista': 'Finnovista',
+    'fintechnews': 'Fintech News',
+    'fintechfutures': 'Fintech Futures',
+    'fintech futures': 'Fintech Futures',
+    'fintech global': 'Fintech Global',
+    'fintech global y finextra': 'Fintech Global',
+    'fintech times': 'The Fintech Times',
+    'the fintech times': 'The Fintech Times',
+    'fintech magazine': 'Fintech Magazine',
+    'fintech magnates': 'Fintech Magnates',
+    'fintech review': 'Fintech Review',
+    'fintechweekly': 'Fintech Weekly',
+    'fintech weekly': 'Fintech Weekly',
+    # International wires / press
+    'reuters': 'Reuters',
+    'reuters y cointelegraph': 'Reuters',
+    'bloomberg': 'Bloomberg',
+    'bloomberglinea': 'Bloomberg Línea',
+    'bloomberg línea': 'Bloomberg Línea',
+    'bloomberg en línea': 'Bloomberg Línea',
+    'financial times': 'Financial Times',
+    'ft': 'Financial Times',
+    'finextra': 'Finextra',
+    'finextra': 'Finextra',
+    'fintextra': 'Finextra',
+    'paypers': 'The Paypers',
+    'the paypers': 'The Paypers',
+    'thepaypers': 'The Paypers',
+    'the paypers': 'The Paypers',
+    'tha paypers': 'The Paypers',
+    'pymnts': 'PYMNTS',
+    'paymnts': 'PYMNTS',
+    'techcrunch': 'TechCrunch',
+    'cnbc': 'CNBC',
+    'forbes': 'Forbes',
+    'forbes perú': 'Forbes',
+    'the economist': 'The Economist',
+    'the guardian': 'The Guardian',
+    'business insider': 'Business Insider',
+    'yahoo finance': 'Yahoo Finance',
+    'coindesk': 'CoinDesk',
+    'cointelegraph': 'CoinTelegraph',
+    'the block': 'The Block',
+    'americaeconomia': 'América Economía',
+    'américa economía': 'América Economía',
+    'finanzas y desarrollo del imf': 'IMF',
+    # Regulators / institutions
+    'sbs': 'SBS',
+    'bcrp': 'BCRP',
+    'bcrportal': 'BCRP',
+    'smv': 'SMV',
+    'mef': 'MEF',
+    'bis': 'BIS',
+    'fca': 'FCA',
+    'sec': 'SEC',
+    'cepal': 'CEPAL',
+    'iadb': 'BID',
+    'idbinvest': 'BID Invest',
+    'bid': 'BID',
+    'asbanc': 'Asbanc',
+    'fenacrep': 'Fenacrep',
+    'fpcmac': 'FEPCMAC',
+    'fepcmac': 'FEPCMAC',
+    'bankofengland': 'Bank of England',
+    'banco central de canadá': 'Banco de Canadá',
+    'centralbanking': 'Central Banking',
+    # Corporates / banks
+    'bbva': 'BBVA',
+    'bbva': 'BBVA',
+    'hsbc': 'HSBC',
+    'santander': 'Santander',
+    'nubank': 'Nubank',
+    'nu méxico': 'Nubank',
+    'j.p. morgan': 'JP Morgan',
+    'jp morgan': 'JP Morgan',
+    'bnp paribas': 'BNP Paribas',
+    'bnp pariba': 'BNP Paribas',
+    'visa': 'Visa',
+    'mastercard': 'Mastercard',
+    'paypal': 'PayPal',
+    'klarna': 'Klarna',
+    'revolut': 'Revolut',
+    'robinhood': 'Robinhood',
+    'etoro': 'eToro',
+    'coinbase': 'Coinbase',
+    'bitpanda': 'Bitpanda',
+    'astropay': 'AstroPay',
+    'belvo': 'Belvo',
+    'kushki': 'Kushki',
+    'ualá': 'Ualá',
+    'google': 'Google',
+    'google cloud': 'Google',
+    # Discard-like / low-signal labels → "Fuente no identificada"
+    'es': 'Fuente no identificada',
+    'ok': 'Fuente no identificada',
+    'blog': 'Fuente no identificada',
+    'publishing': 'Fuente no identificada',
+    'repe?': 'Fuente no identificada',
+    'no va': 'Fuente no identificada',
+    'opcional': 'Fuente no identificada',
+    'up': 'Fuente no identificada',
+    'drive': 'Fuente no identificada',
+    'peru': 'Fuente no identificada',
+    'gob': 'Fuente no identificada',
+    'pl': 'Fuente no identificada',
+    'br': 'Fuente no identificada',
+    'cloud': 'Fuente no identificada',
+    'maximo': 'Fuente no identificada',
+    'elias': 'Fuente no identificada',
+    'video': 'Fuente no identificada',
+    'hola': 'Fuente no identificada',
+    'newswriter': 'Fuente no identificada',
+    'investor': 'Fuente no identificada',
+    'finance': 'Fuente no identificada',
+    'city': 'Fuente no identificada',
+    'fintech': 'Fuente no identificada',
+    'linkedin': 'LinkedIn',
+    'facebook': 'Facebook',
+    'youtube': 'YouTube',
+    'bing': 'Fuente no identificada',
+    '24/7': 'Fuente no identificada',
+    '6minutos': '6 Minutos',
+    'pt50': 'Fuente no identificada',
+    'lrt': 'LRT',
+    'anna': 'ANNA',
+    'ebis': 'EBIS',
+    'ey': 'EY',
+    'polarg': 'PolArg',
+    # Typos / malformed
+    'finextra': 'Finextra',
+    'www1-folha-uol-com-br': 'Folha',
+    'lloys banking group': 'Lloyds Banking Group',
+}
+
+def normalize_source(raw):
+    """Normalize a source string to a canonical form.
+    Applies: trim, strip stray punctuation, exact-map lookup, then heuristic cleanup."""
+    if not raw or not isinstance(raw, str):
+        return "Fuente no identificada"
+    s = raw.strip()
+    # Strip trailing/leading stray quotes or punctuation
+    s = s.strip('"\'.,; ')
+    if not s:
+        return "Fuente no identificada"
+    # Exact-map lookup (case-insensitive)
+    canonical = SOURCE_CANONICAL_MAP.get(s.lower())
+    if canonical:
+        return canonical
+    # Heuristic: Title Case for ALL-CAPS words that look like acronyms (SBS, FCA, BIS)
+    if s.isupper() and len(s) <= 4:
+        return s  # keep as acronym
+    # Heuristic: all-lowercase single word → capitalize
+    if s.islower() and ' ' not in s:
+        return s.capitalize()
+    return s
 
 def clean_title(title):
     """Remove source parenthetical from end of title and strip whitespace."""
@@ -124,8 +350,14 @@ def convert(excel_path):
         
         resumen = row.get('Resumen')
         if pd.notna(resumen):
-            resumen = str(resumen).strip().replace('\n', ' ').replace('\r', '')
-            resumen_short = resumen[:280] + '...' if len(resumen) > 280 else resumen
+            resumen = str(resumen).strip().replace('\r\n', '\n').replace('\r', '')
+            # Collapse 3+ consecutive newlines to 2 (paragraph break)
+            import re
+            resumen = re.sub(r'\n{3,}', '\n\n', resumen)
+            # Short version: single-line for cards
+            resumen_short_raw = resumen.replace('\n', ' ')
+            resumen_short_raw = re.sub(r'  +', ' ', resumen_short_raw).strip()
+            resumen_short = resumen_short_raw[:280] + '...' if len(resumen_short_raw) > 280 else resumen_short_raw
         else:
             resumen = None
             resumen_short = None
@@ -185,7 +417,7 @@ def convert(excel_path):
     with open(out_path, 'w', encoding='utf-8') as f:
         json.dump(output, f, ensure_ascii=False, indent=2)
     
-    print(f"✓ Converted {len(articles)} articles → {out_path}")
+    print(f" Converted {len(articles)} articles -> {out_path}")
     print(f"  Categories: {', '.join(categories)}")
     print(f"  Sources: {', '.join(sources)}")
     print(f"  Regions: {', '.join(regions)}")
