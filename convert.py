@@ -11,8 +11,11 @@ import json
 import sys
 import re
 import os
+import math
+import unicodedata
+from collections import Counter, defaultdict
 from urllib.parse import urlparse
-from datetime import datetime
+from datetime import datetime, timedelta
 
 def extract_source(title, url):
     """Extract source from title parentheses, then URL domain, then fallback."""
@@ -319,6 +322,370 @@ def parse_keywords(kw_str):
     keywords = [k.strip().rstrip('.') for k in kw_str.split(',')]
     return [k for k in keywords if k and len(k) > 1]
 
+
+STOPWORDS = {
+    'a', 'al', 'ante', 'antes', 'asi', 'bajo', 'cada', 'como', 'con', 'contra',
+    'cuando', 'de', 'del', 'desde', 'donde', 'durante', 'e', 'el', 'ella',
+    'ellas', 'ellos', 'en', 'entre', 'era', 'es', 'esa', 'ese', 'eso', 'esta',
+    'estan', 'estar', 'este', 'esto', 'estos', 'fue', 'ha', 'han', 'hasta',
+    'hay', 'la', 'las', 'le', 'les', 'lo', 'los', 'mas', 'mientras', 'muy',
+    'no', 'o', 'para', 'pero', 'por', 'porque', 'que', 'se', 'segun', 'ser',
+    'si', 'sin', 'sobre', 'su', 'sus', 'tambien', 'tras', 'un', 'una', 'uno',
+    'y', 'the', 'and', 'for', 'from', 'into', 'with', 'that', 'this', 'will',
+    'financiero', 'financiera', 'financieros', 'financieras', 'sistema',
+    'banco', 'bancos', 'empresa', 'empresas', 'mercado', 'sector', 'nuevo',
+    'nueva', 'nuevos', 'nuevas', 'peru', 'peruano', 'peruana', 'articulo',
+    'noticia', 'noticias', 'fintech', 'banca', 'pagos', 'regulacion',
+    'inversiones'
+}
+
+SOURCE_TIERS = {
+    'official': {
+        'SBS', 'BCRP', 'BIS', 'SEC', 'FCA', 'SMV', 'MEF', 'Banco de Canadá',
+        'Bank of England', 'CEPAL', 'BID', 'BID Invest'
+    },
+    'market_intel': {
+        'Bloomberg', 'Bloomberg Línea', 'Reuters', 'Financial Times',
+        'The Economist', 'Finextra', 'The Paypers', 'PYMNTS',
+        'The Fintech Times', 'Fintech Futures'
+    },
+    'specialized': {
+        'Iupana', 'Latam Fintech Hub', 'Colombia Fintech', 'Finnovista',
+        'Más Finanzas', 'Gana Más', 'Semana Económica', 'Gestión',
+        'Microfinanzas'
+    },
+}
+
+ENTITY_GROUPS = {
+    'regulators': [
+        ('SBS', ['sbs', 'superintendencia de banca']),
+        ('BCRP', ['bcrp', 'banco central de reserva']),
+        ('BIS', ['bis', 'banco de pagos internacionales']),
+        ('SEC', ['sec', 'securities and exchange commission']),
+        ('FCA', ['fca', 'financial conduct authority']),
+        ('SMV', ['smv', 'superintendencia del mercado de valores']),
+        ('MEF', ['mef', 'ministerio de economia']),
+        ('Banco de Inglaterra', ['bank of england', 'banco de inglaterra']),
+        ('Banco de Canadá', ['bank of canada', 'banco de canada']),
+    ],
+    'companies': [
+        ('Nubank', ['nubank', 'nu mexico', 'nu méxico']),
+        ('Visa', ['visa']),
+        ('Mastercard', ['mastercard']),
+        ('PayPal', ['paypal']),
+        ('BBVA', ['bbva']),
+        ('Coinbase', ['coinbase']),
+        ('Klarna', ['klarna']),
+        ('Revolut', ['revolut']),
+        ('Ualá', ['uala', 'ualá']),
+        ('Belvo', ['belvo']),
+        ('Kushki', ['kushki']),
+        ('AstroPay', ['astropay']),
+        ('eToro', ['etoro']),
+        ('Google', ['google']),
+        ('Lloyds Banking Group', ['lloyds banking group', 'lloyds']),
+    ],
+    'countries': [
+        ('Perú', ['peru', 'perú']),
+        ('Brasil', ['brasil', 'brazil']),
+        ('México', ['mexico', 'méxico']),
+        ('Colombia', ['colombia']),
+        ('Chile', ['chile']),
+        ('Argentina', ['argentina']),
+        ('Estados Unidos', ['estados unidos', 'united states', 'eeuu', 'usa']),
+        ('Reino Unido', ['reino unido', 'united kingdom', 'uk']),
+        ('Unión Europea', ['union europea', 'unión europea', 'european union', 'ue']),
+        ('Canadá', ['canada', 'canadá']),
+        ('China', ['china']),
+    ],
+}
+
+RISK_RULES = [
+    ('Regulación', ['regulacion', 'normativa', 'ley', 'supervision', 'supervisor', 'licencia', 'sbs', 'smv', 'sec', 'fca', 'bis']),
+    ('Ciberseguridad / fraude', ['fraude', 'ciberseguridad', 'ciberataque', 'phishing', 'estafa', 'mulas', 'lavado', 'aml', 'riesgo operacional']),
+    ('Criptoactivos', ['cripto', 'crypto', 'bitcoin', 'stablecoin', 'stablecoins', 'tokenizacion', 'tokenización', 'activos digitales', 'blockchain']),
+    ('IA / modelos', ['inteligencia artificial', ' ia ', 'machine learning', 'modelo', 'algoritmo', 'automatizacion', 'automatización']),
+    ('Pagos e infraestructura', ['pagos', 'pago', 'interoperabilidad', 'transferencia', 'instantaneo', 'instantáneo', 'wallet', 'billetera', 'qr']),
+    ('Open finance', ['open finance', 'open banking', 'finanzas abiertas', 'banca abierta', 'apis', 'api']),
+    ('Crédito / deuda', ['credito', 'crédito', 'prestamo', 'préstamo', 'bnpl', 'deuda', 'morosidad', 'financiamiento']),
+    ('Protección al consumidor', ['consumidor', 'usuario', 'reclamo', 'transparencia', 'comisiones', 'indecopi', 'proteccion', 'protección']),
+    ('Estabilidad financiera', ['estabilidad financiera', 'liquidez', 'solvencia', 'sistemico', 'sistémico', 'capital', 'riesgo financiero']),
+    ('Mercados / inversión', ['inversion', 'inversión', 'valores', 'bolsa', 'acciones', 'trading', 'asset management']),
+]
+
+
+def strip_accents(text):
+    return ''.join(
+        ch for ch in unicodedata.normalize('NFD', str(text or ''))
+        if unicodedata.category(ch) != 'Mn'
+    )
+
+
+def norm_text(text):
+    return strip_accents(text).lower()
+
+
+def tokenize(text):
+    words = re.findall(r'[a-záéíóúñü0-9]{3,}', str(text or '').lower(), flags=re.I)
+    clean = []
+    for word in words:
+        key = norm_text(word)
+        if key not in STOPWORDS and not key.isdigit():
+            clean.append(key)
+    return clean
+
+
+def parse_date_sort(date_sort):
+    try:
+        return datetime.strptime(str(date_sort), '%Y-%m-%d')
+    except Exception:
+        return None
+
+
+def text_contains_alias(text, alias):
+    alias_norm = norm_text(alias).strip()
+    if not alias_norm:
+        return False
+    if re.fullmatch(r'[a-z0-9]{2,4}', alias_norm):
+        return re.search(r'(^|[^a-z0-9])' + re.escape(alias_norm) + r'([^a-z0-9]|$)', text) is not None
+    return alias_norm in text
+
+
+def detect_entities(article):
+    text = norm_text(
+        f"{article.get('title', '')} {article.get('summary', '')} "
+        f"{' '.join(article.get('keywords', []))} {article.get('source', '')}"
+    )
+    found = {}
+    for group, entities in ENTITY_GROUPS.items():
+        hits = []
+        for name, aliases in entities:
+            if any(text_contains_alias(text, alias) for alias in aliases):
+                hits.append(name)
+        found[group] = hits
+    return found
+
+
+def detect_risk_tags(article):
+    text = norm_text(
+        f"{article.get('title', '')} {article.get('summary', '')} "
+        f"{' '.join(article.get('keywords', []))} {article.get('category', '')}"
+    )
+    tags = []
+    for label, aliases in RISK_RULES:
+        if any(text_contains_alias(text, alias) for alias in aliases):
+            tags.append(label)
+    return tags
+
+
+def source_tier(source):
+    if source in SOURCE_TIERS['official']:
+        return 'official'
+    if source in SOURCE_TIERS['market_intel']:
+        return 'market_intel'
+    if source in SOURCE_TIERS['specialized']:
+        return 'specialized'
+    if source == 'Fuente no identificada':
+        return 'unknown'
+    return 'general'
+
+
+def source_score(source):
+    return {
+        'official': 100,
+        'market_intel': 82,
+        'specialized': 72,
+        'general': 52,
+        'unknown': 25,
+    }[source_tier(source)]
+
+
+def article_terms(article, max_terms=10):
+    terms = []
+    seen = set()
+    for kw in article.get('keywords', []):
+        clean = norm_text(kw).strip()
+        if clean and clean not in STOPWORDS and len(clean) > 2 and clean not in seen:
+            seen.add(clean)
+            terms.append(kw.strip())
+    text_terms = tokenize(f"{article.get('title', '')} {article.get('summary_short', '')}")
+    for token in text_terms:
+        if token not in seen:
+            seen.add(token)
+            terms.append(token)
+        if len(terms) >= max_terms:
+            break
+    return terms[:max_terms]
+
+
+def slugify_value(text):
+    value = norm_text(text)
+    value = re.sub(r'[^a-z0-9]+', '-', value).strip('-')
+    return value or 'sin-cluster'
+
+
+def label_from_terms(terms, fallback):
+    useful = [t.strip() for t in terms if norm_text(t).strip() not in STOPWORDS]
+    if not useful:
+        return fallback or 'Sin cluster'
+    label = ' · '.join(useful[:2])
+    return label[:80]
+
+
+def build_story_key(article):
+    tokens = tokenize(article.get('title', ''))
+    if len(tokens) < 3:
+        tokens = tokenize(f"{article.get('title', '')} {' '.join(article.get('keywords', []))}")
+    return ' '.join(sorted(set(tokens[:8]))[:6]) or slugify_value(article.get('title', ''))
+
+
+def enrich_articles(articles):
+    """Add transparent scoring, entity, risk, novelty, and cluster fields."""
+    latest = max((parse_date_sort(a.get('date_sort')) for a in articles), default=None)
+    latest = latest if latest else datetime.now()
+    current_start = latest - timedelta(days=29)
+    previous_start = latest - timedelta(days=59)
+    previous_end = current_start - timedelta(days=1)
+
+    article_term_lists = {}
+    doc_freq = Counter()
+    current_terms = Counter()
+    previous_terms = Counter()
+
+    for a in articles:
+        terms = article_terms(a)
+        article_term_lists[a['id']] = terms
+        unique_norm_terms = {norm_text(t) for t in terms if norm_text(t)}
+        doc_freq.update(unique_norm_terms)
+        dt = parse_date_sort(a.get('date_sort'))
+        if dt:
+            if current_start <= dt <= latest:
+                current_terms.update(unique_norm_terms)
+            elif previous_start <= dt <= previous_end:
+                previous_terms.update(unique_norm_terms)
+
+    momentum_by_term = {}
+    for term, cur in current_terms.items():
+        prev = previous_terms.get(term, 0)
+        pct = ((cur - prev) / prev * 100) if prev else (100 if cur else 0)
+        volume_bonus = min(40, cur * 4)
+        momentum_by_term[term] = max(0, min(100, 45 + (pct / 6) + volume_bonus))
+
+    story_counts = Counter(build_story_key(a) for a in articles)
+    cluster_counts = Counter()
+    cluster_labels = {}
+    for a in articles:
+        terms = article_term_lists[a['id']]
+        risk_tags = detect_risk_tags(a)
+        if risk_tags:
+            cluster_label = risk_tags[0]
+        else:
+            cluster_label = label_from_terms(terms, a.get('category'))
+        cluster_id = slugify_value(cluster_label)
+        a['_cluster_id_tmp'] = cluster_id
+        a['_cluster_label_tmp'] = cluster_label
+        cluster_counts[cluster_id] += 1
+        cluster_labels[cluster_id] = cluster_label
+
+    for a in articles:
+        terms = article_term_lists[a['id']]
+        entities = detect_entities(a)
+        entity_total = sum(len(v) for v in entities.values())
+        risk_tags = detect_risk_tags(a)
+        risk_score = min(100, len(risk_tags) * 22)
+        strategic_score = min(100, 20 + risk_score + entity_total * 8)
+        if a.get('region') == 'Local':
+            strategic_score = min(100, strategic_score + 8)
+        if a.get('category') == 'Regulación':
+            strategic_score = min(100, strategic_score + 12)
+
+        story_size = story_counts[build_story_key(a)]
+        novelty = max(25, 100 - min(15, story_size - 1) * 6)
+        if story_size == 1:
+            novelty = 100
+
+        term_momentum = [
+            momentum_by_term.get(norm_text(t), 45)
+            for t in terms
+            if norm_text(t)
+        ]
+        momentum = round(sum(term_momentum) / len(term_momentum)) if term_momentum else 45
+
+        src_score = source_score(a.get('source'))
+        entity_score = min(100, entity_total * 18)
+        region_score = 70 if a.get('region') == 'Local' else 55
+        components = {
+            'strategic_relevance': round(strategic_score),
+            'source_quality': round(src_score),
+            'novelty': round(novelty),
+            'momentum': round(momentum),
+            'risk_pressure': round(risk_score),
+            'entity_density': round(entity_score),
+            'regional_relevance': round(region_score),
+        }
+        signal = round(
+            components['strategic_relevance'] * 0.24 +
+            components['source_quality'] * 0.15 +
+            components['novelty'] * 0.14 +
+            components['momentum'] * 0.18 +
+            components['risk_pressure'] * 0.16 +
+            components['entity_density'] * 0.08 +
+            components['regional_relevance'] * 0.05
+        )
+        signal = max(0, min(100, signal))
+
+        reasons = []
+        if risk_tags:
+            reasons.append('Riesgo: ' + ', '.join(risk_tags[:2]))
+        if entity_total:
+            flat_entities = [e for group in entities.values() for e in group]
+            reasons.append('Entidades: ' + ', '.join(flat_entities[:3]))
+        tier = source_tier(a.get('source'))
+        if tier in ('official', 'market_intel'):
+            reasons.append('Fuente de alta señal')
+        if momentum >= 70:
+            reasons.append('Tema en aceleración')
+        if novelty >= 90:
+            reasons.append('Historia poco repetida')
+
+        cluster_id = a.pop('_cluster_id_tmp')
+        cluster_label = a.pop('_cluster_label_tmp')
+        a.update({
+            'topic_terms': terms,
+            'entities': entities,
+            'entity_count': entity_total,
+            'risk_tags': risk_tags,
+            'source_tier': tier,
+            'novelty_score': round(novelty),
+            'momentum_score': round(momentum),
+            'story_cluster_size': story_size,
+            'topic_cluster': {
+                'id': cluster_id,
+                'label': cluster_label,
+                'size': cluster_counts[cluster_id],
+            },
+            'score_components': components,
+            'signal_score': signal,
+            'signal_level': 'Alta' if signal >= 75 else ('Media' if signal >= 50 else 'Baja'),
+            'signal_reasons': reasons[:4],
+        })
+
+    top_clusters = [
+        {
+            'id': cid,
+            'label': cluster_labels[cid],
+            'count': count,
+        }
+        for cid, count in cluster_counts.most_common(20)
+    ]
+    return {
+        'scoring_version': 'safr-signal-v1',
+        'latest_date': latest.strftime('%Y-%m-%d'),
+        'current_window_days': 30,
+        'top_clusters': top_clusters,
+        'risk_tags': [label for label, _ in RISK_RULES],
+    }
+
 def convert(excel_path):
     df = pd.read_excel(excel_path)
     articles = []
@@ -398,6 +765,7 @@ def convert(excel_path):
     
     # Sort by date descending
     articles.sort(key=lambda x: x['date_sort'], reverse=True)
+    intelligence = enrich_articles(articles)
     
     # Extract unique categories and sources
     categories = sorted(set(a['category'] for a in articles))
@@ -410,6 +778,7 @@ def convert(excel_path):
         'categories': categories,
         'sources': sources,
         'regions': regions,
+        'intelligence': intelligence,
         'articles': articles,
     }
     
@@ -421,6 +790,7 @@ def convert(excel_path):
     print(f"  Categories: {', '.join(categories)}")
     print(f"  Sources: {', '.join(sources)}")
     print(f"  Regions: {', '.join(regions)}")
+    print(f"  Intelligence: {intelligence['scoring_version']} / {len(intelligence['top_clusters'])} clusters")
     return output
 
 if __name__ == '__main__':

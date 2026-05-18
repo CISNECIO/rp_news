@@ -12,6 +12,8 @@ El sitio no usa build step ni servidor permanente: `index.html` contiene el fron
 
 `convert.py` normaliza el Excel y genera `data/news.json`, que es el único JSON de noticias usado por la web. Los Excel `Sample*.xlsx` son insumos locales y están ignorados por Git.
 
+La conversión también agrega una capa de inteligencia estadística determinística (`safr-signal-v1`): score por noticia, entidades, etiquetas de riesgo, clusters temáticos, novedad y momentum.
+
 ## Estructura
 
 ```text
@@ -98,3 +100,28 @@ Cada artículo en `data/news.json` tiene:
 - `category`
 - `keywords`
 - `region`
+- `signal_score`
+- `signal_level`
+- `signal_reasons`
+- `score_components`
+- `risk_tags`
+- `entities`
+- `topic_terms`
+- `topic_cluster`
+- `novelty_score`
+- `momentum_score`
+- `story_cluster_size`
+
+## Inteligencia Estadística
+
+La pestaña `Estadísticas` incluye:
+
+- Ventanas rápidas (`7d`, `15d`, `30d`, `90d`, `Todo`)
+- Ventana exacta con fecha inicial y final
+- SAFR Signal Score por noticia
+- Índice de momentum de temas
+- Presión de riesgo / regulación
+- Clusters y duplicados
+- Red de co-menciones de entidades
+- Diversidad de fuentes
+- Detección simple de anomalías de volumen

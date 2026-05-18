@@ -1432,6 +1432,40 @@ input, select { font-family: inherit; }
   font-size: 10px;
   color: var(--gray-500);
 }
+.stats-date-window {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.stats-date-window input {
+  height: 28px;
+  border: 1px solid var(--gray-200);
+  background: var(--white);
+  color: var(--gray-700);
+  border-radius: 4px;
+  padding: 0 8px;
+  font-size: 11px;
+  font-weight: 600;
+}
+.stats-date-window input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(37,99,235,.08);
+}
+.stats-window-btn {
+  border: 1px solid var(--gray-200);
+  background: var(--white);
+  color: var(--gray-600);
+  border-radius: 4px;
+  height: 28px;
+  padding: 0 10px;
+  font-size: 11px;
+  font-weight: 800;
+  transition: var(--transition);
+}
+.stats-window-btn:hover { border-color: var(--accent); color: var(--accent); }
+.stats-window-btn--clear { color: var(--gray-400); }
 .intel-period-btn {
   border: 1px solid var(--gray-200);
   background: var(--gray-50);
@@ -1691,13 +1725,237 @@ input, select { font-family: inherit; }
   padding: 20px 0;
   text-align: center;
 }
+.ml-kpi-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.ml-kpi {
+  background: var(--gray-50);
+  border: 1px solid var(--gray-200);
+  border-radius: 6px;
+  padding: 12px;
+}
+.ml-kpi__label {
+  font-size: 9px;
+  font-weight: 800;
+  color: var(--gray-500);
+  text-transform: uppercase;
+  letter-spacing: .6px;
+  margin-bottom: 5px;
+}
+.ml-kpi__value {
+  font-family: var(--font-display);
+  font-size: 25px;
+  font-weight: 800;
+  color: var(--gray-800);
+  line-height: 1;
+}
+.ml-kpi__sub {
+  font-size: 10px;
+  color: var(--gray-500);
+  margin-top: 5px;
+}
+.score-meter {
+  height: 10px;
+  background: var(--gray-100);
+  border-radius: 5px;
+  overflow: hidden;
+  margin: 10px 0 14px;
+}
+.score-meter__fill {
+  height: 100%;
+  border-radius: 5px;
+  background: linear-gradient(90deg, var(--gold), var(--accent), var(--green));
+}
+.score-news-list {
+  display: grid;
+  gap: 8px;
+}
+.score-news-item {
+  display: grid;
+  grid-template-columns: 42px 1fr;
+  gap: 10px;
+  align-items: start;
+  border-bottom: 1px solid var(--gray-100);
+  padding: 8px 0;
+  cursor: pointer;
+}
+.score-news-item:hover .score-news-item__title { color: var(--accent); }
+.score-news-item__score {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--white);
+  background: var(--navy);
+  border-radius: 5px;
+  text-align: center;
+  padding: 5px 0;
+}
+.score-news-item__title {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--gray-800);
+  line-height: 1.35;
+}
+.score-news-item__meta {
+  font-size: 10px;
+  color: var(--gray-500);
+  margin-top: 3px;
+}
+.score-reason {
+  display: inline-block;
+  font-size: 9px;
+  color: var(--gray-500);
+  background: var(--gray-100);
+  border-radius: 3px;
+  padding: 2px 5px;
+  margin: 5px 4px 0 0;
+}
+.ml-bar-row {
+  display: grid;
+  grid-template-columns: minmax(110px, 180px) 1fr 48px;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 0;
+  cursor: pointer;
+}
+.ml-bar-row:hover .ml-bar-label { color: var(--accent); }
+.ml-bar-label {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--gray-700);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ml-bar-track {
+  height: 10px;
+  border-radius: 5px;
+  background: var(--gray-100);
+  overflow: hidden;
+}
+.ml-bar-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 5px;
+}
+.ml-bar-count {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--gray-500);
+  text-align: right;
+}
+.cluster-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+.cluster-bubble {
+  border: 1px solid var(--gray-200);
+  background: var(--gray-50);
+  border-radius: 7px;
+  padding: 12px;
+  cursor: pointer;
+  transition: transform 120ms ease, border-color 120ms ease;
+}
+.cluster-bubble:hover { transform: translateY(-2px); border-color: var(--accent); }
+.cluster-bubble__name {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--gray-800);
+  margin-bottom: 6px;
+}
+.cluster-bubble__meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 10px;
+  color: var(--gray-500);
+  font-family: var(--font-mono);
+}
+.network-pair {
+  display: grid;
+  grid-template-columns: 1fr 34px 1fr;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--gray-100);
+  cursor: pointer;
+}
+.network-pair:hover .network-node { color: var(--accent); border-color: var(--accent); }
+.network-node {
+  border: 1px solid var(--gray-200);
+  background: var(--gray-50);
+  border-radius: 999px;
+  padding: 5px 8px;
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--gray-700);
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.network-count {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 800;
+  color: var(--white);
+  background: var(--accent);
+  border-radius: 999px;
+  text-align: center;
+  padding: 4px 0;
+}
+.anomaly-list {
+  display: grid;
+  gap: 8px;
+}
+.anomaly-item {
+  display: grid;
+  grid-template-columns: 86px 1fr 52px;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--gray-100);
+  cursor: pointer;
+}
+.anomaly-item:hover .anomaly-item__date { color: var(--accent); }
+.anomaly-item__date {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 800;
+  color: var(--gray-700);
+}
+.anomaly-item__bar {
+  height: 10px;
+  border-radius: 5px;
+  background: var(--gray-100);
+  overflow: hidden;
+}
+.anomaly-item__fill {
+  height: 100%;
+  border-radius: 5px;
+  background: var(--red);
+}
+.anomaly-item__score {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--gray-500);
+  text-align: right;
+}
 @media (max-width: 1000px) {
   .intel-grid, .intel-momentum, .intel-entity-grid { grid-template-columns: 1fr; }
+  .cluster-grid, .ml-kpi-row { grid-template-columns: 1fr; }
 }
 @media (max-width: 600px) {
   .stats-toolbar { align-items: flex-start; }
   .intel-timeline-row { grid-template-columns: 52px 1fr 34px; }
   .intel-table__topic { max-width: 120px; }
+  .ml-bar-row { grid-template-columns: 110px 1fr 38px; }
+  .network-pair { grid-template-columns: 1fr; }
+  .network-count { width: 40px; justify-self: center; }
 }
 
 /* Clickable timeline bars */
@@ -2425,6 +2683,13 @@ body.focus-mode { background: #f5f7fa; }
         <button class="intel-period-btn" data-intel-days="90">90d</button>
         <button class="intel-period-btn" data-intel-days="0">Todo</button>
       </div>
+      <div class="stats-date-window">
+        <span class="stats-toolbar__label">Ventana exacta</span>
+        <input type="date" id="statsDateFrom" aria-label="Fecha inicial de estadísticas">
+        <input type="date" id="statsDateTo" aria-label="Fecha final de estadísticas">
+        <button class="stats-window-btn" id="statsDateApply">Aplicar</button>
+        <button class="stats-window-btn stats-window-btn--clear" id="statsDateClear">Limpiar</button>
+      </div>
       <span class="stats-toolbar__meta" id="intelPeriodLabel"></span>
     </div>
 
@@ -2472,6 +2737,57 @@ body.focus-mode { background: #f5f7fa; }
         </div>
         <div class="intel-timeline" id="intelCategoryTimeline"></div>
         <div class="intel-legend" id="intelCategoryLegend"></div>
+      </div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stats-card">
+        <div class="stats-card__header">
+          <span class="stats-card__title">SAFR Signal Score</span>
+          <span class="stats-card__sub" id="mlScoreSub"></span>
+        </div>
+        <div id="mlSignalScore"></div>
+      </div>
+      <div class="stats-card">
+        <div class="stats-card__header">
+          <span class="stats-card__title">Presión de riesgo</span>
+          <span class="stats-card__sub" id="mlRiskSub"></span>
+        </div>
+        <div id="mlRiskPressure"></div>
+      </div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stats-card">
+        <div class="stats-card__header">
+          <span class="stats-card__title">Clusters y duplicados</span>
+          <span class="stats-card__sub" id="mlClusterSub"></span>
+        </div>
+        <div id="mlClusters"></div>
+      </div>
+      <div class="stats-card">
+        <div class="stats-card__header">
+          <span class="stats-card__title">Red de entidades</span>
+          <span class="stats-card__sub" id="mlNetworkSub"></span>
+        </div>
+        <div id="mlEntityNetwork"></div>
+      </div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stats-card">
+        <div class="stats-card__header">
+          <span class="stats-card__title">Diversidad de fuentes</span>
+          <span class="stats-card__sub" id="mlSourceDiversitySub"></span>
+        </div>
+        <div id="mlSourceDiversity"></div>
+      </div>
+      <div class="stats-card">
+        <div class="stats-card__header">
+          <span class="stats-card__title">Anomalías de volumen</span>
+          <span class="stats-card__sub" id="mlAnomalySub"></span>
+        </div>
+        <div id="mlAnomalies"></div>
       </div>
     </div>
 
@@ -2588,6 +2904,8 @@ var SORT_DESC = true;
 var TODAY_SORT = '';
 var ACTIVE_PRESET = null;
 var STATS_INTEL_DAYS = 30;
+var STATS_CUSTOM_FROM = '';
+var STATS_CUSTOM_TO = '';
 var STATS_CAT_COLORS = {
   'Fintech': '#2563eb',
   'Banca': '#0b1d3a',
@@ -2835,6 +3153,29 @@ function getStatsContext(days) {
       previousArticles: []
     };
   }
+  if (STATS_CUSTOM_FROM && STATS_CUSTOM_TO) {
+    var from = STATS_CUSTOM_FROM <= STATS_CUSTOM_TO ? STATS_CUSTOM_FROM : STATS_CUSTOM_TO;
+    var to = STATS_CUSTOM_FROM <= STATS_CUSTOM_TO ? STATS_CUSTOM_TO : STATS_CUSTOM_FROM;
+    var fromDt = new Date(from + 'T00:00:00');
+    var toDt = new Date(to + 'T00:00:00');
+    var customDays = Math.max(1, Math.round((toDt - fromDt) / 86400000) + 1);
+    var prevEndDt = new Date(fromDt.getTime());
+    prevEndDt.setDate(prevEndDt.getDate() - 1);
+    var prevStartDt = new Date(prevEndDt.getTime());
+    prevStartDt.setDate(prevStartDt.getDate() - customDays + 1);
+    var prevEndStr = prevEndDt.toISOString().slice(0, 10);
+    var prevStartStr = prevStartDt.toISOString().slice(0, 10);
+    return {
+      days: -1,
+      customDays: customDays,
+      latest: to,
+      start: from,
+      prevStart: prevStartStr,
+      prevEnd: prevEndStr,
+      currentArticles: articles.filter(function(a) { return a.date_sort >= from && a.date_sort <= to; }),
+      previousArticles: articles.filter(function(a) { return a.date_sort >= prevStartStr && a.date_sort <= prevEndStr; })
+    };
+  }
   var latestDt = new Date(latest + 'T00:00:00');
   var start = isoDaysAgo(latestDt, days - 1);
   var prevEnd = isoDaysAgo(latestDt, days);
@@ -2852,6 +3193,7 @@ function getStatsContext(days) {
 
 function periodLabel(ctx) {
   if (!ctx || !ctx.latest) return 'Sin datos';
+  if (ctx.days === -1) return 'Ventana exacta · ' + formatDateShort(ctx.start) + ' — ' + formatDateShort(ctx.latest) + ' · ' + ctx.customDays + ' días';
   if (ctx.days === 0) return 'Todo el histórico · hasta ' + formatDateShort(ctx.latest);
   return formatDateShort(ctx.start) + ' — ' + formatDateShort(ctx.latest) + ' · compara vs periodo anterior';
 }
@@ -3010,7 +3352,7 @@ function applyIntelFilter(opts) {
     document.getElementById('filterDateTo').value = opts.dateTo || '';
   } else {
     var ctx = getStatsContext(STATS_INTEL_DAYS);
-    if (ctx.days > 0) {
+    if (ctx.days !== 0) {
       document.getElementById('filterDateFrom').value = ctx.start;
       document.getElementById('filterDateTo').value = ctx.latest;
     }
@@ -3208,11 +3550,213 @@ function renderCategoryTimeline(ctx) {
   });
 }
 
+function avg(nums) {
+  if (!nums.length) return 0;
+  return nums.reduce(function(a,b) { return a + b; }, 0) / nums.length;
+}
+
+function median(nums) {
+  if (!nums.length) return 0;
+  var arr = nums.slice().sort(function(a,b) { return a - b; });
+  var mid = Math.floor(arr.length / 2);
+  return arr.length % 2 ? arr[mid] : (arr[mid - 1] + arr[mid]) / 2;
+}
+
+function renderMLPanels(ctx, topicRows) {
+  renderSignalScorePanel(ctx);
+  renderRiskPressurePanel(ctx);
+  renderClusterPanel(ctx);
+  renderEntityNetworkPanel(ctx);
+  renderSourceDiversityPanel(ctx);
+  renderAnomalyPanel(ctx);
+}
+
+function renderSignalScorePanel(ctx) {
+  var articles = ctx.currentArticles.slice().sort(function(a,b) {
+    return (b.signal_score || 0) - (a.signal_score || 0);
+  });
+  var scores = articles.map(function(a) { return a.signal_score || 0; });
+  var avgScore = Math.round(avg(scores));
+  var high = articles.filter(function(a) { return (a.signal_score || 0) >= 75; }).length;
+  var med = Math.round(median(scores));
+  document.getElementById('mlScoreSub').textContent = articles.length + ' noticias';
+  var top = articles.slice(0, 5);
+  document.getElementById('mlSignalScore').innerHTML =
+    '<div class="ml-kpi-row">' +
+      '<div class="ml-kpi"><div class="ml-kpi__label">Score promedio</div><div class="ml-kpi__value">' + avgScore + '</div><div class="ml-kpi__sub">mediana ' + med + '</div></div>' +
+      '<div class="ml-kpi"><div class="ml-kpi__label">Alta señal</div><div class="ml-kpi__value">' + high + '</div><div class="ml-kpi__sub">score ≥ 75</div></div>' +
+      '<div class="ml-kpi"><div class="ml-kpi__label">Máximo</div><div class="ml-kpi__value">' + (scores[0] || 0) + '</div><div class="ml-kpi__sub">top del periodo</div></div>' +
+    '</div>' +
+    '<div class="score-meter"><div class="score-meter__fill" style="width:' + avgScore + '%"></div></div>' +
+    '<div class="score-news-list">' +
+      top.map(function(a) {
+        var reasons = (a.signal_reasons || []).slice(0, 2).map(function(r) { return '<span class="score-reason">' + escapeHTML(r) + '</span>'; }).join('');
+        return '<div class="score-news-item" data-id="' + a.id + '"><div class="score-news-item__score">' + (a.signal_score || 0) + '</div><div><div class="score-news-item__title">' + escapeHTML(a.title) + '</div><div class="score-news-item__meta">' + escapeHTML(a.source) + ' · ' + escapeHTML(a.date) + ' · ' + escapeHTML(a.signal_level || '') + '</div>' + reasons + '</div></div>';
+      }).join('') +
+    '</div>';
+  document.querySelectorAll('#mlSignalScore [data-id]').forEach(function(row) {
+    row.addEventListener('click', function() { openModal(parseInt(row.dataset.id)); });
+  });
+}
+
+function renderRiskPressurePanel(ctx) {
+  var counts = {};
+  ctx.currentArticles.forEach(function(a) {
+    (a.risk_tags || []).forEach(function(tag) { counts[tag] = (counts[tag] || 0) + 1; });
+  });
+  var rows = Object.keys(counts).map(function(k) { return [k, counts[k]]; }).sort(function(a,b) { return b[1] - a[1]; }).slice(0, 10);
+  document.getElementById('mlRiskSub').textContent = rows.length + ' frentes';
+  if (!rows.length) {
+    document.getElementById('mlRiskPressure').innerHTML = '<div class="intel-empty">Sin etiquetas de riesgo en esta ventana</div>';
+    return;
+  }
+  var max = rows[0][1] || 1;
+  document.getElementById('mlRiskPressure').innerHTML = rows.map(function(row) {
+    var pct = Math.round(row[1] / max * 100);
+    return '<div class="ml-bar-row" data-risk-query="' + escapeHTML(row[0]) + '"><span class="ml-bar-label">' + escapeHTML(row[0]) + '</span><div class="ml-bar-track"><div class="ml-bar-fill" style="width:' + pct + '%"></div></div><span class="ml-bar-count">' + row[1] + '</span></div>';
+  }).join('');
+  document.querySelectorAll('#mlRiskPressure [data-risk-query]').forEach(function(row) {
+    row.addEventListener('click', function() { applyIntelFilter({ query: row.dataset.riskQuery }); });
+  });
+}
+
+function renderClusterPanel(ctx) {
+  var clusters = {};
+  var repeatedStories = 0;
+  ctx.currentArticles.forEach(function(a) {
+    var c = a.topic_cluster || { id: 'sin-cluster', label: 'Sin cluster', size: 0 };
+    if (!clusters[c.id]) clusters[c.id] = { label: c.label, count: 0, scoreSum: 0, ids: [] };
+    clusters[c.id].count++;
+    clusters[c.id].scoreSum += a.signal_score || 0;
+    clusters[c.id].ids.push(a.id);
+    if ((a.story_cluster_size || 1) > 1) repeatedStories++;
+  });
+  var rows = Object.keys(clusters).map(function(id) {
+    var c = clusters[id];
+    c.id = id;
+    c.avgScore = Math.round(c.scoreSum / Math.max(1, c.count));
+    return c;
+  }).sort(function(a,b) { return b.count - a.count || b.avgScore - a.avgScore; }).slice(0, 8);
+  document.getElementById('mlClusterSub').textContent = rows.length + ' clusters · ' + repeatedStories + ' repetidas';
+  if (!rows.length) {
+    document.getElementById('mlClusters').innerHTML = '<div class="intel-empty">Sin clusters en esta ventana</div>';
+    return;
+  }
+  document.getElementById('mlClusters').innerHTML = '<div class="cluster-grid">' + rows.map(function(c) {
+    return '<div class="cluster-bubble" data-cluster-query="' + escapeHTML(c.label) + '"><div class="cluster-bubble__name">' + escapeHTML(c.label) + '</div><div class="cluster-bubble__meta"><span>' + c.count + ' artículos</span><span>score ' + c.avgScore + '</span></div></div>';
+  }).join('') + '</div>';
+  document.querySelectorAll('#mlClusters [data-cluster-query]').forEach(function(row) {
+    row.addEventListener('click', function() { applyIntelFilter({ query: row.dataset.clusterQuery }); });
+  });
+}
+
+function flattenEntities(a) {
+  var out = [];
+  var entities = a.entities || {};
+  Object.keys(entities).forEach(function(group) {
+    (entities[group] || []).forEach(function(name) { out.push(name); });
+  });
+  return Array.from(new Set(out));
+}
+
+function renderEntityNetworkPanel(ctx) {
+  var pairs = {};
+  ctx.currentArticles.forEach(function(a) {
+    var entities = flattenEntities(a).slice(0, 8);
+    for (var i = 0; i < entities.length; i++) {
+      for (var j = i + 1; j < entities.length; j++) {
+        var pair = [entities[i], entities[j]].sort();
+        var key = pair.join('|||');
+        pairs[key] = (pairs[key] || 0) + 1;
+      }
+    }
+  });
+  var rows = Object.keys(pairs).map(function(k) {
+    var p = k.split('|||');
+    return { a: p[0], b: p[1], count: pairs[k] };
+  }).filter(function(r) { return r.count >= 1; }).sort(function(a,b) { return b.count - a.count; }).slice(0, 9);
+  document.getElementById('mlNetworkSub').textContent = rows.length + ' conexiones';
+  if (!rows.length) {
+    document.getElementById('mlEntityNetwork').innerHTML = '<div class="intel-empty">Sin co-menciones suficientes</div>';
+    return;
+  }
+  document.getElementById('mlEntityNetwork').innerHTML = rows.map(function(r) {
+    return '<div class="network-pair" data-network-query="' + escapeHTML(r.a) + ' ' + escapeHTML(r.b) + '"><span class="network-node">' + escapeHTML(r.a) + '</span><span class="network-count">' + r.count + '</span><span class="network-node">' + escapeHTML(r.b) + '</span></div>';
+  }).join('');
+  document.querySelectorAll('#mlEntityNetwork [data-network-query]').forEach(function(row) {
+    row.addEventListener('click', function() { applyIntelFilter({ query: row.dataset.networkQuery.split(' ')[0] }); });
+  });
+}
+
+function renderSourceDiversityPanel(ctx) {
+  var counts = {};
+  ctx.currentArticles.forEach(function(a) { counts[a.source] = (counts[a.source] || 0) + 1; });
+  var total = ctx.currentArticles.length || 1;
+  var sources = Object.keys(counts).sort(function(a,b) { return counts[b] - counts[a]; });
+  var hhi = sources.reduce(function(sum, s) {
+    var share = counts[s] / total;
+    return sum + share * share;
+  }, 0);
+  var top3 = sources.slice(0, 3).reduce(function(sum, s) { return sum + counts[s]; }, 0);
+  var diversityScore = Math.round((1 - hhi) * 100);
+  document.getElementById('mlSourceDiversitySub').textContent = sources.length + ' fuentes';
+  document.getElementById('mlSourceDiversity').innerHTML =
+    '<div class="ml-kpi-row">' +
+      '<div class="ml-kpi"><div class="ml-kpi__label">Diversidad</div><div class="ml-kpi__value">' + diversityScore + '</div><div class="ml-kpi__sub">100 = más distribuido</div></div>' +
+      '<div class="ml-kpi"><div class="ml-kpi__label">Top 3 fuentes</div><div class="ml-kpi__value">' + Math.round(top3 / total * 100) + '%</div><div class="ml-kpi__sub">concentración</div></div>' +
+      '<div class="ml-kpi"><div class="ml-kpi__label">HHI</div><div class="ml-kpi__value">' + Math.round(hhi * 1000) + '</div><div class="ml-kpi__sub">índice concentración</div></div>' +
+    '</div>' +
+    sources.slice(0, 5).map(function(s) {
+      var pct = Math.round(counts[s] / Math.max(1, counts[sources[0]]) * 100);
+      return '<div class="ml-bar-row" data-source-query="' + escapeHTML(s) + '"><span class="ml-bar-label">' + escapeHTML(s) + '</span><div class="ml-bar-track"><div class="ml-bar-fill" style="width:' + pct + '%;background:var(--navy);"></div></div><span class="ml-bar-count">' + counts[s] + '</span></div>';
+    }).join('');
+  document.querySelectorAll('#mlSourceDiversity [data-source-query]').forEach(function(row) {
+    row.addEventListener('click', function() { applyIntelFilter({ source: row.dataset.sourceQuery }); });
+  });
+}
+
+function renderAnomalyPanel(ctx) {
+  var allDateCount = {};
+  DATA.articles.forEach(function(a) {
+    if (a.date_sort && a.date_sort !== '1900-01-01') allDateCount[a.date_sort] = (allDateCount[a.date_sort] || 0) + 1;
+  });
+  var dates = Object.keys(allDateCount).sort();
+  var counts = dates.map(function(d) { return allDateCount[d]; });
+  var mean = avg(counts);
+  var variance = avg(counts.map(function(c) { return Math.pow(c - mean, 2); }));
+  var sd = Math.sqrt(variance) || 1;
+  var rows = dates.map(function(d) {
+    return { date: d, count: allDateCount[d], z: (allDateCount[d] - mean) / sd };
+  }).filter(function(r) {
+    var inWindow = ctx.days === 0 || (r.date >= ctx.start && r.date <= ctx.latest);
+    return inWindow && r.z >= 1.2;
+  }).sort(function(a,b) { return b.z - a.z; }).slice(0, 8);
+  document.getElementById('mlAnomalySub').textContent = rows.length + ' picos';
+  if (!rows.length) {
+    document.getElementById('mlAnomalies').innerHTML = '<div class="intel-empty">Sin picos anómalos en esta ventana</div>';
+    return;
+  }
+  var maxZ = Math.max.apply(null, rows.map(function(r) { return r.z; })) || 1;
+  document.getElementById('mlAnomalies').innerHTML = '<div class="anomaly-list">' + rows.map(function(r) {
+    var pct = Math.round(r.z / maxZ * 100);
+    return '<div class="anomaly-item" data-anomaly-date="' + r.date + '"><span class="anomaly-item__date">' + formatDateShort(r.date) + '</span><div class="anomaly-item__bar"><div class="anomaly-item__fill" style="width:' + pct + '%"></div></div><span class="anomaly-item__score">' + r.count + ' · z' + (Math.round(r.z * 10) / 10) + '</span></div>';
+  }).join('') + '</div>';
+  document.querySelectorAll('#mlAnomalies [data-anomaly-date]').forEach(function(row) {
+    row.addEventListener('click', function() { applyIntelFilter({ dateFrom: row.dataset.anomalyDate, dateTo: row.dataset.anomalyDate }); });
+  });
+}
+
 function renderIntelligence(ctx) {
   document.getElementById('intelPeriodLabel').textContent = periodLabel(ctx);
   document.querySelectorAll('.intel-period-btn').forEach(function(btn) {
-    btn.classList.toggle('active', parseInt(btn.dataset.intelDays, 10) === ctx.days);
+    btn.classList.toggle('active', ctx.days !== -1 && parseInt(btn.dataset.intelDays, 10) === ctx.days);
   });
+  var fromInput = document.getElementById('statsDateFrom');
+  var toInput = document.getElementById('statsDateTo');
+  if (fromInput && toInput) {
+    fromInput.value = STATS_CUSTOM_FROM;
+    toInput.value = STATS_CUSTOM_TO;
+  }
   var topicRows = makeTopicRows(ctx);
   renderMomentumCards(ctx, topicRows);
   renderWordCloud(topicRows);
@@ -3220,6 +3764,7 @@ function renderIntelligence(ctx) {
   renderEntities(countEntities(ctx.currentArticles));
   renderCoverageAlerts(ctx);
   renderCategoryTimeline(ctx);
+  renderMLPanels(ctx, topicRows);
 }
 
 function buildStatsView() {
@@ -3979,8 +4524,27 @@ function bindEvents() {
   document.querySelectorAll('.intel-period-btn').forEach(function(btn) {
     btn.addEventListener('click', function() {
       STATS_INTEL_DAYS = parseInt(btn.dataset.intelDays, 10);
+      STATS_CUSTOM_FROM = '';
+      STATS_CUSTOM_TO = '';
       buildStatsView();
     });
+  });
+  document.getElementById('statsDateApply').addEventListener('click', function() {
+    var from = document.getElementById('statsDateFrom').value;
+    var to = document.getElementById('statsDateTo').value;
+    if (!from || !to) {
+      showToast('Selecciona fecha inicial y final');
+      return;
+    }
+    STATS_CUSTOM_FROM = from;
+    STATS_CUSTOM_TO = to;
+    buildStatsView();
+  });
+  document.getElementById('statsDateClear').addEventListener('click', function() {
+    STATS_CUSTOM_FROM = '';
+    STATS_CUSTOM_TO = '';
+    STATS_INTEL_DAYS = 30;
+    buildStatsView();
   });
 
   // Search overlay toggle
@@ -4537,7 +5101,7 @@ function buildInsightStrip(ctx) {
   if (!strip) return;
 
   if (!ctx.latest || articles.length === 0) { strip.innerHTML = ''; return; }
-  var WINDOW = ctx.days === 0 ? 'Todo' : ctx.days + 'd';
+  var WINDOW = ctx.days === 0 ? 'Todo' : (ctx.days === -1 ? ctx.customDays + 'd' : ctx.days + 'd');
   var curr = articles.length;
   var prev = previous.length;
   var pct = prev > 0 ? Math.round(((curr - prev) / prev) * 100) : (curr > 0 ? 100 : 0);
@@ -4547,7 +5111,7 @@ function buildInsightStrip(ctx) {
   var avgBase = ctx.days === 0 ? Math.max(1, Object.keys(articles.reduce(function(acc, a) {
     if (a.date_sort && a.date_sort !== '1900-01-01') acc[a.date_sort] = true;
     return acc;
-  }, {})).length) : ctx.days;
+  }, {})).length) : (ctx.days === -1 ? ctx.customDays : ctx.days);
   var avgDaily = Math.round(curr / avgBase * 10) / 10;
 
   var ALLOWED_CATS = ['Fintech', 'Banca', 'Pagos', 'Regulación', 'Inversiones'];
