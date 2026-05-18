@@ -1,85 +1,100 @@
-# RP — Visualizador de Noticias Financieras
+# RP News
 
-Aplicación local para visualizar y clasificar noticias financieras con interfaz editorial premium inspirada en portadas de medios financieros.
+Visualizador estático de noticias financieras para BCRP / SAFR.
 
-## Arquitectura
+El sitio no usa build step ni servidor permanente: `index.html` contiene el frontend y lee los datos desde `data/news.json`.
 
-**HTML + CSS + JavaScript + Python (conversión)**
+## Flujo Principal
 
-Se eligió esta arquitectura porque:
-- **Zero dependencias del frontend**: un solo archivo HTML con todo embebido
-- **Fácil de ejecutar**: solo necesitas Python y un navegador
-- **Mantenimiento mínimo**: reemplazas el Excel, ejecutas el script y listo
-- **Sin servidor permanente**: Python solo se usa para la conversión; la app corre estática
+1. Reemplazar o actualizar el Excel local `Sample.xlsx`.
+2. Ejecutar `python convert.py`.
+3. Abrir `index.html` o servir la carpeta con `python -m http.server 8000`.
 
-## Estructura del proyecto
+`convert.py` normaliza el Excel y genera `data/news.json`, que es el único JSON de noticias usado por la web. Los Excel `Sample*.xlsx` son insumos locales y están ignorados por Git.
 
-```
+## Estructura
+
+```text
 rp-news/
-├── index.html          ← Aplicación principal (abrir en navegador)
-├── convert.py          ← Script Python para convertir Excel → JSON
-├── Sample.xlsx         ← Tu archivo Excel con las noticias
+├── index.html              # Aplicación web estática
+├── convert.py              # Excel -> data/news.json
 ├── data/
-│   └── news.json       ← JSON generado automáticamente
-└── README.md           ← Este archivo
+│   ├── news.json           # Datos activos del sitio
+│   └── market.json         # Indicadores de mercado, opcional
+├── functions/
+│   └── _middleware.js      # Protección Cloudflare Pages
+├── update_rp_news.py       # Automatización de conversión + commit + push
+├── run_rp_news_daily.bat   # Wrapper para Programador de tareas de Windows
+└── update_market.py        # Generador opcional de data/market.json
+```
+
+Archivo local esperado para conversión:
+
+```text
+Sample.xlsx                 # Excel fuente local, no versionado
 ```
 
 ## Requisitos
 
-- **Python 3.7+** con `pandas` y `openpyxl`
-- **Navegador moderno** (Chrome, Firefox, Edge, Safari)
+- Python 3.10+ recomendado
+- Paquetes: `pandas`, `openpyxl`
+- Navegador moderno
 
-## Instalación rápida
+Instalación mínima:
 
 ```bash
-# 1. Instalar dependencias de Python (si no las tienes)
 pip install pandas openpyxl
-
-# 2. Colocar tu Excel en la carpeta del proyecto como Sample.xlsx
-
-# 3. Ejecutar la conversión
-python convert.py
-
-# 4. Abrir index.html en el navegador
-# Opción A: doble clic en index.html
-# Opción B: servidor local (recomendado para imágenes externas)
-python -m http.server 8000
-# Luego abrir http://localhost:8000 en tu navegador
 ```
 
-## Cómo actualizar las noticias
+Para indicadores de mercado:
 
-1. Reemplaza `Sample.xlsx` con tu nuevo archivo Excel
-2. Ejecuta `python convert.py` (o `python convert.py mi_archivo.xlsx` si tiene otro nombre)
-3. Recarga la página en el navegador
+```bash
+pip install yfinance
+```
 
-¡Eso es todo! No necesitas modificar ni reconstruir nada más.
+## Ejecutar Localmente
 
-## Funcionalidades
+```bash
+python convert.py
+python -m http.server 8000
+```
 
-- **Portada editorial** con noticia destacada, feed y sidebar de "Últimas"
-- **Navegación por categorías** desde la barra superior
-- **Búsqueda general** por título, resumen, palabras clave y fuente
-- **Filtros combinables**: categoría, fuente, rango de fechas
-- **Ordenamiento** ascendente/descendente por fecha
-- **Vista de detalle (modal)** con toda la información de la noticia
-- **Enlace al artículo original** en nueva pestaña
-- **Manejo elegante de datos faltantes**
-- **Diseño responsive** para laptop, tablet y móvil
+Abrir `http://localhost:8000`.
 
-## Lógica de datos
+## Automatización
 
-- **Fuente**: se extrae del texto entre paréntesis al final del título, e.g. "(Gestión)"; si no existe, se usa el dominio de la URL
-- **Categoría**: se usa la columna "Clasificación"; si falta, se infiere de palabras clave y título
-- **Fechas**: ordenadas de más reciente a más antigua por defecto
-- **Imágenes**: se usa "URL imagen"; si falla la carga, se muestra placeholder
+`update_rp_news.py` hace:
 
-## Mejoras futuras opcionales
+1. `git pull --ff-only origin main`
+2. `python convert.py`
+3. `git add data/news.json`
+4. Commit y push solo si cambió el JSON generado
 
-- Exportar noticias filtradas a CSV/PDF
-- Modo oscuro
-- Gráficos de tendencias por categoría o fuente
-- Automatización con cron para conversión periódica
-- Integración con feeds RSS para importar noticias automáticamente
-- Paginación para datasets grandes (100+ noticias)
-- Estadísticas editoriales (noticias por categoría/fuente/semana)
+Los logs se escriben en `logs/task.log`, pero `logs/` está ignorado por Git.
+
+En Windows, programar `run_rp_news_daily.bat`; el `.bat` usa `py -3` si existe y si no usa `python`.
+
+## GitHub y Credenciales
+
+No guardes credenciales en este repositorio. Usa una de estas opciones:
+
+- Git Credential Manager: ejecutar `git pull` o `git push` y completar el login del navegador.
+- GitHub CLI: `gh auth login`, luego usar Git normalmente.
+- Token personal: usarlo solo en el prompt seguro de Git, nunca dentro de archivos del proyecto.
+
+## Datos
+
+Cada artículo en `data/news.json` tiene:
+
+- `id`
+- `title`
+- `source`
+- `date`
+- `date_sort`
+- `url`
+- `summary`
+- `summary_short`
+- `image_url`
+- `category`
+- `keywords`
+- `region`

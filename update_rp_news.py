@@ -12,6 +12,9 @@ CONVERT_SCRIPT = REPO_DIR / 'convert.py'
 BRANCH = 'main'
 REMOTE = 'origin'
 COMMIT_PREFIX = 'actualizacion automatica'
+FILES_TO_COMMIT = [
+    REPO_DIR / 'data' / 'news.json',
+]
 
 
 def log(message: str) -> None:
@@ -68,11 +71,14 @@ def run_convert_script() -> None:
 
 
 def sync_branch() -> None:
-    run(['git', 'pull', REMOTE, BRANCH])
+    run(['git', 'pull', '--ff-only', REMOTE, BRANCH])
 
 
-def stage_all() -> None:
-    run(['git', 'add', '.'])
+def stage_generated_files() -> None:
+    paths = [str(path.relative_to(REPO_DIR)) for path in FILES_TO_COMMIT if path.exists()]
+    if not paths:
+        raise FileNotFoundError('No se encontraron archivos generados para agregar a Git.')
+    run(['git', 'add', *paths])
 
 
 def has_staged_changes() -> bool:
@@ -92,7 +98,7 @@ def main() -> int:
         ensure_git_repo()
         sync_branch()
         run_convert_script()
-        stage_all()
+        stage_generated_files()
 
         if has_staged_changes():
             log('Se detectaron cambios. Haciendo commit y push...')
