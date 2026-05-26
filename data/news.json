@@ -1,5 +1,5 @@
 {
-  "generated": "2026-05-17 22:41:29",
+  "generated": "2026-05-26 00:27:51",
   "total": 2964,
   "categories": [
     "Banca",
@@ -183,7 +183,7 @@
     "Local"
   ],
   "intelligence": {
-    "scoring_version": "safr-signal-v1",
+    "scoring_version": "daifr-signal-v1",
     "latest_date": "2026-05-04",
     "current_window_days": 30,
     "top_clusters": [

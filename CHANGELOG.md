@@ -1,4 +1,4 @@
-# CHANGELOG — SAFR / RP News
+# CHANGELOG — DAIFR / RP News
 
 ## ⚠️ Actualización importante (bugfix)
 

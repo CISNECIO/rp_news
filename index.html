@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BCRP | SAFR — Plataforma de Novedades</title>
+<title>BCRP | DAIFR — Plataforma de Novedades</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800&family=Playfair+Display:wght@500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -61,6 +61,7 @@ body {
   line-height: 1.55;
   font-size: 15px;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
 
 a { color: inherit; text-decoration: none; }
@@ -105,7 +106,7 @@ input, select { font-family: inherit; }
   margin: 0 8px;
   font-weight: 400;
 }
-.logo-brand .logo-safr {
+.logo-brand .logo-daifr {
   color: var(--gold);
   font-weight: 700;
 }
@@ -184,7 +185,7 @@ input, select { font-family: inherit; }
   position: sticky;
   top: var(--header-h);
   z-index: 999;
-  overflow-x: auto;
+  overflow: visible;
   scrollbar-width: none;
 }
 .nav-bar::-webkit-scrollbar { display: none; }
@@ -220,6 +221,74 @@ input, select { font-family: inherit; }
 }
 .nav-item.nav-all { color: rgba(255,255,255,.7); font-weight: 700; }
 .nav-item.nav-all.active { color: var(--white); }
+.nav-dropdown {
+  height: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+.nav-item--has-submenu::after {
+  content: "\25BE";
+  font-size: 8px;
+  margin-left: 6px;
+  opacity: .65;
+}
+.nav-dropdown__menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 184px;
+  padding: 8px;
+  background: var(--navy-mid);
+  border: 1px solid rgba(255,255,255,.1);
+  border-top: 2px solid var(--gold);
+  box-shadow: var(--shadow-lg);
+  display: none;
+  z-index: 1002;
+}
+.nav-dropdown:hover .nav-dropdown__menu,
+.nav-dropdown:focus-within .nav-dropdown__menu {
+  display: grid;
+  gap: 2px;
+}
+.nav-dropdown__item {
+  display: block;
+  padding: 9px 10px;
+  border-radius: 4px;
+  color: rgba(255,255,255,.72);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .35px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: var(--transition);
+}
+.nav-dropdown__item:hover,
+.nav-dropdown__item.active {
+  color: var(--white);
+  background: rgba(255,255,255,.08);
+}
+@media (max-width: 900px) {
+  .nav-bar { overflow-x: auto; overflow-y: visible; }
+  .nav-bar__inner { padding: 0 14px; }
+  .nav-item { padding: 0 10px; font-size: 10.5px; }
+}
+@media (max-width: 600px) {
+  .nav-dropdown__menu { position: fixed; top: calc(var(--header-h) + var(--nav-h)); left: 12px; right: 12px; min-width: 0; }
+}
+@media (max-width: 700px) {
+  .top-header { padding: 0 12px; }
+  .top-header__inner { min-width: 0; }
+  .header-right { gap: 8px; flex-shrink: 0; }
+  .header-date,
+  .header-updated { display: none !important; }
+  .top-header .saved-views__btn { padding: 5px 8px; }
+  .top-header .saved-views__btn span:nth-child(2),
+  .top-header .focus-toggle__label { display: none; }
+  .top-header .focus-toggle { padding: 6px 8px; min-width: 30px; justify-content: center; }
+  .top-header .search-toggle { padding: 5px; }
+}
 
 /* ═══ MARKET BAR (removed — kept for data compatibility) ═══ */
 .market-bar { display: none !important; }
@@ -338,7 +407,7 @@ input, select { font-family: inherit; }
 }
 
 /* ═══ CATEGORY-AWARE IMAGE PLACEHOLDERS ═══
-   Replaces generic "SAFR"/gray placeholders with a colored, category-derived
+   Replaces generic "DAIFR"/gray placeholders with a colored, category-derived
    visual so broken or missing images feel intentional, not broken. */
 .ph {
   width: 100%; height: 100%;
@@ -1289,6 +1358,56 @@ input, select { font-family: inherit; }
 }
 .stats-card__title { font-size: 15px; font-weight: 800; color: var(--gray-800); }
 .stats-card__sub { font-size: 10px; color: var(--gray-400); font-family: var(--font-mono); text-transform: uppercase; letter-spacing: .5px; }
+.stats-title-with-info {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+}
+.info-pop {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+.info-button {
+  width: 19px;
+  height: 19px;
+  border-radius: 50%;
+  border: 1px solid var(--gray-200);
+  background: var(--white);
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1;
+  cursor: pointer;
+  transition: var(--transition);
+}
+.info-button:hover,
+.info-button[aria-expanded="true"] {
+  border-color: var(--accent);
+  background: rgba(37,99,235,.08);
+}
+.info-popover {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  width: min(340px, calc(100vw - 48px));
+  padding: 12px 13px;
+  background: var(--navy);
+  color: rgba(255,255,255,.88);
+  border-radius: 6px;
+  box-shadow: var(--shadow-lg);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.5;
+  text-transform: none;
+  letter-spacing: 0;
+  font-family: var(--font-body);
+  display: none;
+  z-index: 1200;
+}
+.info-pop.open .info-popover { display: block; }
 .stats-bar-row {
   display: flex; align-items: center; gap: 10px; padding: 6px 0;
   cursor: pointer; border-radius: 4px; transition: background 120ms;
@@ -1640,34 +1759,6 @@ input, select { font-family: inherit; }
   font-size: 10px;
   color: var(--gray-500);
   flex-shrink: 0;
-}
-.coverage-list {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 10px;
-}
-.coverage-alert {
-  border: 1px solid var(--gray-200);
-  border-left: 3px solid var(--gold);
-  border-radius: 6px;
-  padding: 11px 12px;
-  background: var(--gray-50);
-  cursor: pointer;
-  transition: background 120ms ease, transform 120ms ease;
-}
-.coverage-alert:hover { background: var(--white); transform: translateX(2px); }
-.coverage-alert--high { border-left-color: var(--red); }
-.coverage-alert--good { border-left-color: var(--green); cursor: default; }
-.coverage-alert__title {
-  font-size: 12px;
-  font-weight: 800;
-  color: var(--gray-800);
-  margin-bottom: 2px;
-}
-.coverage-alert__body {
-  font-size: 11px;
-  color: var(--gray-500);
-  line-height: 1.45;
 }
 .intel-timeline {
   display: grid;
@@ -2561,7 +2652,7 @@ body.focus-mode { background: #f5f7fa; }
 <header class="top-header">
   <div class="top-header__inner">
     <div class="logo" id="logoHome">
-      <span class="logo-brand">BCRP<span class="logo-sep">|</span><span class="logo-safr">SAFR</span></span>
+      <span class="logo-brand">BCRP<span class="logo-sep">|</span><span class="logo-daifr">DAIFR</span></span>
       <span class="logo-subtitle">Plataforma de Novedades</span>
     </div>
     <div class="header-right">
@@ -2713,19 +2804,12 @@ body.focus-mode { background: #f5f7fa; }
     </div>
 
     <div class="stats-grid">
-      <div class="stats-card">
+      <div class="stats-card stats-card--full">
         <div class="stats-card__header">
           <span class="stats-card__title">Entidades relevantes</span>
           <span class="stats-card__sub" id="intelEntitiesSub"></span>
         </div>
         <div class="intel-entity-grid" id="intelEntities"></div>
-      </div>
-      <div class="stats-card">
-        <div class="stats-card__header">
-          <span class="stats-card__title">Alertas de cobertura</span>
-          <span class="stats-card__sub" id="intelGapsSub"></span>
-        </div>
-        <div class="coverage-list" id="intelGaps"></div>
       </div>
     </div>
 
@@ -2743,7 +2827,13 @@ body.focus-mode { background: #f5f7fa; }
     <div class="stats-grid">
       <div class="stats-card">
         <div class="stats-card__header">
-          <span class="stats-card__title">SAFR Signal Score</span>
+          <span class="stats-title-with-info">
+            <span class="stats-card__title">DAIFR Signal Score</span>
+            <span class="info-pop">
+              <button class="info-button" type="button" data-info-target="scoreInfo" aria-expanded="false" aria-label="Información sobre DAIFR Signal Score">i</button>
+              <span class="info-popover" id="scoreInfo">El DAIFR Signal Score resume la relevancia potencial de una noticia para el monitoreo de innovación financiera. Combina señales como fuente, tema, palabras clave, categoría, posible impacto regulatorio o financiero y similitud con noticias previamente consideradas relevantes. No reemplaza la revisión del analista; ayuda a priorizar contenidos que podrían requerir mayor atención.</span>
+            </span>
+          </span>
           <span class="stats-card__sub" id="mlScoreSub"></span>
         </div>
         <div id="mlSignalScore"></div>
@@ -2760,7 +2850,13 @@ body.focus-mode { background: #f5f7fa; }
     <div class="stats-grid">
       <div class="stats-card">
         <div class="stats-card__header">
-          <span class="stats-card__title">Clusters y duplicados</span>
+          <span class="stats-title-with-info">
+            <span class="stats-card__title">Flashes y duplicados</span>
+            <span class="info-pop">
+              <button class="info-button" type="button" data-info-target="clusterInfo" aria-expanded="false" aria-label="Información sobre flashes y duplicados">i</button>
+              <span class="info-popover" id="clusterInfo">Esta métrica identifica noticias muy similares, repetidas o provenientes de varias fuentes sobre un mismo evento. Ayuda a evitar doble conteo y permite distinguir entre una señal aislada y una noticia que está ganando cobertura en distintos medios.</span>
+            </span>
+          </span>
           <span class="stats-card__sub" id="mlClusterSub"></span>
         </div>
         <div id="mlClusters"></div>
@@ -2784,7 +2880,13 @@ body.focus-mode { background: #f5f7fa; }
       </div>
       <div class="stats-card">
         <div class="stats-card__header">
-          <span class="stats-card__title">Anomalías de volumen</span>
+          <span class="stats-title-with-info">
+            <span class="stats-card__title">Anomalías</span>
+            <span class="info-pop">
+              <button class="info-button" type="button" data-info-target="anomalyInfo" aria-expanded="false" aria-label="Información sobre anomalías">i</button>
+              <span class="info-popover" id="anomalyInfo">Esta métrica identifica patrones inusuales dentro del flujo de noticias, como aumentos repentinos de publicaciones, cambios fuertes en la concentración temática o señales atípicas respecto al comportamiento normal del monitoreo. Su objetivo es alertar sobre movimientos que podrían requerir revisión adicional.</span>
+            </span>
+          </span>
           <span class="stats-card__sub" id="mlAnomalySub"></span>
         </div>
         <div id="mlAnomalies"></div>
@@ -2895,7 +2997,7 @@ body.focus-mode { background: #f5f7fa; }
 </div>
 
 <footer class="footer">
-  <strong>BCRP | SAFR</strong> &#8212; Plataforma de Novedades &#183; Datos actualizados al <span id="footerDate"></span>
+  <strong>BCRP | DAIFR</strong> &#8212; Plataforma de Novedades &#183; Datos actualizados al <span id="footerDate"></span>
 </footer>
 
 <script>
@@ -2914,6 +3016,21 @@ var STATS_CAT_COLORS = {
   'Regulacion': '#16a34a',
   'Inversiones': '#6b7789'
 };
+var CATEGORY_DISPLAY_NAMES = {
+  'Banca': 'Sistema financiero',
+  'Inversiones': 'Mercado de capitales'
+};
+
+function categoryDisplayName(cat) {
+  return CATEGORY_DISPLAY_NAMES[cat] || cat || '';
+}
+
+function shortLabel(value, maxLen) {
+  var text = String(value || '');
+  var max = maxLen || 28;
+  if (text.length <= max) return text;
+  return text.slice(0, Math.max(0, max - 1)).replace(/\s+\S*$/, '') + '…';
+}
 
 /* ══════════════════════════════════════════════════════════
    INDICADORES DE MERCADO
@@ -2954,7 +3071,7 @@ function placeholderHTML(a, extraClass) {
   }
   return '<div class="ph ' + phClass(a.category) + ' ' + (extraClass || '') + '">' +
     '<span class="ph__mono">' + initials + '</span>' +
-    '<span class="ph__tag">' + (a.category || '') + '</span>' +
+    '<span class="ph__tag">' + categoryDisplayName(a.category) + '</span>' +
   '</div>';
 }
 
@@ -3025,27 +3142,51 @@ function init() {
   });
 }
 
-/* Fixed nav items: region-based and category-based */
+/* Fixed nav items: region-based, category-based and query-based */
 var NAV_ITEMS = [
-  { label: 'Local',          type: 'region',   value: 'Local' },
-  { label: 'Internacional',  type: 'region',   value: 'Internacional' },
-  { label: 'Fintech',        type: 'category', value: 'Fintech' },
-  { label: 'Banca',          type: 'category', value: 'Banca' },
-  { label: 'Pagos',          type: 'category', value: 'Pagos' },
-  { label: 'Regulación',     type: 'category', value: 'Regulación' },
-  { label: 'Inversiones',    type: 'category', value: 'Inversiones' },
+  { label: 'Local',                 type: 'region',   value: 'Local' },
+  { label: 'Internacional',         type: 'region',   value: 'Internacional' },
+  { label: 'Fintech',               type: 'category', value: 'Fintech', children: [
+    { label: 'Pagos',          type: 'category', value: 'Pagos' },
+    { label: 'Préstamos',      type: 'query',    value: 'préstamo' },
+    { label: 'Inversiones',    type: 'category', value: 'Inversiones' },
+    { label: 'Casa de cambio', type: 'query',    value: 'casa de cambio' },
+  ] },
+  { label: 'Sistema financiero',    type: 'category', value: 'Banca' },
+  { label: 'Regulación',            type: 'category', value: 'Regulación' },
+  { label: 'Mercado de capitales',  type: 'category', value: 'Inversiones' },
+  { label: 'Activos digitales',     type: 'query',    value: 'activos digitales' },
+  { label: 'IA',                    type: 'query',    value: 'inteligencia artificial' },
 ];
+
+function makeNavAnchor(item, className) {
+  var a = document.createElement('a');
+  a.className = className || 'nav-item';
+  a.href = '#';
+  a.dataset.filterType = item.type;
+  a.dataset.filterValue = item.value;
+  a.textContent = item.label;
+  return a;
+}
 
 function buildNav() {
   var nav = document.getElementById('navBar');
   NAV_ITEMS.forEach(function(item) {
-    var a = document.createElement('a');
-    a.className = 'nav-item';
-    a.href = '#';
-    a.dataset.filterType = item.type;
-    a.dataset.filterValue = item.value;
-    a.textContent = item.label;
-    nav.appendChild(a);
+    if (item.children && item.children.length) {
+      var wrap = document.createElement('div');
+      wrap.className = 'nav-dropdown';
+      var a = makeNavAnchor(item, 'nav-item nav-item--has-submenu');
+      wrap.appendChild(a);
+      var menu = document.createElement('div');
+      menu.className = 'nav-dropdown__menu';
+      item.children.forEach(function(child) {
+        menu.appendChild(makeNavAnchor(child, 'nav-dropdown__item'));
+      });
+      wrap.appendChild(menu);
+      nav.appendChild(wrap);
+      return;
+    }
+    nav.appendChild(makeNavAnchor(item, 'nav-item'));
   });
   // Estadísticas tab
   var statsLink = document.createElement('a');
@@ -3094,7 +3235,8 @@ function buildTrendChart() {
   var colors = ['#2563eb', '#0b1d3a', '#c9a84c', '#16a34a', '#6b7789'];
   document.getElementById('trendBars').innerHTML = cats.map(function(c, i) {
     var pct = (counts[c] / max * 100);
-    return '<div class="trend-bar-col"><span class="trend-bar-count">' + counts[c] + '</span><div class="trend-bar" style="height:' + Math.max(pct, 5) + '%;background:' + colors[i] + ';"></div><span class="trend-bar-label">' + c + '</span></div>';
+    var label = categoryDisplayName(c);
+    return '<div class="trend-bar-col" title="' + escapeHTML(label) + '"><span class="trend-bar-count">' + counts[c] + '</span><div class="trend-bar" style="height:' + Math.max(pct, 5) + '%;background:' + colors[i] + ';"></div><span class="trend-bar-label">' + escapeHTML(shortLabel(label, 18)) + '</span></div>';
   }).join('');
   document.getElementById('trendTotal').textContent = DATA.articles.length + ' art\u00edculos totales';
 
@@ -3106,7 +3248,7 @@ function buildTrendChart() {
   var srcColors = ['#0b1d3a', '#2563eb', '#c9a84c', '#16a34a', '#6b7789', '#4a5568', '#dc2626', '#60a5fa'];
   document.getElementById('trendSourceBars').innerHTML = topSrc.map(function(s, i) {
     var pct = (srcCount[s] / srcMax * 100);
-    return '<div class="trend-bar-col" style="cursor:pointer;" data-filter-source="' + s + '"><span class="trend-bar-count">' + srcCount[s] + '</span><div class="trend-bar" style="height:' + Math.max(pct, 5) + '%;background:' + srcColors[i % srcColors.length] + ';"></div><span class="trend-bar-label">' + s + '</span></div>';
+    return '<div class="trend-bar-col" style="cursor:pointer;" data-filter-source="' + escapeHTML(s) + '" title="' + escapeHTML(s) + '"><span class="trend-bar-count">' + srcCount[s] + '</span><div class="trend-bar" style="height:' + Math.max(pct, 5) + '%;background:' + srcColors[i % srcColors.length] + ';"></div><span class="trend-bar-label">' + escapeHTML(shortLabel(s, 18)) + '</span></div>';
   }).join('');
   document.getElementById('trendSourceTotal').textContent = Object.keys(srcCount).length + ' fuentes';
 
@@ -3387,7 +3529,7 @@ function renderMomentumCards(ctx, rows) {
 }
 
 function renderWordCloud(rows) {
-  var top = rows.slice().sort(function(a,b) { return b.cur - a.cur; }).slice(0, 34);
+  var top = rows.slice().sort(function(a,b) { return b.cur - a.cur; }).slice(0, 22);
   var el = document.getElementById('intelWordCloud');
   var sub = document.getElementById('intelCloudSub');
   sub.textContent = top.length + ' temas';
@@ -3398,9 +3540,9 @@ function renderWordCloud(rows) {
   var max = top[0].cur || 1;
   var min = top[top.length - 1].cur || 1;
   el.innerHTML = top.map(function(r, i) {
-    var size = 13 + Math.round(((r.cur - min) / Math.max(max - min, 1)) * 22);
-    var muted = i > 16 ? ' word-token--muted' : '';
-    return '<span class="word-token' + muted + '" style="font-size:' + size + 'px" data-intel-query="' + escapeHTML(r.topic) + '" title="' + r.cur + ' menciones">' + escapeHTML(r.topic) + '</span>';
+    var size = 12 + Math.round(((r.cur - min) / Math.max(max - min, 1)) * 12);
+    var muted = i > 12 ? ' word-token--muted' : '';
+    return '<span class="word-token' + muted + '" style="font-size:' + size + 'px" data-intel-query="' + escapeHTML(r.topic) + '" title="' + escapeHTML(r.topic) + ' · ' + r.cur + ' menciones">' + escapeHTML(shortLabel(r.topic, 28)) + '</span>';
   }).join('');
   el.querySelectorAll('[data-intel-query]').forEach(function(token) {
     token.addEventListener('click', function() { applyIntelFilter({ query: token.dataset.intelQuery }); });
@@ -3420,7 +3562,7 @@ function renderRisingTopics(rows) {
   el.innerHTML = '<table class="intel-table"><thead><tr><th>Tema</th><th>Ahora</th><th>Antes</th><th>Var.</th></tr></thead><tbody>' +
     rising.map(function(r) {
       var delta = r.prev > 0 ? ('+' + Math.max(0, r.deltaPct) + '%') : 'Nuevo';
-      return '<tr data-intel-query="' + escapeHTML(r.topic) + '"><td class="intel-table__topic">' + escapeHTML(r.topic) + '</td><td>' + r.cur + '</td><td>' + r.prev + '</td><td><span class="intel-delta">' + delta + '</span></td></tr>';
+      return '<tr data-intel-query="' + escapeHTML(r.topic) + '"><td class="intel-table__topic" title="' + escapeHTML(r.topic) + '">' + escapeHTML(shortLabel(r.topic, 32)) + '</td><td>' + r.cur + '</td><td>' + r.prev + '</td><td><span class="intel-delta">' + delta + '</span></td></tr>';
     }).join('') +
     '</tbody></table>';
   el.querySelectorAll('[data-intel-query]').forEach(function(row) {
@@ -3442,56 +3584,6 @@ function renderEntities(groups) {
   document.getElementById('intelEntitiesSub').textContent = totalRows + ' entidades';
   document.querySelectorAll('#intelEntities [data-intel-query]').forEach(function(row) {
     row.addEventListener('click', function() { applyIntelFilter({ query: row.dataset.intelQuery }); });
-  });
-}
-
-function renderCoverageAlerts(ctx) {
-  var alerts = [];
-  var total = ctx.currentArticles.length || 1;
-  var prevTotal = ctx.previousArticles.length || 0;
-  var cats = ['Fintech', 'Banca', 'Pagos', 'Regulación', 'Inversiones'];
-  cats.forEach(function(cat) {
-    var count = ctx.currentArticles.filter(function(a) { return a.category === cat; }).length;
-    var pct = Math.round(count / total * 100);
-    if (count === 0 || pct < 4) {
-      alerts.push({ type: count === 0 ? 'high' : 'warn', title: 'Baja cobertura en ' + cat, body: count + ' artículos en el periodo (' + pct + '% del total).', category: cat });
-    }
-  });
-  var local = ctx.currentArticles.filter(function(a) { return (a.region || '').toLowerCase() === 'local'; }).length;
-  var intl = ctx.currentArticles.filter(function(a) { return (a.region || '').toLowerCase() === 'internacional'; }).length;
-  if (local / total > .8) alerts.push({ type: 'warn', title: 'Sesgo local alto', body: local + ' de ' + total + ' artículos son locales; revisar señales internacionales.', region: 'Internacional' });
-  if (intl / total > .65) alerts.push({ type: 'warn', title: 'Sesgo internacional alto', body: intl + ' de ' + total + ' artículos son internacionales; revisar cobertura local.', region: 'Local' });
-  var unknown = ctx.currentArticles.filter(function(a) { return a.source === 'Fuente no identificada'; }).length;
-  if (unknown / total > .08) alerts.push({ type: 'warn', title: 'Fuentes sin identificar', body: unknown + ' artículos no tienen fuente normalizada.', source: 'Fuente no identificada' });
-  var srcCount = {};
-  ctx.currentArticles.forEach(function(a) { srcCount[a.source] = (srcCount[a.source] || 0) + 1; });
-  var topSrc = Object.keys(srcCount).sort(function(a,b) { return srcCount[b] - srcCount[a]; })[0];
-  if (topSrc && srcCount[topSrc] / total > .35) alerts.push({ type: 'warn', title: 'Alta concentración por fuente', body: topSrc + ' concentra ' + Math.round(srcCount[topSrc] / total * 100) + '% de la cobertura.', source: topSrc });
-  if (ctx.days > 0 && prevTotal > 0) {
-    var pctChange = Math.round(((total - prevTotal) / prevTotal) * 100);
-    if (pctChange < -25) alerts.push({ type: 'high', title: 'Volumen en caída', body: total + ' artículos vs ' + prevTotal + ' en el periodo anterior (' + pctChange + '%).' });
-  }
-  var officialSources = ['SBS', 'BCRP', 'BIS', 'SEC', 'FCA', 'SMV', 'MEF'];
-  var official = ctx.currentArticles.filter(function(a) { return officialSources.indexOf(a.source) !== -1; }).length;
-  if (official === 0) alerts.push({ type: 'warn', title: 'Sin fuentes oficiales', body: 'No aparecen fuentes regulatorias directas en el periodo.' });
-  if (!alerts.length) alerts.push({ type: 'good', title: 'Cobertura balanceada', body: 'No se detectan brechas fuertes con las reglas actuales.' });
-  document.getElementById('intelGapsSub').textContent = alerts.length + ' alertas';
-  document.getElementById('intelGaps').innerHTML = alerts.slice(0, 6).map(function(a) {
-    var cls = a.type === 'high' ? ' coverage-alert--high' : (a.type === 'good' ? ' coverage-alert--good' : '');
-    var attrs = '';
-    if (a.category) attrs += ' data-intel-category="' + escapeHTML(a.category) + '"';
-    if (a.source) attrs += ' data-intel-source="' + escapeHTML(a.source) + '"';
-    if (a.region) attrs += ' data-intel-region="' + escapeHTML(a.region) + '"';
-    return '<div class="coverage-alert' + cls + '"' + attrs + '><div class="coverage-alert__title">' + escapeHTML(a.title) + '</div><div class="coverage-alert__body">' + escapeHTML(a.body) + '</div></div>';
-  }).join('');
-  document.querySelectorAll('#intelGaps [data-intel-category], #intelGaps [data-intel-source], #intelGaps [data-intel-region]').forEach(function(row) {
-    row.addEventListener('click', function() {
-      applyIntelFilter({
-        category: row.dataset.intelCategory || '',
-        source: row.dataset.intelSource || '',
-        region: row.dataset.intelRegion || ''
-      });
-    });
   });
 }
 
@@ -3536,12 +3628,12 @@ function renderCategoryTimeline(ctx) {
       var count = g.counts[c] || 0;
       if (!count) return '';
       var width = Math.max(4, count / g.total * 100);
-      return '<span class="intel-timeline__seg" data-intel-category="' + c + '" data-week-from="' + g.from + '" data-week-to="' + g.to + '" style="width:' + width + '%;background:' + STATS_CAT_COLORS[c] + ';" title="' + c + ': ' + count + '"></span>';
+      return '<span class="intel-timeline__seg" data-intel-category="' + c + '" data-week-from="' + g.from + '" data-week-to="' + g.to + '" style="width:' + width + '%;background:' + STATS_CAT_COLORS[c] + ';" title="' + categoryDisplayName(c) + ': ' + count + '"></span>';
     }).join('');
     return '<div class="intel-timeline-row"><span class="intel-timeline__label">' + label + '</span><div class="intel-timeline__bar">' + segs + '</div><span class="intel-timeline__total">' + g.total + '</span></div>';
   }).join('');
   document.getElementById('intelCategoryLegend').innerHTML = cats.map(function(c) {
-    return '<span class="intel-legend__item"><span class="intel-legend__swatch" style="background:' + STATS_CAT_COLORS[c] + '"></span>' + c + '</span>';
+    return '<span class="intel-legend__item"><span class="intel-legend__swatch" style="background:' + STATS_CAT_COLORS[c] + '"></span>' + categoryDisplayName(c) + '</span>';
   }).join('');
   el.querySelectorAll('[data-intel-category]').forEach(function(seg) {
     seg.addEventListener('click', function() {
@@ -3613,7 +3705,7 @@ function renderRiskPressurePanel(ctx) {
   var max = rows[0][1] || 1;
   document.getElementById('mlRiskPressure').innerHTML = rows.map(function(row) {
     var pct = Math.round(row[1] / max * 100);
-    return '<div class="ml-bar-row" data-risk-query="' + escapeHTML(row[0]) + '"><span class="ml-bar-label">' + escapeHTML(row[0]) + '</span><div class="ml-bar-track"><div class="ml-bar-fill" style="width:' + pct + '%"></div></div><span class="ml-bar-count">' + row[1] + '</span></div>';
+    return '<div class="ml-bar-row" data-risk-query="' + escapeHTML(row[0]) + '"><span class="ml-bar-label" title="' + escapeHTML(row[0]) + '">' + escapeHTML(shortLabel(row[0], 28)) + '</span><div class="ml-bar-track"><div class="ml-bar-fill" style="width:' + pct + '%"></div></div><span class="ml-bar-count">' + row[1] + '</span></div>';
   }).join('');
   document.querySelectorAll('#mlRiskPressure [data-risk-query]').forEach(function(row) {
     row.addEventListener('click', function() { applyIntelFilter({ query: row.dataset.riskQuery }); });
@@ -3643,7 +3735,7 @@ function renderClusterPanel(ctx) {
     return;
   }
   document.getElementById('mlClusters').innerHTML = '<div class="cluster-grid">' + rows.map(function(c) {
-    return '<div class="cluster-bubble" data-cluster-query="' + escapeHTML(c.label) + '"><div class="cluster-bubble__name">' + escapeHTML(c.label) + '</div><div class="cluster-bubble__meta"><span>' + c.count + ' artículos</span><span>score ' + c.avgScore + '</span></div></div>';
+    return '<div class="cluster-bubble" data-cluster-query="' + escapeHTML(c.label) + '" title="' + escapeHTML(c.label) + '"><div class="cluster-bubble__name">' + escapeHTML(shortLabel(c.label, 34)) + '</div><div class="cluster-bubble__meta"><span>' + c.count + ' artículos</span><span>score ' + c.avgScore + '</span></div></div>';
   }).join('') + '</div>';
   document.querySelectorAll('#mlClusters [data-cluster-query]').forEach(function(row) {
     row.addEventListener('click', function() { applyIntelFilter({ query: row.dataset.clusterQuery }); });
@@ -3681,7 +3773,7 @@ function renderEntityNetworkPanel(ctx) {
     return;
   }
   document.getElementById('mlEntityNetwork').innerHTML = rows.map(function(r) {
-    return '<div class="network-pair" data-network-query="' + escapeHTML(r.a) + ' ' + escapeHTML(r.b) + '"><span class="network-node">' + escapeHTML(r.a) + '</span><span class="network-count">' + r.count + '</span><span class="network-node">' + escapeHTML(r.b) + '</span></div>';
+    return '<div class="network-pair" data-network-query="' + escapeHTML(r.a) + ' ' + escapeHTML(r.b) + '"><span class="network-node" title="' + escapeHTML(r.a) + '">' + escapeHTML(shortLabel(r.a, 24)) + '</span><span class="network-count">' + r.count + '</span><span class="network-node" title="' + escapeHTML(r.b) + '">' + escapeHTML(shortLabel(r.b, 24)) + '</span></div>';
   }).join('');
   document.querySelectorAll('#mlEntityNetwork [data-network-query]').forEach(function(row) {
     row.addEventListener('click', function() { applyIntelFilter({ query: row.dataset.networkQuery.split(' ')[0] }); });
@@ -3708,7 +3800,7 @@ function renderSourceDiversityPanel(ctx) {
     '</div>' +
     sources.slice(0, 5).map(function(s) {
       var pct = Math.round(counts[s] / Math.max(1, counts[sources[0]]) * 100);
-      return '<div class="ml-bar-row" data-source-query="' + escapeHTML(s) + '"><span class="ml-bar-label">' + escapeHTML(s) + '</span><div class="ml-bar-track"><div class="ml-bar-fill" style="width:' + pct + '%;background:var(--navy);"></div></div><span class="ml-bar-count">' + counts[s] + '</span></div>';
+      return '<div class="ml-bar-row" data-source-query="' + escapeHTML(s) + '"><span class="ml-bar-label" title="' + escapeHTML(s) + '">' + escapeHTML(shortLabel(s, 28)) + '</span><div class="ml-bar-track"><div class="ml-bar-fill" style="width:' + pct + '%;background:var(--navy);"></div></div><span class="ml-bar-count">' + counts[s] + '</span></div>';
     }).join('');
   document.querySelectorAll('#mlSourceDiversity [data-source-query]').forEach(function(row) {
     row.addEventListener('click', function() { applyIntelFilter({ source: row.dataset.sourceQuery }); });
@@ -3762,7 +3854,6 @@ function renderIntelligence(ctx) {
   renderWordCloud(topicRows);
   renderRisingTopics(topicRows);
   renderEntities(countEntities(ctx.currentArticles));
-  renderCoverageAlerts(ctx);
   renderCategoryTimeline(ctx);
   renderMLPanels(ctx, topicRows);
 }
@@ -3790,7 +3881,8 @@ function buildStatsView() {
   document.getElementById('statsCatBars').innerHTML = cats.map(function(c) {
     var pct = Math.round(catCount[c] / catMax * 100);
     var pctTotal = Math.round(catCount[c] / total * 100);
-    return '<div class="stats-bar-row" data-stats-cat="' + c + '"><span class="stats-bar-label">' + c + '</span><div class="stats-bar-track"><div class="stats-bar-fill stats-bar-fill--accent" style="width:' + pct + '%"></div></div><span class="stats-bar-count">' + catCount[c] + '</span><span class="stats-bar-pct">' + pctTotal + '%</span></div>';
+    var label = categoryDisplayName(c);
+    return '<div class="stats-bar-row" data-stats-cat="' + escapeHTML(c) + '"><span class="stats-bar-label" title="' + escapeHTML(label) + '">' + escapeHTML(shortLabel(label, 26)) + '</span><div class="stats-bar-track"><div class="stats-bar-fill stats-bar-fill--accent" style="width:' + pct + '%"></div></div><span class="stats-bar-count">' + catCount[c] + '</span><span class="stats-bar-pct">' + pctTotal + '%</span></div>';
   }).join('');
   document.getElementById('statsCatSub').textContent = cats.length + ' categorías';
 
@@ -3801,7 +3893,7 @@ function buildStatsView() {
   var kwMax = topKW.length > 0 ? kwCount[topKW[0]] : 1;
   document.getElementById('statsKwBars').innerHTML = topKW.map(function(k) {
     var pct = Math.round(kwCount[k] / kwMax * 100);
-    return '<div class="stats-bar-row" data-stats-kw="' + k + '"><span class="stats-bar-label">' + k + '</span><div class="stats-bar-track"><div class="stats-bar-fill stats-bar-fill--gold" style="width:' + pct + '%"></div></div><span class="stats-bar-count">' + kwCount[k] + '</span></div>';
+    return '<div class="stats-bar-row" data-stats-kw="' + escapeHTML(k) + '"><span class="stats-bar-label" title="' + escapeHTML(k) + '">' + escapeHTML(shortLabel(k, 28)) + '</span><div class="stats-bar-track"><div class="stats-bar-fill stats-bar-fill--gold" style="width:' + pct + '%"></div></div><span class="stats-bar-count">' + kwCount[k] + '</span></div>';
   }).join('');
   document.getElementById('statsKwSub').textContent = topKW.length + ' temas';
 
@@ -3820,7 +3912,7 @@ function buildStatsView() {
   var srcHTML = mainSources.map(function(s) {
     var pct = Math.round(srcCount[s] / srcMax * 100);
     var pctTotal = Math.round(srcCount[s] / total * 100);
-    return '<div class="stats-bar-row" data-stats-src="' + s + '"><span class="stats-bar-label">' + s + '</span><div class="stats-bar-track"><div class="stats-bar-fill stats-bar-fill--navy" style="width:' + pct + '%"></div></div><span class="stats-bar-count">' + srcCount[s] + '</span><span class="stats-bar-pct">' + pctTotal + '%</span></div>';
+    return '<div class="stats-bar-row" data-stats-src="' + escapeHTML(s) + '"><span class="stats-bar-label" title="' + escapeHTML(s) + '">' + escapeHTML(shortLabel(s, 28)) + '</span><div class="stats-bar-track"><div class="stats-bar-fill stats-bar-fill--navy" style="width:' + pct + '%"></div></div><span class="stats-bar-count">' + srcCount[s] + '</span><span class="stats-bar-pct">' + pctTotal + '%</span></div>';
   }).join('');
   if (otrosCount > 0) {
     var otrosPct = Math.round(otrosCount / srcMax * 100);
@@ -4062,7 +4154,7 @@ function renderHome() {
           : placeholderHTML(heroLead, 'hero-lead__img-placeholder')) +
       '</div>' +
       '<div class="hero-lead__body">' +
-        '<span class="hero-lead__cat">' + heroLead.category + '</span>' + regionHTML(heroLead) +
+        '<span class="hero-lead__cat">' + categoryDisplayName(heroLead.category) + '</span>' + regionHTML(heroLead) +
         '<h1 class="hero-lead__title">' + badgeHTML(heroLead) + heroLead.title + '</h1>' +
         '<p class="hero-lead__summary">' + (heroLead.summary_short || 'Resumen no disponible') + '</p>' +
         '<div class="hero-lead__meta"><span class="source">' + heroLead.source + '</span><span> · </span><span>' + heroLead.date + '</span></div>' +
@@ -4077,7 +4169,7 @@ function renderHome() {
               : placeholderHTML(a, 'hero-mid-card__img-placeholder')) +
           '</div>' +
           '<div class="hero-mid-card__body">' +
-            '<div class="hero-mid-card__cat">' + a.category + '</div>' + regionHTML(a) +
+            '<div class="hero-mid-card__cat">' + categoryDisplayName(a.category) + '</div>' + regionHTML(a) +
             '<div class="hero-mid-card__title">' + badgeHTML(a) + a.title + '</div>' +
             '<div class="hero-mid-card__meta"><span class="source">' + a.source + '</span> · ' + a.date + '</div>' +
           '</div>' +
@@ -4130,7 +4222,7 @@ function renderHome() {
         (hasRealImage(lead)
           ? '<img class="cat-venture__lead-img" loading="lazy" src="' + lead.image_url + '" alt="" onerror="phFallback(this,' + lead.id + ',\'cat-venture__lead-img-placeholder\')">'
           : placeholderHTML(lead, 'cat-venture__lead-img-placeholder')) +
-        '<div class="cat-venture__lead-cat">' + cat + '</div>' +
+        '<div class="cat-venture__lead-cat">' + categoryDisplayName(cat) + '</div>' +
         '<div class="cat-venture__lead-title">' + badgeHTML(lead) + lead.title + '</div>' +
         '<div class="cat-venture__lead-summary">' + (lead.summary_short || 'Resumen no disponible') + '</div>' +
         '<div class="cat-venture__lead-meta"><span class="source">' + lead.source + '</span> · ' + lead.date + '</div>' +
@@ -4142,7 +4234,7 @@ function renderHome() {
           ? '<img class="cat-headline-item__thumb" loading="lazy" src="' + a.image_url + '" alt="" onerror="phFallback(this,' + a.id + ',\'cat-headline-item__thumb-placeholder\')">'
           : placeholderHTML(a, 'cat-headline-item__thumb-placeholder')) +
         '<div class="cat-headline-item__body">' +
-          '<div class="cat-headline-item__cat">' + cat + '</div>' +
+          '<div class="cat-headline-item__cat">' + categoryDisplayName(cat) + '</div>' +
           '<div class="cat-headline-item__title">' + badgeHTML(a) + a.title + '</div>' +
           '<div class="cat-headline-item__meta"><span class="source">' + a.source + '</span> · ' + a.date + '</div>' +
         '</div>' +
@@ -4168,7 +4260,7 @@ function renderHome() {
     catHTML +=
       '<section class="category-section" id="cat-' + slugify(cat) + '">' +
         '<div class="section-header">' +
-          '<span class="section-title">' + cat + '</span>' +
+          '<span class="section-title">' + categoryDisplayName(cat) + '</span>' +
           '<span class="section-count">' + catArticles.length + '</span>' +
         '</div>' +
         '<div class="cat-venture">' +
@@ -4176,7 +4268,7 @@ function renderHome() {
           '<div class="cat-venture__side">' + sideHTML + '</div>' +
         '</div>' +
         textHTML +
-        (moreCount > 0 ? '<button class="load-more" data-cat="' + cat + '">Ver más en ' + cat + ' (' + moreCount + ')</button>' : '') +
+        (moreCount > 0 ? '<button class="load-more" data-cat="' + cat + '">Ver más en ' + categoryDisplayName(cat) + ' (' + moreCount + ')</button>' : '') +
       '</section>';
   });
   document.getElementById('categorySections').innerHTML = catHTML;
@@ -4240,7 +4332,7 @@ function renderHome() {
       if (catShown >= allCatArticles.length) {
         btn.remove();
       } else {
-        btn.textContent = 'Ver más en ' + cat + ' (' + (allCatArticles.length - catShown) + ')';
+        btn.textContent = 'Ver más en ' + categoryDisplayName(cat) + ' (' + (allCatArticles.length - catShown) + ')';
       }
     });
   });
@@ -4255,7 +4347,7 @@ function feedCardHTML(a) {
       ? '<img class="feed-card__img" loading="lazy" src="' + a.image_url + '" alt="" onerror="phFallback(this,' + a.id + ',\'feed-card__img-placeholder\')">'
       : '') +
     '<div class="feed-card__body">' +
-      '<div class="feed-card__cat">' + a.category + '</div>' + regionHTML(a) +
+      '<div class="feed-card__cat">' + categoryDisplayName(a.category) + '</div>' + regionHTML(a) +
       '<div class="feed-card__title">' + badgeHTML(a) + a.title + '</div>' +
       '<div class="feed-card__summary">' + (a.summary_short || 'Resumen no disponible') + '</div>' +
       (tagsHTML ? '<div class="feed-card__tags" style="margin-bottom:8px;display:flex;flex-wrap:wrap;gap:4px;">' + tagsHTML + '</div>' : '') +
@@ -4293,7 +4385,7 @@ function openModal(id) {
       ? '<img class="modal-image" loading="lazy" src="' + a.image_url + '" alt="" onerror="phFallback(this,' + a.id + ',\'modal-image-placeholder\')">'
       : placeholderHTML(a, 'modal-image-placeholder')) +
     '<div class="modal-body">' +
-      '<div class="modal-cat">' + a.category + '</div>' + regionHTML(a) +
+      '<div class="modal-cat">' + categoryDisplayName(a.category) + '</div>' + regionHTML(a) +
       '<h2 class="modal-title">' + badgeHTML(a) + a.title + '</h2>' +
       '<div class="modal-meta"><span class="source">' + a.source + '</span><span> · </span><span>' + a.date + '</span></div>' +
       '<div class="modal-summary">' + (a.summary || 'Resumen no disponible') + '</div>' +
@@ -4328,7 +4420,7 @@ function applyFilters() {
   var results = DATA.articles.slice();
   if (query) {
     results = results.filter(function(a) {
-      return (a.title + ' ' + (a.summary||'') + ' ' + a.keywords.join(' ') + ' ' + a.source + ' ' + (a.region||'')).toLowerCase().indexOf(query) !== -1;
+      return (a.title + ' ' + (a.summary||'') + ' ' + (a.keywords||[]).join(' ') + ' ' + (a.risk_tags||[]).join(' ') + ' ' + (a.signal_reasons||[]).join(' ') + ' ' + flattenEntities(a).join(' ') + ' ' + a.source + ' ' + (a.category||'') + ' ' + categoryDisplayName(a.category) + ' ' + (a.region||'')).toLowerCase().indexOf(query) !== -1;
     });
   }
   if (cat) results = results.filter(function(a) { return a.category === cat; });
@@ -4385,7 +4477,7 @@ function updateFilterChips() {
   var region = document.getElementById('filterRegion').value;
   var src = document.getElementById('filterSource').value;
   if (query) chips.push({ label: '"' + query + '"', clear: function() { document.getElementById('searchInput').value = ''; } });
-  if (cat) chips.push({ label: cat, clear: function() { document.getElementById('filterCategory').value = ''; } });
+  if (cat) chips.push({ label: categoryDisplayName(cat), clear: function() { document.getElementById('filterCategory').value = ''; } });
   if (region) chips.push({ label: region, clear: function() { document.getElementById('filterRegion').value = ''; } });
   if (src) chips.push({ label: '\u{1F4F0} ' + src, clear: function() { document.getElementById('filterSource').value = ''; document.querySelectorAll('.source-pill').forEach(function(p){p.classList.remove('active');}); } });
   if (ACTIVE_PRESET !== null) chips.push({ label: ACTIVE_PRESET === 0 ? 'Todo' : ACTIVE_PRESET + ' d\u00edas', clear: function() { clearDatePreset(); } });
@@ -4419,6 +4511,66 @@ function updateFilterChips() {
   if (ca) ca.addEventListener('click', clearAllFilters);
 }
 
+function navFilterItems() {
+  return document.querySelectorAll('.nav-item, .nav-dropdown__item');
+}
+
+function clearNavActive() {
+  navFilterItems().forEach(function(n) { n.classList.remove('active'); });
+}
+
+function activateHomeNav() {
+  clearNavActive();
+  var home = document.querySelector('.nav-item.nav-all');
+  if (home) home.classList.add('active');
+}
+
+function activateNavItem(item) {
+  clearNavActive();
+  item.classList.add('active');
+  var dropdown = item.closest ? item.closest('.nav-dropdown') : null;
+  if (dropdown) {
+    var parent = dropdown.querySelector('.nav-item');
+    if (parent) parent.classList.add('active');
+  }
+}
+
+function applyNavItemFilter(item) {
+  hideStatsView();
+  document.getElementById('filterCategory').value = '';
+  document.getElementById('filterRegion').value = '';
+  document.getElementById('searchInput').value = '';
+  var fType = item.dataset.filterType;
+  var fValue = item.dataset.filterValue || '';
+  if (fType === 'region') {
+    document.getElementById('filterRegion').value = fValue;
+  } else if (fType === 'category') {
+    document.getElementById('filterCategory').value = fValue;
+  } else if (fType === 'query') {
+    document.getElementById('searchInput').value = fValue;
+  }
+  applyFilters();
+}
+
+function applyFocusNavFilter(item) {
+  var fType = item.dataset.filterType;
+  var fValue = item.dataset.filterValue || '';
+  focusActiveCat = 'TODAS';
+  focusQuery = '';
+  if (fType === 'region' || fType === 'category') {
+    focusActiveCat = fValue;
+  } else if (fType === 'query') {
+    focusQuery = fValue.toLowerCase();
+  }
+  focusShown = 0;
+  renderFocusView();
+}
+
+function closeInfoPopovers() {
+  document.querySelectorAll('.info-pop.open').forEach(function(pop) { pop.classList.remove('open'); });
+  document.querySelectorAll('.info-button[aria-expanded="true"]').forEach(function(btn) { btn.setAttribute('aria-expanded', 'false'); });
+}
+
 function clearDatePreset() {
   ACTIVE_PRESET = null;
   document.getElementById('filterDateFrom').value = '';
@@ -4446,8 +4598,7 @@ function clearAllFilters() {
   ACTIVE_PRESET = null;
   document.querySelectorAll('.preset-btn').forEach(function(b) { b.classList.remove('active'); });
   document.querySelectorAll('.source-pill').forEach(function(p) { p.classList.remove('active'); });
-  document.querySelectorAll('.nav-item').forEach(function(n) { n.classList.remove('active'); });
-  document.querySelector('.nav-item.nav-all').classList.add('active');
+  activateHomeNav();
   document.getElementById('filterChips').innerHTML = '';
   closeSearchOverlay();
   hideStatsView();
@@ -4484,8 +4635,7 @@ function bindEvents() {
       focusQuery = '';
       focusDateInited = false;
       // Reset nav to Inicio when entering focus
-      document.querySelectorAll('.nav-item').forEach(function(n) { n.classList.remove('active'); });
-      document.querySelector('.nav-item.nav-all').classList.add('active');
+      activateHomeNav();
       renderFocusView();
     }
   });
@@ -4587,6 +4737,23 @@ function bindEvents() {
     }
   });
 
+  document.addEventListener('click', function(e) {
+    var btn = e.target.closest('.info-button');
+    if (btn) {
+      e.preventDefault();
+      e.stopPropagation();
+      var pop = btn.closest('.info-pop');
+      var willOpen = !(pop && pop.classList.contains('open'));
+      closeInfoPopovers();
+      if (pop && willOpen) {
+        pop.classList.add('open');
+        btn.setAttribute('aria-expanded', 'true');
+      }
+      return;
+    }
+    if (!e.target.closest('.info-pop')) closeInfoPopovers();
+  });
+
   // Stats back button
   document.getElementById('statsBack').addEventListener('click', function() {
     hideStatsView();
@@ -4598,33 +4765,21 @@ function bindEvents() {
     document.getElementById('newSinceBanner').classList.add('hidden');
   });
 
-  document.querySelectorAll('.nav-item').forEach(function(item) {
+  document.querySelectorAll('.nav-item, .nav-dropdown__item').forEach(function(item) {
     item.addEventListener('click', function(e) {
       e.preventDefault();
-      document.querySelectorAll('.nav-item').forEach(function(n) { n.classList.remove('active'); });
-      item.classList.add('active');
-
-      // If focus mode is active, route to focus filtering
-      if (document.body.classList.contains('focus-mode')) {
-        if (item.dataset.category === 'all') {
-          focusActiveCat = 'TODAS';
-        } else {
-          var fType = item.dataset.filterType;
-          var fValue = item.dataset.filterValue;
-          if (fType === 'region') {
-            focusActiveCat = fValue; // 'Local' or 'Internacional'
-          } else {
-            focusActiveCat = fValue; // category name
-          }
-        }
-        focusShown = 0;
-        renderFocusView();
-        return;
-      }
+      activateNavItem(item);
 
       // "Inicio" has data-category="all"
       if (item.dataset.category === 'all') {
-        hideStatsView();
+        activateHomeNav();
+        if (document.body.classList.contains('focus-mode')) {
+          focusActiveCat = 'TODAS';
+          focusQuery = '';
+          focusShown = 0;
+          renderFocusView();
+          return;
+        }
         clearAllFilters();
         return;
       }
@@ -4633,21 +4788,11 @@ function bindEvents() {
         showStatsView();
         return;
       }
-      // Any other nav click hides stats
-      hideStatsView();
-      // Clear all filters first
-      document.getElementById('filterCategory').value = '';
-      document.getElementById('filterRegion').value = '';
-      document.getElementById('searchInput').value = '';
-      // Set the right filter based on type
-      var fType = item.dataset.filterType;
-      var fValue = item.dataset.filterValue;
-      if (fType === 'region') {
-        document.getElementById('filterRegion').value = fValue;
-      } else {
-        document.getElementById('filterCategory').value = fValue;
+      if (document.body.classList.contains('focus-mode')) {
+        applyFocusNavFilter(item);
+        return;
       }
-      applyFilters();
+      applyNavItemFilter(item);
     });
   });
 
@@ -4655,7 +4800,7 @@ function bindEvents() {
     if (e.target === document.getElementById('modalOverlay')) closeModal();
   });
   document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') { closeModal(); closeSearchOverlay(); }
+    if (e.key === 'Escape') { closeModal(); closeSearchOverlay(); closeInfoPopovers(); }
   });
 }
 
@@ -4793,7 +4938,7 @@ function renderFocusView() {
   // Filter by search query
   if (focusQuery) {
     focusFiltered = focusFiltered.filter(function(a) {
-      return (a.title + ' ' + (a.summary||'') + ' ' + a.keywords.join(' ') + ' ' + a.source + ' ' + (a.region||'')).toLowerCase().indexOf(focusQuery) !== -1;
+      return (a.title + ' ' + (a.summary||'') + ' ' + (a.keywords||[]).join(' ') + ' ' + (a.risk_tags||[]).join(' ') + ' ' + (a.signal_reasons||[]).join(' ') + ' ' + flattenEntities(a).join(' ') + ' ' + a.source + ' ' + (a.category||'') + ' ' + categoryDisplayName(a.category) + ' ' + (a.region||'')).toLowerCase().indexOf(focusQuery) !== -1;
     });
   }
 
@@ -4842,7 +4987,7 @@ function focusCardHTML(a) {
     '</div>' +
     '<div class="focus-card__content">' +
       '<div class="focus-card__badges">' +
-        '<span class="focus-card__cat-badge">' + a.category + '</span>' +
+        '<span class="focus-card__cat-badge">' + categoryDisplayName(a.category) + '</span>' +
         '<span class="focus-card__region-badge ' + regionCls + '">' + regionLabel + '</span>' +
       '</div>' +
       '<div class="focus-card__title">' + (a.url ? '<a href="' + a.url + '" target="_blank" rel="noopener">' + a.title + '</a>' : a.title) + '</div>' +
@@ -4944,7 +5089,7 @@ function captureCurrentView() {
 function describeView(v) {
   var parts = [];
   if (v.q)      parts.push('"' + v.q + '"');
-  if (v.cat)    parts.push(v.cat);
+  if (v.cat)    parts.push(categoryDisplayName(v.cat));
   if (v.region) parts.push(v.region);
   if (v.src)    parts.push(v.src);
   if (v.preset !== null && v.preset !== undefined) {
@@ -4977,12 +5122,12 @@ function applySavedView(v) {
     });
   }
   // Reflect nav highlight
-  document.querySelectorAll('.nav-item').forEach(function(n) { n.classList.remove('active'); });
+  clearNavActive();
   var navMatch = null;
-  if (v.region)   navMatch = document.querySelector('.nav-item[data-filter-value="' + v.region + '"]');
-  else if (v.cat) navMatch = document.querySelector('.nav-item[data-filter-value="' + v.cat + '"]');
-  if (navMatch) navMatch.classList.add('active');
-  else document.querySelector('.nav-item.nav-all').classList.add('active');
+  if (v.region)   navMatch = document.querySelector('.nav-item[data-filter-value="' + v.region + '"], .nav-dropdown__item[data-filter-value="' + v.region + '"]');
+  else if (v.cat) navMatch = document.querySelector('.nav-item[data-filter-value="' + v.cat + '"], .nav-dropdown__item[data-filter-value="' + v.cat + '"]');
+  if (navMatch) activateNavItem(navMatch);
+  else activateHomeNav();
   if (hasAnyFilter(v)) applyFilters();
   closeSavedViewsPanel();
 }

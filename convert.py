@@ -679,7 +679,7 @@ def enrich_articles(articles):
         for cid, count in cluster_counts.most_common(20)
     ]
     return {
-        'scoring_version': 'safr-signal-v1',
+        'scoring_version': 'daifr-signal-v1',
         'latest_date': latest.strftime('%Y-%m-%d'),
         'current_window_days': 30,
         'top_clusters': top_clusters,

@@ -1,6 +1,6 @@
 # RP News
 
-Visualizador estático de noticias financieras para BCRP / SAFR.
+Visualizador estático de noticias financieras para BCRP / DAIFR.
 
 El sitio no usa build step ni servidor permanente: `index.html` contiene el frontend y lee los datos desde `data/news.json`.
 
@@ -12,7 +12,7 @@ El sitio no usa build step ni servidor permanente: `index.html` contiene el fron
 
 `convert.py` normaliza el Excel y genera `data/news.json`, que es el único JSON de noticias usado por la web. Los Excel `Sample*.xlsx` son insumos locales y están ignorados por Git.
 
-La conversión también agrega una capa de inteligencia estadística determinística (`safr-signal-v1`): score por noticia, entidades, etiquetas de riesgo, clusters temáticos, novedad y momentum.
+La conversión también agrega una capa de inteligencia estadística determinística (`daifr-signal-v1`): score por noticia, entidades, etiquetas de riesgo, clusters temáticos, novedad y momentum.
 
 ## Estructura
 
@@ -118,10 +118,10 @@ La pestaña `Estadísticas` incluye:
 
 - Ventanas rápidas (`7d`, `15d`, `30d`, `90d`, `Todo`)
 - Ventana exacta con fecha inicial y final
-- SAFR Signal Score por noticia
+- DAIFR Signal Score por noticia
 - Índice de momentum de temas
 - Presión de riesgo / regulación
-- Clusters y duplicados
+- Flashes y duplicados
 - Red de co-menciones de entidades
 - Diversidad de fuentes
-- Detección simple de anomalías de volumen
+- Detección simple de anomalías
