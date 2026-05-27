@@ -3106,8 +3106,17 @@ function isGenericImage(url) {
   }
   return false;
 }
+function normalizeImageUrl(url) {
+  var clean = String(url || '').trim().replace(/&amp;/g, '&');
+  return /^https?:\/\//i.test(clean) ? clean : '';
+}
 function hasRealImage(a) {
-  return !!a.image_url && !isGenericImage(a.image_url);
+  var url = normalizeImageUrl(a.image_url);
+  return !!url && !isGenericImage(url);
+}
+function imageHTML(a, className, fallbackClass) {
+  var url = normalizeImageUrl(a.image_url);
+  return '<img class="' + className + '" decoding="async" referrerpolicy="no-referrer" src="' + escapeHTML(url) + '" alt="" onerror="phFallback(this,' + a.id + ',\'' + fallbackClass + '\')">';
 }
 function badgeHTML(a) {
   return isNew(a) ? '<span class="badge-new" title="Reciente"></span>' : '';
@@ -4150,7 +4159,7 @@ function renderHome() {
     '<div class="hero-lead" data-id="' + heroLead.id + '">' +
       '<div class="hero-lead__img-wrap">' +
         (hasRealImage(heroLead)
-          ? '<img class="hero-lead__img" src="' + heroLead.image_url + '" alt="" onerror="phFallback(this,' + heroLead.id + ',\'hero-lead__img-placeholder\')">'
+          ? imageHTML(heroLead, 'hero-lead__img', 'hero-lead__img-placeholder')
           : placeholderHTML(heroLead, 'hero-lead__img-placeholder')) +
       '</div>' +
       '<div class="hero-lead__body">' +
@@ -4165,7 +4174,7 @@ function renderHome() {
         return '<div class="hero-mid-card" data-id="' + a.id + '">' +
           '<div class="hero-mid-card__img-wrap">' +
             (hasRealImage(a)
-              ? '<img class="hero-mid-card__img" loading="lazy" src="' + a.image_url + '" alt="" onerror="phFallback(this,' + a.id + ',\'hero-mid-card__img-placeholder\')">'
+              ? imageHTML(a, 'hero-mid-card__img', 'hero-mid-card__img-placeholder')
               : placeholderHTML(a, 'hero-mid-card__img-placeholder')) +
           '</div>' +
           '<div class="hero-mid-card__body">' +
@@ -4220,7 +4229,7 @@ function renderHome() {
     var leadHTML =
       '<div class="cat-venture__lead" data-id="' + lead.id + '">' +
         (hasRealImage(lead)
-          ? '<img class="cat-venture__lead-img" loading="lazy" src="' + lead.image_url + '" alt="" onerror="phFallback(this,' + lead.id + ',\'cat-venture__lead-img-placeholder\')">'
+          ? imageHTML(lead, 'cat-venture__lead-img', 'cat-venture__lead-img-placeholder')
           : placeholderHTML(lead, 'cat-venture__lead-img-placeholder')) +
         '<div class="cat-venture__lead-cat">' + categoryDisplayName(cat) + '</div>' +
         '<div class="cat-venture__lead-title">' + badgeHTML(lead) + lead.title + '</div>' +
@@ -4231,7 +4240,7 @@ function renderHome() {
     var sideHTML = sideItems.map(function(a) {
       return '<div class="cat-headline-item" data-id="' + a.id + '">' +
         (hasRealImage(a)
-          ? '<img class="cat-headline-item__thumb" loading="lazy" src="' + a.image_url + '" alt="" onerror="phFallback(this,' + a.id + ',\'cat-headline-item__thumb-placeholder\')">'
+          ? imageHTML(a, 'cat-headline-item__thumb', 'cat-headline-item__thumb-placeholder')
           : placeholderHTML(a, 'cat-headline-item__thumb-placeholder')) +
         '<div class="cat-headline-item__body">' +
           '<div class="cat-headline-item__cat">' + categoryDisplayName(cat) + '</div>' +
@@ -4344,7 +4353,7 @@ function feedCardHTML(a) {
   }).join('');
   return '<div class="feed-card ' + (hasRealImage(a) ? '' : 'feed-card--no-img') + '" data-id="' + a.id + '">' +
     (hasRealImage(a)
-      ? '<img class="feed-card__img" loading="lazy" src="' + a.image_url + '" alt="" onerror="phFallback(this,' + a.id + ',\'feed-card__img-placeholder\')">'
+      ? imageHTML(a, 'feed-card__img', 'feed-card__img-placeholder')
       : '') +
     '<div class="feed-card__body">' +
       '<div class="feed-card__cat">' + categoryDisplayName(a.category) + '</div>' + regionHTML(a) +
@@ -4382,7 +4391,7 @@ function openModal(id) {
   document.getElementById('modalContent').innerHTML =
     '<button class="modal-close" id="modalClose">&#x2715;</button>' +
     (hasRealImage(a)
-      ? '<img class="modal-image" loading="lazy" src="' + a.image_url + '" alt="" onerror="phFallback(this,' + a.id + ',\'modal-image-placeholder\')">'
+      ? imageHTML(a, 'modal-image', 'modal-image-placeholder')
       : placeholderHTML(a, 'modal-image-placeholder')) +
     '<div class="modal-body">' +
       '<div class="modal-cat">' + categoryDisplayName(a.category) + '</div>' + regionHTML(a) +

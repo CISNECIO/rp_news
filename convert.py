@@ -32,6 +32,23 @@ def extract_source(title, url):
             pass
     return "Fuente no identificada"
 
+def normalize_external_url(value):
+    """Return a clean absolute URL, or None for flags/placeholders such as Si/X."""
+    if value is None or pd.isna(value):
+        return None
+    text = str(value).strip()
+    if not text:
+        return None
+    text = text.replace('&amp;', '&')
+    if text.lower() in {'si', 'sí', 's\u00ed', 'x', 'no', 'nan', 'none', 'null'}:
+        return None
+    if text.startswith('www.'):
+        text = 'https://' + text
+    parsed = urlparse(text)
+    if parsed.scheme not in {'http', 'https'} or not parsed.netloc:
+        return None
+    return text
+
 # ─────────────────────────────────────────────────────────────
 # SOURCE NORMALIZATION
 # Consolidates variants like "Gestion"/"Gestión", "ThePaypers"/"The paypers",
@@ -729,8 +746,7 @@ def convert(excel_path):
             resumen = None
             resumen_short = None
         
-        img_url = row.get('URL imagen')
-        img_url = str(img_url).strip() if pd.notna(img_url) else None
+        img_url = normalize_external_url(row.get('URL imagen'))
         
         keywords_raw = row.get(keywords_col)
         keywords = parse_keywords(str(keywords_raw) if pd.notna(keywords_raw) else '')
