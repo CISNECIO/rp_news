@@ -2840,7 +2840,7 @@ body.focus-mode { background: #f5f7fa; }
       </div>
       <div class="stats-card">
         <div class="stats-card__header">
-          <span class="stats-card__title">Presión de riesgo</span>
+          <span class="stats-card__title">Temas sensibles</span>
           <span class="stats-card__sub" id="mlRiskSub"></span>
         </div>
         <div id="mlRiskPressure"></div>
@@ -3344,9 +3344,9 @@ function getStatsContext(days) {
 
 function periodLabel(ctx) {
   if (!ctx || !ctx.latest) return 'Sin datos';
-  if (ctx.days === -1) return 'Ventana exacta · ' + formatDateShort(ctx.start) + ' — ' + formatDateShort(ctx.latest) + ' · ' + ctx.customDays + ' días';
+  if (ctx.days === -1) return 'Ventana exacta · ' + formatDateShort(ctx.start) + ' — ' + formatDateShort(ctx.latest) + ' · compara vs ' + ctx.customDays + ' días previos';
   if (ctx.days === 0) return 'Todo el histórico · hasta ' + formatDateShort(ctx.latest);
-  return formatDateShort(ctx.start) + ' — ' + formatDateShort(ctx.latest) + ' · compara vs periodo anterior';
+  return formatDateShort(ctx.start) + ' — ' + formatDateShort(ctx.latest) + ' · compara vs ' + ctx.days + ' días previos';
 }
 
 function stripDiacritics(s) {
@@ -3406,9 +3406,18 @@ function makeTopicRows(ctx) {
     var prevKey = Object.keys(previous).find(function(k) { return normalizedText(k) === normalizedText(topic); });
     var prev = prevKey ? previous[prevKey] : 0;
     var deltaPct = prev > 0 ? Math.round(((cur - prev) / prev) * 100) : (cur > 0 ? 100 : 0);
-    var score = (cur - prev) * 10 + deltaPct;
-    return { topic: topic, cur: cur, prev: prev, deltaPct: deltaPct, score: score };
+    var absDelta = cur - prev;
+    var relativeLift = prev > 0 ? absDelta / Math.max(prev, 4) : cur;
+    var score = (absDelta * 12) + Math.round(Math.max(0, Math.min(relativeLift, 2)) * 25) + (prev === 0 ? 20 : 0);
+    return { topic: topic, cur: cur, prev: prev, absDelta: absDelta, deltaPct: deltaPct, score: score };
   });
+}
+
+function comparisonDeltaLabel(row) {
+  if (!row || row.prev === 0) return 'Nuevo';
+  if (row.absDelta <= 0) return 'Estable';
+  if (row.prev < 4 || row.deltaPct > 150) return '+' + row.absDelta + ' menc.';
+  return '+' + row.deltaPct + '%';
 }
 
 function escapeRegExp(s) {
@@ -3512,20 +3521,23 @@ function applyIntelFilter(opts) {
 }
 
 function renderMomentumCards(ctx, rows) {
-  var top = rows.filter(function(r) { return r.cur >= 2 && (r.cur > r.prev || r.prev === 0); })
-    .sort(function(a,b) { return b.score - a.score; })
-    .slice(0, 3);
-  if (top.length === 0) {
-    top = rows.sort(function(a,b) { return b.cur - a.cur; }).slice(0, 3);
-  }
+  var hasComparison = !!(ctx.previousArticles && ctx.previousArticles.length);
+  var top = hasComparison
+    ? rows.filter(function(r) { return r.cur >= 2 && r.absDelta > 0; })
+        .sort(function(a,b) { return b.score - a.score; })
+        .slice(0, 3)
+    : [];
+  if (top.length === 0) top = rows.sort(function(a,b) { return b.cur - a.cur; }).slice(0, 3);
   var el = document.getElementById('intelMomentumCards');
   if (!top.length) {
     el.innerHTML = '';
     return;
   }
   el.innerHTML = top.map(function(r, i) {
-    var label = i === 0 ? 'Tema en alza' : (i === 1 ? 'Señal secundaria' : 'Señal emergente');
-    var delta = r.prev > 0 ? ('+' + Math.max(0, r.deltaPct) + '%') : 'Nuevo';
+    var label = hasComparison
+      ? (i === 0 ? 'Tema en alza' : (i === 1 ? 'Señal secundaria' : 'Señal emergente'))
+      : (i === 0 ? 'Tema frecuente' : (i === 1 ? 'Tema destacado' : 'Tema recurrente'));
+    var delta = hasComparison ? comparisonDeltaLabel(r) : 'Total';
     return '<div class="momentum-card" data-intel-query="' + escapeHTML(r.topic) + '">' +
       '<div class="momentum-card__label">' + label + '</div>' +
       '<div class="momentum-card__topic">' + escapeHTML(r.topic) + '</div>' +
@@ -3558,19 +3570,25 @@ function renderWordCloud(rows) {
   });
 }
 
-function renderRisingTopics(rows) {
-  var rising = rows.filter(function(r) { return r.cur >= 2 && (r.cur > r.prev || r.prev === 0); })
+function renderRisingTopics(ctx, rows) {
+  var hasComparison = !!(ctx.previousArticles && ctx.previousArticles.length);
+  var el = document.getElementById('intelRisingTopics');
+  if (!hasComparison) {
+    document.getElementById('intelRisingSub').textContent = 'sin comparativo';
+    el.innerHTML = '<div class="intel-empty">Elige 7d, 15d, 30d o 90d para ver temas en alza contra una ventana espejo anterior</div>';
+    return;
+  }
+  var rising = rows.filter(function(r) { return r.cur >= 2 && r.absDelta > 0; })
     .sort(function(a,b) { return b.score - a.score; })
     .slice(0, 10);
-  var el = document.getElementById('intelRisingTopics');
   document.getElementById('intelRisingSub').textContent = rising.length + ' señales';
   if (!rising.length) {
     el.innerHTML = '<div class="intel-empty">Sin aceleraciones claras en este periodo</div>';
     return;
   }
-  el.innerHTML = '<table class="intel-table"><thead><tr><th>Tema</th><th>Ahora</th><th>Antes</th><th>Var.</th></tr></thead><tbody>' +
+  el.innerHTML = '<table class="intel-table"><thead><tr><th>Tema</th><th>Ahora</th><th>Antes</th><th>Cambio</th></tr></thead><tbody>' +
     rising.map(function(r) {
-      var delta = r.prev > 0 ? ('+' + Math.max(0, r.deltaPct) + '%') : 'Nuevo';
+      var delta = comparisonDeltaLabel(r);
       return '<tr data-intel-query="' + escapeHTML(r.topic) + '"><td class="intel-table__topic" title="' + escapeHTML(r.topic) + '">' + escapeHTML(shortLabel(r.topic, 32)) + '</td><td>' + r.cur + '</td><td>' + r.prev + '</td><td><span class="intel-delta">' + delta + '</span></td></tr>';
     }).join('') +
     '</tbody></table>';
@@ -3706,9 +3724,9 @@ function renderRiskPressurePanel(ctx) {
     (a.risk_tags || []).forEach(function(tag) { counts[tag] = (counts[tag] || 0) + 1; });
   });
   var rows = Object.keys(counts).map(function(k) { return [k, counts[k]]; }).sort(function(a,b) { return b[1] - a[1]; }).slice(0, 10);
-  document.getElementById('mlRiskSub').textContent = rows.length + ' frentes';
+  document.getElementById('mlRiskSub').textContent = rows.length + ' temas';
   if (!rows.length) {
-    document.getElementById('mlRiskPressure').innerHTML = '<div class="intel-empty">Sin etiquetas de riesgo en esta ventana</div>';
+    document.getElementById('mlRiskPressure').innerHTML = '<div class="intel-empty">Sin temas sensibles en esta ventana</div>';
     return;
   }
   var max = rows[0][1] || 1;
@@ -3861,7 +3879,7 @@ function renderIntelligence(ctx) {
   var topicRows = makeTopicRows(ctx);
   renderMomentumCards(ctx, topicRows);
   renderWordCloud(topicRows);
-  renderRisingTopics(topicRows);
+  renderRisingTopics(ctx, topicRows);
   renderEntities(countEntities(ctx.currentArticles));
   renderCategoryTimeline(ctx);
   renderMLPanels(ctx, topicRows);
