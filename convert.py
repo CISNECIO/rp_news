@@ -285,8 +285,8 @@ def clean_title(title):
 
 def infer_category(title, keywords, existing):
     """Use classification if exists, else infer from keywords/title.
-    All categories normalized to: Fintech, Banca, Pagos, Regulación, Inversiones."""
-    ALLOWED = ['Fintech', 'Banca', 'Pagos', 'Regulación', 'Inversiones']
+    All categories normalized to: Fintech, Banca, Pagos, Regulación, Inversiones, IA."""
+    ALLOWED = ['Fintech', 'Banca', 'Pagos', 'Regulación', 'Inversiones', 'IA']
     
     if existing and isinstance(existing, str) and existing.strip():
         cat = existing.strip()
@@ -303,8 +303,11 @@ def infer_category(title, keywords, existing):
             'Inversiones': 'Inversiones',
             'Fintech': 'Fintech',
             'Criptoactivos': 'Fintech',
-            'IA / tecnología': 'Fintech',
-            'IA / Tecnología': 'Fintech',
+            'IA': 'IA',
+            'AI': 'IA',
+            'Inteligencia artificial': 'IA',
+            'IA / tecnología': 'IA',
+            'IA / Tecnología': 'IA',
             'Inclusión financiera': 'Banca',
             'Inclusión Financiera': 'Banca',
         }
@@ -315,20 +318,23 @@ def infer_category(title, keywords, existing):
         cat_lower = cat.lower()
         if 'regul' in cat_lower: return 'Regulación'
         if 'pago' in cat_lower: return 'Pagos'
+        if cat_lower.strip() in ['ia', 'ai'] or 'inteligencia artificial' in cat_lower or 'machine learning' in cat_lower: return 'IA'
         if 'banc' in cat_lower or 'bank' in cat_lower or 'préstam' in cat_lower or 'prestam' in cat_lower: return 'Banca'
         if 'invers' in cat_lower or 'bolsa' in cat_lower: return 'Inversiones'
-        if 'fintech' in cat_lower or 'cripto' in cat_lower or 'tecnol' in cat_lower or 'ia' in cat_lower: return 'Fintech'
+        if 'fintech' in cat_lower or 'cripto' in cat_lower: return 'Fintech'
     
     text = f"{title} {keywords}".lower()
     if any(w in text for w in ['regulación', 'sbs', 'indecopi', 'normativa', 'ley', 'regulador']):
         return 'Regulación'
     if any(w in text for w in ['pago', 'pagos', 'transferencia', 'pasarela']):
         return 'Pagos'
+    if any(w in text for w in ['inteligencia artificial', ' ia ', 'mistral ai', 'mistral', 'openai', 'machine learning', 'generative ai', 'genai', 'modelo de lenguaje']):
+        return 'IA'
     if any(w in text for w in ['préstamo', 'crédito', 'bnpl', 'deuda', 'financiamiento', 'banco', 'bancario', 'banca', 'banking']):
         return 'Banca'
     if any(w in text for w in ['inversión', 'bolsa', 'acciones', 'valores']):
         return 'Inversiones'
-    if any(w in text for w in ['fintech', 'startup', 'neobank', 'cripto', 'bitcoin', 'blockchain', 'inteligencia artificial', 'machine learning', 'tecnología']):
+    if any(w in text for w in ['fintech', 'startup', 'neobank', 'cripto', 'bitcoin', 'blockchain', 'tecnología']):
         return 'Fintech'
     return 'Banca'  # fallback to most common
 
@@ -421,7 +427,7 @@ RISK_RULES = [
     ('Regulación', ['regulacion', 'normativa', 'ley', 'supervision', 'supervisor', 'licencia', 'sbs', 'smv', 'sec', 'fca', 'bis']),
     ('Ciberseguridad / fraude', ['fraude', 'ciberseguridad', 'ciberataque', 'phishing', 'estafa', 'mulas', 'lavado', 'aml', 'riesgo operacional']),
     ('Criptoactivos', ['cripto', 'crypto', 'bitcoin', 'stablecoin', 'stablecoins', 'tokenizacion', 'tokenización', 'activos digitales', 'blockchain']),
-    ('IA / modelos', ['inteligencia artificial', ' ia ', 'machine learning', 'modelo', 'algoritmo', 'automatizacion', 'automatización']),
+    ('IA / modelos', ['inteligencia artificial', ' ia ', 'mistral ai', 'openai', 'machine learning', 'modelo de lenguaje', 'modelo de inteligencia artificial', 'modelos de inteligencia artificial', 'ia generativa', 'algoritmo de ia', 'automatizacion con ia', 'automatización con ia']),
     ('Pagos e infraestructura', ['pagos', 'pago', 'interoperabilidad', 'transferencia', 'instantaneo', 'instantáneo', 'wallet', 'billetera', 'qr']),
     ('Open finance', ['open finance', 'open banking', 'finanzas abiertas', 'banca abierta', 'apis', 'api']),
     ('Crédito / deuda', ['credito', 'crédito', 'prestamo', 'préstamo', 'bnpl', 'deuda', 'morosidad', 'financiamiento']),

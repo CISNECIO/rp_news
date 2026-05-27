@@ -71,7 +71,7 @@ Arriba de la vista Estadísticas, strip de 4 cards:
 
 ### 6. Manejo de imágenes vacías
 Sistema `.ph` (placeholder con identidad):
-- Placeholder coloreado por categoría: Fintech=azul, Banca=navy, Pagos=dorado, Regulación=verde, Inversiones=slate.
+- Placeholder coloreado por categoría: Fintech=azul, Banca=navy, Pagos=dorado, Regulación=verde, Inversiones=slate, IA=verde petróleo.
 - Iniciales de la fuente como letra grande (p.ej. "GE" para Gestión, "RE" para Reuters).
 - Tag de categoría en esquina inferior izquierda.
 - Detección de URLs genéricas (patrones `no-image`, `placeholder`, Finextra default, etc.) → trata como vacío.

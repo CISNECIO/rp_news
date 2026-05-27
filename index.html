@@ -454,6 +454,7 @@ input, select { font-family: inherit; }
 .ph--pagos       { background: linear-gradient(135deg, #b45309, #c9a84c); }
 .ph--regulacion  { background: linear-gradient(135deg, #065f46, #16a34a); }
 .ph--inversiones { background: linear-gradient(135deg, #4a5568, #6b7789); }
+.ph--ia          { background: linear-gradient(135deg, #134e4a, #0f766e); }
 .ph--generic     { background: linear-gradient(135deg, #334155, #1e293b); }
 
 /* Size the mono letter by the container font-size inherited */
@@ -3014,7 +3015,8 @@ var STATS_CAT_COLORS = {
   'Pagos': '#c9a84c',
   'Regulación': '#16a34a',
   'Regulacion': '#16a34a',
-  'Inversiones': '#6b7789'
+  'Inversiones': '#6b7789',
+  'IA': '#0f766e'
 };
 var CATEGORY_DISPLAY_NAMES = {
   'Banca': 'Sistema financiero',
@@ -3057,6 +3059,7 @@ function phClass(cat) {
     case 'regulación':
     case 'regulacion':  return 'ph--regulacion';
     case 'inversiones': return 'ph--inversiones';
+    case 'ia':          return 'ph--ia';
     default:            return 'ph--generic';
   }
 }
@@ -3165,7 +3168,7 @@ var NAV_ITEMS = [
   { label: 'Regulación',            type: 'category', value: 'Regulación' },
   { label: 'Mercado de capitales',  type: 'category', value: 'Inversiones' },
   { label: 'Activos digitales',     type: 'query',    value: 'activos digitales' },
-  { label: 'IA',                    type: 'query',    value: 'inteligencia artificial' },
+  { label: 'IA',                    type: 'category', value: 'IA' },
 ];
 
 function makeNavAnchor(item, className) {
@@ -3236,12 +3239,12 @@ function buildSearchSourcePills() {
 
 function buildTrendChart() {
   if (!DATA) return;
-  var cats = ['Fintech', 'Banca', 'Pagos', 'Regulaci\u00f3n', 'Inversiones'];
+  var cats = ['Fintech', 'Banca', 'Pagos', 'Regulaci\u00f3n', 'Inversiones', 'IA'];
   var counts = {};
   cats.forEach(function(c) { counts[c] = 0; });
   DATA.articles.forEach(function(a) { if (counts[a.category] !== undefined) counts[a.category]++; });
   var max = Math.max.apply(null, cats.map(function(c) { return counts[c]; })) || 1;
-  var colors = ['#2563eb', '#0b1d3a', '#c9a84c', '#16a34a', '#6b7789'];
+  var colors = ['#2563eb', '#0b1d3a', '#c9a84c', '#16a34a', '#6b7789', '#0f766e'];
   document.getElementById('trendBars').innerHTML = cats.map(function(c, i) {
     var pct = (counts[c] / max * 100);
     var label = categoryDisplayName(c);
@@ -3623,7 +3626,7 @@ function weekStartISO(dateStr) {
 }
 
 function renderCategoryTimeline(ctx) {
-  var cats = ['Fintech', 'Banca', 'Pagos', 'Regulación', 'Inversiones'];
+  var cats = ['Fintech', 'Banca', 'Pagos', 'Regulación', 'Inversiones', 'IA'];
   var articles = ctx.currentArticles;
   if (ctx.days === 0 && ctx.latest) {
     var latestDt = new Date(ctx.latest + 'T00:00:00');
@@ -4236,7 +4239,7 @@ function renderHome() {
   document.getElementById('sidebar').innerHTML = '';
 
   var catHTML = '';
-  var ALLOWED_CATS = ['Fintech', 'Banca', 'Pagos', 'Regulación', 'Inversiones'];
+  var ALLOWED_CATS = ['Fintech', 'Banca', 'Pagos', 'Regulación', 'Inversiones', 'IA'];
   ALLOWED_CATS.forEach(function(cat) {
     var catArticles = articles.filter(function(a) { return a.category === cat; });
     if (catArticles.length === 0) return;
@@ -5286,7 +5289,7 @@ function buildInsightStrip(ctx) {
   }, {})).length) : (ctx.days === -1 ? ctx.customDays : ctx.days);
   var avgDaily = Math.round(curr / avgBase * 10) / 10;
 
-  var ALLOWED_CATS = ['Fintech', 'Banca', 'Pagos', 'Regulación', 'Inversiones'];
+  var ALLOWED_CATS = ['Fintech', 'Banca', 'Pagos', 'Regulación', 'Inversiones', 'IA'];
   var trending = { cat: '—', pct: 0, count: 0 };
   ALLOWED_CATS.forEach(function(c) {
     var cur = articles.filter(function(a) { return a.category === c; }).length;
