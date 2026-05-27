@@ -120,7 +120,7 @@ La pestaña `Estadísticas` incluye:
 - Ventana exacta con fecha inicial y final
 - DAIFR Signal Score por noticia
 - Índice de momentum de temas
-- Temas sensibles / regulación
+- Indicadores temáticos / regulación
 - Flashes y duplicados
 - Red de co-menciones de entidades
 - Diversidad de fuentes

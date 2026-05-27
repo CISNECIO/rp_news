@@ -2840,7 +2840,7 @@ body.focus-mode { background: #f5f7fa; }
       </div>
       <div class="stats-card">
         <div class="stats-card__header">
-          <span class="stats-card__title">Temas sensibles</span>
+          <span class="stats-card__title">Indicadores temáticos</span>
           <span class="stats-card__sub" id="mlRiskSub"></span>
         </div>
         <div id="mlRiskPressure"></div>
@@ -3726,7 +3726,7 @@ function renderRiskPressurePanel(ctx) {
   var rows = Object.keys(counts).map(function(k) { return [k, counts[k]]; }).sort(function(a,b) { return b[1] - a[1]; }).slice(0, 10);
   document.getElementById('mlRiskSub').textContent = rows.length + ' temas';
   if (!rows.length) {
-    document.getElementById('mlRiskPressure').innerHTML = '<div class="intel-empty">Sin temas sensibles en esta ventana</div>';
+    document.getElementById('mlRiskPressure').innerHTML = '<div class="intel-empty">Sin indicadores temáticos en esta ventana</div>';
     return;
   }
   var max = rows[0][1] || 1;
